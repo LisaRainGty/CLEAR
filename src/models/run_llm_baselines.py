@@ -15,6 +15,7 @@ import argparse
 import json
 import os
 import random
+import re
 from pathlib import Path
 
 import numpy as np
@@ -106,7 +107,19 @@ def clamp01(x, d=0.5):
         return d
 
 
+def cache_namespace(model, fewshot_block):
+    safe_model = re.sub(r"[^0-9A-Za-z_.-]+", "_", model).strip("_").lower()
+    return f"paper_llm_{safe_model}_{'fewshot' if fewshot_block else 'zero'}"
+
+
 def score_split(recs, model, fewshot_block, namespace, concurrency, max_tokens):
+    # The cache key already hashes the complete model/messages/parameters
+    # payload.  Sharing one namespace prevents paying again when an identical
+    # zero-shot (or identical few-shot) prompt appears in another fold, without
+    # sharing labels, thresholds, or model outputs across non-identical prompts.
+    requested_namespace = namespace
+    namespace = cache_namespace(model, fewshot_block)
+
     def fn(r):
         try:
             obj = chat_json(make_prompt(r, fewshot_block), system=SYSTEM, model=model,
@@ -117,7 +130,8 @@ def score_split(recs, model, fewshot_block, namespace, concurrency, max_tokens):
             return {"risk_score": rs, "decision": dec}
         except Exception as e:  # noqa: BLE001
             return {"risk_score": None, "decision": None, "__error__": repr(e)[:200]}
-    res = run_many(recs, fn, concurrency=concurrency, desc=f"{model}:{namespace}")
+    res = run_many(recs, fn, concurrency=concurrency,
+                   desc=f"{model}:{requested_namespace}")
     return res
 
 
@@ -155,6 +169,7 @@ def main():
     val, test, train = sp["val"], sp["test"], sp["train"]
     ns = f"llmbase_{args.tag}"
     fewshot_block = build_fewshot(train, args.shots, args.seed) if args.mode == "fewshot" else ""
+    shared_cache_namespace = cache_namespace(args.model, fewshot_block)
 
     rv = score_split(val, args.model, fewshot_block, ns + "_val", args.concurrency, args.max_tokens)
     rt = score_split(test, args.model, fewshot_block, ns + "_test", args.concurrency, args.max_tokens)
@@ -179,7 +194,10 @@ def main():
         Path(args.eval_out).parent.mkdir(parents=True, exist_ok=True)
         artifact = {
             **res,
-            "cache_namespaces": {"val": ns + "_val", "test": ns + "_test"},
+            "cache_namespaces": {
+                "val": shared_cache_namespace,
+                "test": shared_cache_namespace,
+            },
             "validation": {
                 "pair_id": [str(r.get("pair_id", "")) for r in val],
                 "y": yv.astype(int).tolist(), "p": pv.tolist(),

@@ -7,6 +7,7 @@
 *.tex text eol=lf
 *.bib text eol=lf
 *.tsv text eol=lf
+*.log -diff
 
 # The reviewer package intentionally versions raw, processed, and frozen data.
 # Store large/binary scientific artifacts with Git LFS.  These rules come last

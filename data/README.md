@@ -15,7 +15,9 @@
 1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76
 ```
 
-最终数据中非空 `arguments` 记录为 0，发布树不保留 arguments 数据变体。
+最终数据中非空 `arguments` 记录为 0，且 4,883 条记录均不存在
+`arguments` 字段。发布树不保留 arguments 数据变体；raw、processed 归档内也不含
+名称为 `args` 或 `arguments` 的历史数据变体。
 不要在冻结文件上原地修订；任何标签、三源证据或 split 变化都必须使用新版本名、更新配置和哈希。
 
 无需解包的完整性校验：

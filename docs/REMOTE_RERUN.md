@@ -34,6 +34,14 @@ external cost and requires provider credentials:
   --stages llm --execute --continue-on-error
 ```
 
+The full in-domain and cross-domain matrix contains 37,190 row-level requests
+before caching.  The request cache hashes the model, complete messages,
+temperature and token limit; therefore only byte-identical requests are reused.
+An offline prompt audit found 26,968 unique payloads, which is the upper bound
+before any pre-existing cache hits.  This optimisation changes neither prompts
+nor fold-specific few-shot examples and cannot transfer labels or thresholds
+between folds.
+
 Each completed job writes an independent log, result JSONL, status JSON and
 prediction/embedding bundle under `results/fair_rerun/` and
 `embeddings/fair_rerun/`.  `scripts/aggregate_paper_results.py` compiles these

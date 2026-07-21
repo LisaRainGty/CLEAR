@@ -15,6 +15,11 @@
 
 原 `claimarc_final_副本/data/processed`、`index`、`final` 在审计时基本为空，而项目 README 指向 `../claimarc/data/<layer>` 迁移。因此本快照从同一磁盘上的完整上游项目补齐这些层。raw 和 processed 用确定顺序 tar+zstd 归档，避免 Git/LFS 存储上万个小对象；`data/archives/MANIFEST.json` 记录归档哈希、文件数、逻辑字节数与排序内容树哈希。流式校验已通过。
 
+| 归档 | 归档 SHA-256 | 排序内容树 SHA-256 |
+|---|---|---|
+| raw | `53eecb89b887d4d6c4d5de849b77109e3751443006183f132576ae485ee88774` | `f6614c281f79b4772f1fba382c30cb9c0124b972388ffdef1e4ad73b4e911ab1` |
+| processed | `d8e4025c340b23830eb8fc9a8c5d94dd8844c071933d71fd0fdb881f3e347e4b` | `4aa38a7de4f9984f12c32cca3a50e57d631a91138cbe7f8bd889211d6e791390` |
+
 关键哈希：
 
 ```text

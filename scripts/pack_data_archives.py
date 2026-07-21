@@ -11,7 +11,6 @@ import argparse
 from contextlib import contextmanager
 import hashlib
 import json
-import os
 import shutil
 import subprocess
 import tarfile

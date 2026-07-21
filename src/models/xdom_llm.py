@@ -18,7 +18,7 @@ import random
 import numpy as np
 import torch
 
-from models.run_llm_baselines import build_fewshot, score_split
+from models.run_llm_baselines import build_fewshot, cache_namespace, score_split
 from models.data import apply_evidence_policy
 from models.provenance import sha256_file
 from models.xdom_common import build_splits, holdout_rooms
@@ -45,6 +45,7 @@ def cap_val(val, cap, seed):
 
 def run_mode(model, mode, shots, seed, train, val, test, conc, max_tokens, ns_pre):
     fewshot = build_fewshot(train, shots, seed) if mode == "fewshot" else ""
+    shared_cache_namespace = cache_namespace(model, fewshot)
     rv = score_split(val, model, fewshot, f"{ns_pre}_{mode}_val", conc, max_tokens)
     rt = score_split(test, model, fewshot, f"{ns_pre}_{mode}_test", conc, max_tokens)
     return {
@@ -58,8 +59,8 @@ def run_mode(model, mode, shots, seed, train, val, test, conc, max_tokens, ns_pr
         "attr": [r.get("attribute_id", "") for r in test],
         "parsed_response_val": rv,
         "parsed_response_test": rt,
-        "cache_namespaces": {"val": f"{ns_pre}_{mode}_val",
-                             "test": f"{ns_pre}_{mode}_test"},
+        "cache_namespaces": {"val": shared_cache_namespace,
+                             "test": shared_cache_namespace},
         "n_err_val": int(sum(1 for x in rv if x.get("__error__"))),
         "n_err": int(sum(1 for x in rt if x.get("__error__"))),
     }
