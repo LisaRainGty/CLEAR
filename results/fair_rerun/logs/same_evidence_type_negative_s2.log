@@ -1,0 +1,14 @@
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=2
+[ep0] warmup ce=0.3154 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7119 val_ap=0.5931
+[ep1] warmup ce=0.2312 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7452 val_ap=0.6225
+[ep2] warmup ce=0.1507 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7279 val_ap=0.6288
+[ep3] CL ce=0.0756 td=0.0000 cl=0.0759 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7112 val_ap=0.6101
+[ep4] CL ce=0.0491 td=0.0000 cl=0.0354 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7285 val_ap=0.6119
+[ep5] CL ce=0.0169 td=0.0000 cl=0.0171 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7335 val_ap=0.6580
+[ep6] CL ce=0.0061 td=0.0000 cl=0.0084 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7224 val_ap=0.6245
+[ep7] CL ce=0.0010 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7279 val_ap=0.6322
+[ep8] CL ce=0.0002 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7335 val_ap=0.6324
+[select] best single-val checkpoint score=1.0625
+RESULT {"tag": "same_evidence_type_negative", "seed": 2, "thr": 0.06, "acc": 0.8152, "macro_f1": 0.7902, "pos_f1": 0.7179, "wF1": 0.769, "auprc": 0.7092, "auroc": 0.891, "ece": 0.1664, "n_test": 855, "pos_test": 249, "alpha_rkc": 0.4, "auprc_rkc": 0.7077, "auroc_rkc": 0.8904, "acc_rkc": 0.8117, "pos_f1_rkc": 0.714, "macro_f1_rkc": 0.7868, "wF1_rkc": 0.764, "label_match@10": 0.7956, "attr_mAP@10": 0.2851, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
+[save_emb] -> /root/CLEAR_run/embeddings/fair_rerun/ablations/same_evidence_type_negative_s2.pt
