@@ -307,7 +307,8 @@ def make_collate(pad_id: int, stream_mode: str = "dual"):
       dual     → 默认双流（claim 流 + evidence 流）。
       claim    → 单流消融：evidence 流镜像为 claim 流（仅主播话术进入两个编码器槽）。
       evidence → 单流消融：claim 流镜像为 evidence 流（仅证据进入两个编码器槽）。
-    单流变体需配合 --no_fusion 使用，使两次编码完全等价、不存在跨流交互。"""
+    单流变体需配合 --no_fusion 使用；模型仅编码所选流一次并复用表示，
+    不产生第二个随机编码视图。"""
     def collate(items) -> Batch:
         def pad(key):
             seqs = [it[key] for it in items]

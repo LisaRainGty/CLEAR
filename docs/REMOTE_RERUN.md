@@ -55,6 +55,12 @@ preflight.  Authentication, permission and exhausted-quota HTTP responses fail
 fast and leave all existing job states untouched; only timeout/rate-limit class
 responses are retried.
 
+The claim-only and evidence-only ablations are true single-stream models: the
+selected stream is encoded once and its representation is reused in the paired
+head slots, with fusion disabled.  This avoids both a second stochastic encoder
+view and the doubled memory that previously caused evidence-only OOM.  Both
+single-stream rows must be rerun together after this correction.
+
 The output caps are fixed per endpoint at 320 tokens for Qwen-Flash/GPT-5.4,
 1,024 for Gemini-3.5-Flash and 4,096 for Kimi-K2.6.  Longest-prompt probes showed
 that the two reasoning endpoints could otherwise exhaust the cap before closing

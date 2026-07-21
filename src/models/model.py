@@ -84,7 +84,7 @@ class CLAIMARC(nn.Module):
                  use_lora=True, ret_dim=256, fusion_dropout=0.1, lora_rank=16,
                  xattn_dir="both", indep_proj=False, ffn="swiglu", heads=8,
                  enc_train="lora", unfreeze_top=0, ret_disc=True,
-                 head_4tuple=True, joint_encode=False):
+                 head_4tuple=True, joint_encode=False, single_stream=False):
         super().__init__()
         from transformers import AutoModel
         self.encoder = AutoModel.from_pretrained(bge_path)
@@ -96,6 +96,7 @@ class CLAIMARC(nn.Module):
         #   （跨流交互在编码阶段已发生），随后融合/头保持不变（消融"独立编码再融合"vs"统一编码再拆流"）。
         self.head_4tuple = head_4tuple
         self.joint_encode = joint_encode
+        self.single_stream = single_stream
         self.max_pos = int(getattr(self.encoder.config, "max_position_embeddings", 512) or 512)
         # enc_train: lora（默认，LoRA+LN+特殊embedding）| topk（解冻顶部 unfreeze_top 层）| full（全参微调）
         self.enc_train = enc_train
@@ -189,9 +190,16 @@ class CLAIMARC(nn.Module):
             e_pad = joint_mask[:, Lc:] == 0
         else:
             hc = self.encode(c_ids, c_mask)
-            he = self.encode(e_ids, e_mask)
             c_pad = c_mask == 0
-            e_pad = e_mask == 0
+            if self.single_stream:
+                # The collator mirrors the selected claim/evidence stream into
+                # both slots.  A genuine single-stream ablation encodes it once
+                # and reuses the same representation; two stochastic encoder
+                # passes would be a dual-view model and doubles peak memory.
+                he, e_pad = hc, c_pad
+            else:
+                he = self.encode(e_ids, e_mask)
+                e_pad = e_mask == 0
         for layer in self.fusion:
             hc, he = layer(hc, he, c_pad, e_pad)
         h_c = hc[:, 0]

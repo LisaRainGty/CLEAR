@@ -973,7 +973,8 @@ def train(args, splits=None, return_model=False):
                      unfreeze_top=getattr(args, "unfreeze_top", 0),
                      ret_disc=not getattr(args, "no_ret_disc", False),
                      head_4tuple=not getattr(args, "head_concat_only", False),
-                     joint_encode=getattr(args, "joint_encode", False)).to(device)
+                     joint_encode=getattr(args, "joint_encode", False),
+                     single_stream=(getattr(args, "stream_mode", "dual") != "dual")).to(device)
     if getattr(args, "load_ckpt", ""):
         sd = torch.load(args.load_ckpt, map_location=device, weights_only=False)
         miss, unexp = model.load_state_dict(sd, strict=False)
