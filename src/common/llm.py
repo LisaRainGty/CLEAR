@@ -19,6 +19,7 @@ import os
 import re
 import threading
 import time
+import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -84,6 +85,15 @@ def _call_with_retry(body: dict) -> dict:
     for attempt in range(config.LLM_MAX_RETRIES):
         try:
             return _post(body)
+        except urllib.error.HTTPError as e:
+            last = e
+            # Authentication, permission, invalid-request and exhausted-quota
+            # errors cannot recover through exponential retry.  Rate-limit and
+            # timeout-like responses remain retryable.
+            if 400 <= e.code < 500 and e.code not in {408, 409, 425, 429}:
+                raise
+            wait = min(2 ** attempt, 30) + 0.5 * attempt
+            time.sleep(wait)
         except Exception as e:  # noqa: BLE001
             last = e
             wait = min(2 ** attempt, 30) + 0.5 * attempt

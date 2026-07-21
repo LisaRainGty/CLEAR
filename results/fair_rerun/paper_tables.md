@@ -5,7 +5,7 @@
 - Dataset SHA-256: `1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76`
 - Rows: 4883
 - Argument records: 0
-- Accepted fresh RESULT rows: 48
+- Accepted fresh RESULT rows: 53
 - Rejected incomplete/off-protocol RESULT rows: 0
 
 ## Table 1. Dataset split and statistics
@@ -96,14 +96,14 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | w/o reliability | 80.78±1.24 | 72.00±0.58 | 73.42±0.98 | 89.77±0.69 | 3 |
 | w/o class balance | 80.98±0.22 | 70.80±1.66 | 70.04±0.95 | 88.89±0.07 | 3 |
 | w/o four-tuple | 80.86±0.90 | 72.05±1.87 | 72.28±2.58 | 88.99±1.15 | 3 |
-| BERT backbone | PENDING | PENDING | PENDING | PENDING | PENDING |
+| BERT backbone | 80.31±0.57 | 71.89±1.48 | 69.53±0.38 | 88.58±0.38 | 3 |
 
 ## Table 8. Dual-stream ablations
 
 | 方法/设定 | acc | pos_f1 | auprc | auroc | n |
 |---|---:|---:|---:|---:|---:|
 | Canonical | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
-| w/o fusion | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o fusion | 80.66±0.79 | 72.18±2.63 | 72.27±0.71 | 89.74±0.46 | 3 |
 | Claim only | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Evidence only | PENDING | PENDING | PENDING | PENDING | PENDING |
 

@@ -50,6 +50,10 @@ by a default score in a paper table.
 If a rerun fails, the controller removes any stale artifact at that job's
 canonical output path while retaining its status and log for audit; this keeps
 an older result from masquerading as the failed invocation's output.
+Before any pending hosted job starts, the suite makes one uncached gateway
+preflight.  Authentication, permission and exhausted-quota HTTP responses fail
+fast and leave all existing job states untouched; only timeout/rate-limit class
+responses are retried.
 
 The output caps are fixed per endpoint at 320 tokens for Qwen-Flash/GPT-5.4,
 1,024 for Gemini-3.5-Flash and 4,096 for Kimi-K2.6.  Longest-prompt probes showed

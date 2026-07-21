@@ -72,6 +72,22 @@ def command_output(command: list[str]) -> str:
         return f"UNAVAILABLE: {exc!r}"
 
 
+def hosted_api_preflight(py: str, env: dict[str, str]) -> None:
+    """Make one uncached request before an API queue can touch job state."""
+    code = (
+        "from common.llm import chat; "
+        "chat('只回复 OK', model='Qwen-Flash', max_tokens=16, use_cache=False)"
+    )
+    proc = subprocess.run(
+        [py, "-c", code], cwd=SRC, env=env, text=True,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False,
+    )
+    if proc.returncode:
+        detail = (proc.stdout or "no provider response").strip().replace("\n", " ")[-500:]
+        detail = re.sub(r"sk-[A-Za-z0-9]{10,}", "[REDACTED]", detail)
+        raise RuntimeError(f"hosted API preflight failed; queue not started: {detail}")
+
+
 def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
                      bundle: Path | None = None) -> tuple[str, ...]:
     batch = int(os.environ.get("CLAIMARC_BATCH_SIZE", "12"))
@@ -502,6 +518,10 @@ def main() -> int:
     env["PYTHONPATH"] = str(SRC)
     env["TOKENIZERS_PARALLELISM"] = "false"
     env.setdefault("PYTORCH_CUDA_ALLOC_CONF", "max_split_size_mb:128")
+    py = os.environ.get("CLAIMARC_PYTHON", sys.executable)
+    pending_jobs = [job for job in jobs if args.rerun or not successful(job)]
+    if any(job.stage == "llm" for job in pending_jobs):
+        hosted_api_preflight(py, env)
     invocation = invocation_label(stages, args.only)
     environment = {
         "started_utc": now(), "python": sys.version, "platform": platform.platform(),
