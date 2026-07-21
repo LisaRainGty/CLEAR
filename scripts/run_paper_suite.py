@@ -392,6 +392,20 @@ def successful(job: Job) -> bool:
             and all(path.exists() for path in job.outputs))
 
 
+def invocation_label(stages: set[str], only: str) -> str:
+    """Return a stable filename label for one resumable suite invocation."""
+    non_api = {"audit", "table3", "ablation", "hparams", "xdom", "analysis"}
+    if stages == non_api:
+        label = "non_api"
+    elif stages == {"llm"}:
+        label = "llm"
+    else:
+        label = "_".join(sorted(stages))
+    if only:
+        label += "__only_" + hashlib.sha256(only.encode("utf-8")).hexdigest()[:8]
+    return label
+
+
 def run_job(job: Job, env: dict[str, str], quiet: bool) -> int:
     for output in job.outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -468,8 +482,10 @@ def main() -> int:
     env["PYTHONPATH"] = str(SRC)
     env["TOKENIZERS_PARALLELISM"] = "false"
     env.setdefault("PYTORCH_CUDA_ALLOC_CONF", "max_split_size_mb:128")
+    invocation = invocation_label(stages, args.only)
     environment = {
         "started_utc": now(), "python": sys.version, "platform": platform.platform(),
+        "invocation": invocation,
         "dataset": str(DATASET.relative_to(ROOT)),
         "dataset_sha256": hashlib.sha256(DATASET.read_bytes()).hexdigest(),
         "evidence_policy": POLICY, "selected_stages": sorted(stages),
@@ -486,7 +502,7 @@ def main() -> int:
             "CLAIMARC_NLI_PATH", "CLAIMARC_QWEN_PATH",
         )},
     }
-    (OUT / "suite_environment.json").write_text(
+    (OUT / f"suite_environment_{invocation}.json").write_text(
         json.dumps(environment, ensure_ascii=False, indent=2), encoding="utf-8")
 
     failures = []
@@ -502,7 +518,7 @@ def main() -> int:
                   file=sys.stderr, flush=True)
             if not args.continue_on_error:
                 break
-    (OUT / "suite_failures.json").write_text(
+    (OUT / f"suite_failures_{invocation}.json").write_text(
         json.dumps(failures, ensure_ascii=False, indent=2), encoding="utf-8")
     return 1 if failures else 0
 

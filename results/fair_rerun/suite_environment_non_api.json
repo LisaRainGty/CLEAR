@@ -1,5 +1,6 @@
 {
   "started_utc": "2026-07-21T12:09:41.056640+00:00",
+  "invocation": "non_api",
   "python": "3.9.16 (main, Mar  8 2023, 14:00:05) \n[GCC 11.2.0]",
   "platform": "Linux-4.19.0-14-amd64-x86_64-with-glibc2.31",
   "dataset": "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",

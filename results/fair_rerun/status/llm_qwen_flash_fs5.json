@@ -1,0 +1,37 @@
+{
+  "job": "llm_qwen_flash_fs5",
+  "stage": "llm",
+  "signature": "d1f111aaf69743a8c7cf91cd87c26c2334c513e5411c4efbf5a6b5228086115a",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.run_llm_baselines",
+    "--dataset",
+    "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "--model",
+    "Qwen-Flash",
+    "--mode",
+    "fewshot",
+    "--shots",
+    "5",
+    "--tag",
+    "qwen_flash_fs5",
+    "--seed",
+    "0",
+    "--evidence_policy",
+    "sources_only",
+    "--eval_out",
+    "/root/CLEAR_run/results/fair_rerun/llm_qwen_flash_fs5.json"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.run_llm_baselines --dataset /root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl --model Qwen-Flash --mode fewshot --shots 5 --tag qwen_flash_fs5 --seed 0 --evidence_policy sources_only --eval_out /root/CLEAR_run/results/fair_rerun/llm_qwen_flash_fs5.json",
+  "started_utc": "2026-07-21T14:29:04.439532+00:00",
+  "finished_utc": "2026-07-21T14:33:23.376559+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/llm_qwen_flash_fs5.log",
+  "result_file": "results/fair_rerun/jobs/llm_qwen_flash_fs5.jsonl",
+  "outputs": [
+    "results/fair_rerun/llm_qwen_flash_fs5.json"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

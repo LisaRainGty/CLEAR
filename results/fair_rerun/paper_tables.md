@@ -5,7 +5,7 @@
 - Dataset SHA-256: `1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76`
 - Rows: 4883
 - Argument records: 0
-- Fresh RESULT rows: 28
+- Fresh RESULT rows: 38
 
 ## Table 1. Dataset split and statistics
 
@@ -49,9 +49,9 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | BGE frozen + SVM | 75.20 | 66.98 | 61.68 | 85.14 | 1 |
 | BGE frozen + MLP | 76.84 | 66.78 | 63.50 | 86.07 | 1 |
 | BGE frozen + kNN | 76.49 | 59.23 | 56.56 | 78.94 | 1 |
-| Qwen-Flash zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
-| Qwen-Flash five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
-| GPT-5.4 zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Qwen-Flash zero-shot | 60.00 | 25.65 | 28.88 | 48.91 | 1 |
+| Qwen-Flash five-shot | 57.31 | 32.78 | 28.80 | 49.90 | 1 |
+| GPT-5.4 zero-shot | 58.36 | 29.64 | 29.70 | 49.02 | 1 |
 | GPT-5.4 five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Gemini-3.5-Flash zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Gemini-3.5-Flash five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
@@ -91,8 +91,8 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | 方法/设定 | acc | pos_f1 | auprc | auroc | n |
 |---|---:|---:|---:|---:|---:|
 | Canonical | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
-| w/o RACL | PENDING | PENDING | PENDING | PENDING | PENDING |
-| w/o reliability | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o RACL | 81.21±1.00 | 71.58±1.94 | 70.93±1.70 | 89.19±0.46 | 3 |
+| w/o reliability | 80.70 | 71.79 | 74.17 | 89.75 | 1 |
 | w/o class balance | PENDING | PENDING | PENDING | PENDING | PENDING |
 | w/o four-tuple | PENDING | PENDING | PENDING | PENDING | PENDING |
 | BERT backbone | PENDING | PENDING | PENDING | PENDING | PENDING |
@@ -124,7 +124,7 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | 方法/设定 | acc | pos_f1 | auprc | auroc | n |
 |---|---:|---:|---:|---:|---:|
 | Canonical c | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
-| Uniform | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Uniform | 80.70 | 71.79 | 74.17 | 89.75 | 1 |
 | Inverse | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Permuted | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Binary | PENDING | PENDING | PENDING | PENDING | PENDING |

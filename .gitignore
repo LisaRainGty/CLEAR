@@ -33,3 +33,6 @@ paper/tmp_*/
 *.tmp
 *.partial
 
+# Legacy collision-prone suite summaries (use stage-specific manifests instead)
+results/fair_rerun/suite_environment.json
+results/fair_rerun/suite_failures.json

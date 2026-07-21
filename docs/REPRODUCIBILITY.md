@@ -27,7 +27,9 @@ sha256sum -c CHECKSUMS.sha256
 本次远程重跑使用 Linux、Python 3.9.16、PyTorch 2.0.0+cu117 与 NVIDIA A30
 24 GB。训练依赖见 `requirements-train.txt`；`docs/archive/requirements_dev_snapshot.txt` 只是原开发环境归档，
 不应用于这台 CUDA 11.7 主机。runner 会把实际 `pip freeze`、GPU、模型解析路径
-写入 `results/fair_rerun/suite_environment.json`。
+每个独立队列写入不会互相覆盖的环境快照，例如
+`results/fair_rerun/suite_environment_non_api.json` 与
+`results/fair_rerun/suite_environment_llm.json`；相应失败清单同样按队列命名。
 
 ```bash
 python -m venv .venv
