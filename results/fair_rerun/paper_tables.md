@@ -5,7 +5,8 @@
 - Dataset SHA-256: `1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76`
 - Rows: 4883
 - Argument records: 0
-- Fresh RESULT rows: 38
+- Accepted fresh RESULT rows: 43
+- Rejected incomplete/off-protocol RESULT rows: 0
 
 ## Table 1. Dataset split and statistics
 
@@ -51,8 +52,8 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | BGE frozen + kNN | 76.49 | 59.23 | 56.56 | 78.94 | 1 |
 | Qwen-Flash zero-shot | 60.00 | 25.65 | 28.88 | 48.91 | 1 |
 | Qwen-Flash five-shot | 57.31 | 32.78 | 28.80 | 49.90 | 1 |
-| GPT-5.4 zero-shot | 58.36 | 29.64 | 29.70 | 49.02 | 1 |
-| GPT-5.4 five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| GPT-5.4 zero-shot | 58.25 | 29.31 | 29.68 | 48.96 | 1 |
+| GPT-5.4 five-shot | 54.15 | 31.23 | 28.26 | 47.34 | 1 |
 | Gemini-3.5-Flash zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Gemini-3.5-Flash five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Kimi-K2.6 zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
@@ -92,7 +93,7 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 |---|---:|---:|---:|---:|---:|
 | Canonical | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
 | w/o RACL | 81.21±1.00 | 71.58±1.94 | 70.93±1.70 | 89.19±0.46 | 3 |
-| w/o reliability | 80.70 | 71.79 | 74.17 | 89.75 | 1 |
+| w/o reliability | 80.78±1.24 | 72.00±0.58 | 73.42±0.98 | 89.77±0.69 | 3 |
 | w/o class balance | PENDING | PENDING | PENDING | PENDING | PENDING |
 | w/o four-tuple | PENDING | PENDING | PENDING | PENDING | PENDING |
 | BERT backbone | PENDING | PENDING | PENDING | PENDING | PENDING |
@@ -124,7 +125,7 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | 方法/设定 | acc | pos_f1 | auprc | auroc | n |
 |---|---:|---:|---:|---:|---:|
 | Canonical c | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
-| Uniform | 80.70 | 71.79 | 74.17 | 89.75 | 1 |
+| Uniform | 80.78±1.24 | 72.00±0.58 | 73.42±0.98 | 89.77±0.69 | 3 |
 | Inverse | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Permuted | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Binary | PENDING | PENDING | PENDING | PENDING | PENDING |

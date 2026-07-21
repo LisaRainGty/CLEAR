@@ -120,9 +120,16 @@ def score_split(recs, model, fewshot_block, namespace, concurrency, max_tokens):
     requested_namespace = namespace
     namespace = cache_namespace(model, fewshot_block)
 
-    def fn(r):
+    prompts = [make_prompt(r, fewshot_block) for r in recs]
+    # A few frozen pairs have byte-identical model inputs.  Resolve each exact
+    # payload once, then fan the same parsed response back to every matching
+    # pair.  This removes provider nondeterminism and concurrent cache-write
+    # races without sharing anything between non-identical examples.
+    unique_prompts = list(dict.fromkeys(prompts))
+
+    def fn(prompt):
         try:
-            obj = chat_json(make_prompt(r, fewshot_block), system=SYSTEM, model=model,
+            obj = chat_json(prompt, system=SYSTEM, model=model,
                             temperature=0.0, namespace=namespace, max_tokens=max_tokens)
             rs = clamp01(obj.get("risk_score"))
             dec = obj.get("decision")
@@ -130,9 +137,10 @@ def score_split(recs, model, fewshot_block, namespace, concurrency, max_tokens):
             return {"risk_score": rs, "decision": dec}
         except Exception as e:  # noqa: BLE001
             return {"risk_score": None, "decision": None, "__error__": repr(e)[:200]}
-    res = run_many(recs, fn, concurrency=concurrency,
-                   desc=f"{model}:{requested_namespace}")
-    return res
+    unique_results = run_many(unique_prompts, fn, concurrency=concurrency,
+                              desc=f"{model}:{requested_namespace}")
+    by_prompt = dict(zip(unique_prompts, unique_results))
+    return [dict(by_prompt[prompt]) for prompt in prompts]
 
 
 def metrics_block(y, p, c, thr):

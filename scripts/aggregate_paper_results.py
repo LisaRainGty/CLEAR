@@ -11,6 +11,16 @@ import numpy as np
 
 
 METRICS = ("acc", "pos_f1", "macro_f1", "auprc", "auroc", "wF1", "ece")
+SINGLE_RUN_TAGS = {
+    "qwen_flash_zero", "qwen_flash_fs5", "gpt54_zero", "gpt54_fs5",
+    "gemini35_zero", "gemini35_fs5", "kimi_zero", "kimi_fs5",
+}
+
+
+def expected_runs(tag: str) -> int:
+    if tag in SINGLE_RUN_TAGS or tag.startswith(("BGEfz_", "hp_", "c_")):
+        return 1
+    return 3
 
 
 def load_json(path: Path):
@@ -19,6 +29,7 @@ def load_json(path: Path):
 
 def load_rows(root: Path):
     rows = []
+    rejected = []
     for path in sorted((root / "results/fair_rerun/jobs").glob("*.jsonl")):
         if path.name.startswith("._"):
             continue
@@ -26,8 +37,22 @@ def load_rows(root: Path):
             if line.strip():
                 row = json.loads(line)
                 row["_result_file"] = str(path.relative_to(root))
+                reasons = []
+                if row.get("evidence_policy") not in (None, "sources_only"):
+                    reasons.append("non_sources_only")
+                for field in ("n_err_val", "n_err_test", "n_err"):
+                    if int(row.get(field) or 0) > 0:
+                        reasons.append(f"{field}={int(row[field])}")
+                if reasons:
+                    rejected.append({
+                        "result_file": row["_result_file"],
+                        "suite_job": row.get("_suite_job"),
+                        "tag": row.get("tag"),
+                        "reasons": reasons,
+                    })
+                    continue
                 rows.append(row)
-    return rows
+    return rows, rejected
 
 
 def aggregate(rows):
@@ -49,9 +74,10 @@ def aggregate(rows):
     return out
 
 
-def metric_cell(agg, tag, metric, percent=True):
+def metric_cell(agg, tag, metric, percent=True, expected_n=None):
     value = agg.get(tag, {}).get(metric)
-    if not value:
+    required = expected_runs(tag) if expected_n is None else expected_n
+    if not value or agg.get(tag, {}).get("n", 0) < required:
         return "PENDING"
     scale = 100 if percent else 1
     mean, std = scale * value["mean"], scale * value["std"]
@@ -59,13 +85,16 @@ def metric_cell(agg, tag, metric, percent=True):
     return f"{mean:.2f}±{std:.2f}" if n > 1 else f"{mean:.2f}"
 
 
-def metric_table(lines, title, entries, agg, metrics=("acc", "pos_f1", "auprc", "auroc")):
+def metric_table(lines, title, entries, agg, metrics=("acc", "pos_f1", "auprc", "auroc"),
+                 expected_n=None):
     lines.extend([f"## {title}", "", "| 方法/设定 | " + " | ".join(metrics) + " | n |",
                   "|---|" + "---:|" * (len(metrics) + 1)])
     for label, tag in entries:
-        cells = [metric_cell(agg, tag, metric) for metric in metrics]
+        cells = [metric_cell(agg, tag, metric, expected_n=expected_n) for metric in metrics]
         n = agg.get(tag, {}).get("n", 0)
-        lines.append(f"| {label} | " + " | ".join(cells) + f" | {n or 'PENDING'} |")
+        required = expected_runs(tag) if expected_n is None else expected_n
+        shown_n = n if n >= required else "PENDING"
+        lines.append(f"| {label} | " + " | ".join(cells) + f" | {shown_n} |")
     lines.append("")
 
 
@@ -101,7 +130,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     root = args.root.resolve()
-    rows = load_rows(root)
+    rows, rejected_rows = load_rows(root)
     agg = aggregate(rows)
     agg_seed0 = aggregate([row for row in rows if row.get("seed") == 0])
     audit = load_json(root / "results/audit/reproducibility_report.json") or {}
@@ -113,7 +142,8 @@ def main():
         f"- Dataset SHA-256: `{data.get('sha256', 'PENDING')}`",
         f"- Rows: {data.get('rows', 'PENDING')}",
         f"- Argument records: {data.get('argument_records', 'PENDING')}",
-        f"- Fresh RESULT rows: {len(rows)}", "",
+        f"- Accepted fresh RESULT rows: {len(rows)}",
+        f"- Rejected incomplete/off-protocol RESULT rows: {len(rejected_rows)}", "",
         "## Table 1. Dataset split and statistics", "",
         "| Split | N | Positive | Positive rate | Rooms |", "|---|---:|---:|---:|---:|",
     ]
@@ -259,12 +289,13 @@ def main():
         ("lambda=0.6", "c_lambda0p6"), ("rho=0.2", "c_rho0p2"),
         ("rho=0.6", "c_rho0p6"), ("phi=1.0", "c_phi1p0"),
         ("phi=1.5", "c_phi1p5"),
-    ), agg_seed0)
+    ), agg_seed0, expected_n=1)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(lines) + "\n", encoding="utf-8")
     json_out = args.output.with_suffix(".json")
-    json_out.write_text(json.dumps({"aggregates": agg, "fresh_rows": len(rows)},
+    json_out.write_text(json.dumps({"aggregates": agg, "fresh_rows": len(rows),
+                                    "rejected_rows": rejected_rows},
                                    ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"[written] {args.output}")
     print(f"[written] {json_out}")
