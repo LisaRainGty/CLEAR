@@ -1,0 +1,25 @@
+# CLAIMARC 数据处理流水线依赖
+# 在远程 GPU 服务器上：pip install -r requirements.txt
+
+# --- 基础 ---
+numpy>=1.26
+pandas>=2.0
+xlrd>=2.0.1            # 读取飞瓜导出的 .xls（OLE2/BIFF）
+openpyxl>=3.1          # 读取 .xlsx（兜底）
+tqdm>=4.66
+orjson>=3.9           # 快速 jsonl 读写（可选，缺省回退到标准 json）
+
+# --- LLM / VLM（Gemini）---
+google-genai>=0.3.0   # Gemini 2.5 Flash + Batch API
+langextract>=0.1.0    # Stage B1 schema-guided claim 抽取（后端 Gemini Flash）
+Pillow>=10.0          # 图片读取（C1/C4 VLM 多图输入）
+
+# --- 嵌入与聚类（Stage A0/A2）---
+FlagEmbedding>=1.2    # BGE-large-zh-v1.5
+# 或者：sentence-transformers>=2.7
+scikit-learn>=1.3     # AgglomerativeClustering / 层次聚类
+faiss-cpu>=1.7        # 备用：近邻检索（下游建库复用）
+
+# --- OCR（Stage C3）---
+paddlepaddle>=2.6     # PaddleOCR 后端（GPU 版按服务器 CUDA 安装 paddlepaddle-gpu）
+paddleocr>=2.7        # PP-OCRv4 中文

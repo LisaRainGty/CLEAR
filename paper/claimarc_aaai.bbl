@@ -1,0 +1,314 @@
+\begin{thebibliography}{52}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Aghakhani and Main(2019)}]{agakhani2019brand}
+Aghakhani, H.; and Main, K.~J. 2019.
+\newblock Can Two Wrongs Make a Right? The Effect of Consumer Perceptions of
+  Brand Transgressions on Unrelated Brands.
+\newblock \emph{Journal of Consumer Research}, 46(4): 776--793.
+
+\bibitem[{Angelidis and Lapata(2018)}]{angelidis2018aspect}
+Angelidis, S.; and Lapata, M. 2018.
+\newblock Summarizing Opinions: Aspect Extraction Meets Sentiment Prediction
+  and They Are Both Weakly Supervised.
+\newblock In \emph{Proceedings of EMNLP}, 3675--3686.
+
+\bibitem[{Augenstein et~al.(2019)Augenstein, Lioma, Wang, Chaves~Lima, Hansen,
+  Hansen, and Simonsen}]{augenstein2019multifc}
+Augenstein, I.; Lioma, C.; Wang, D.; Chaves~Lima, L.; Hansen, C.; Hansen, C.;
+  and Simonsen, J.~G. 2019.
+\newblock {MultiFC}: A Real-World Multi-Domain Dataset for Evidence-Based Fact
+  Checking of Claims.
+\newblock In \emph{Proceedings of EMNLP-IJCNLP}, 4685--4697.
+
+\bibitem[{Baumeister et~al.(2001)Baumeister, Bratslavsky, Finkenauer, and
+  Vohs}]{baumeister2001bad}
+Baumeister, R.~F.; Bratslavsky, E.; Finkenauer, C.; and Vohs, K.~D. 2001.
+\newblock Bad Is Stronger than Good.
+\newblock \emph{Review of General Psychology}, 5(4): 323--370.
+
+\bibitem[{Bowman et~al.(2015)Bowman, Angeli, Potts, and
+  Manning}]{bowman2015snli}
+Bowman, S.~R.; Angeli, G.; Potts, C.; and Manning, C.~D. 2015.
+\newblock A Large Annotated Corpus for Learning Natural Language Inference.
+\newblock In \emph{Proceedings of EMNLP}, 632--642.
+
+\bibitem[{Chen et~al.(2017)Chen, Zhu, Ling, Wei, Jiang, and
+  Inkpen}]{chen2017esim}
+Chen, Q.; Zhu, X.; Ling, Z.-H.; Wei, S.; Jiang, H.; and Inkpen, D. 2017.
+\newblock Enhanced {LSTM} for Natural Language Inference.
+\newblock In \emph{Proceedings of ACL}, 1657--1668.
+
+\bibitem[{Chevalier and Mayzlin(2006)}]{chevalier2006wom}
+Chevalier, J.~A.; and Mayzlin, D. 2006.
+\newblock The Effect of Word of Mouth on Sales: Online Book Reviews.
+\newblock \emph{Journal of Marketing Research}, 43(3): 345--354.
+
+\bibitem[{Cui et~al.(2021)Cui, Che, Liu, Qin, and Yang}]{cui2021wwm}
+Cui, Y.; Che, W.; Liu, T.; Qin, B.; and Yang, Z. 2021.
+\newblock Pre-training with Whole Word Masking for Chinese {BERT}.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language
+  Processing}, 29: 3504--3514.
+
+\bibitem[{Dawid and Skene(1979)}]{dawid1979em}
+Dawid, A.~P.; and Skene, A.~M. 1979.
+\newblock Maximum Likelihood Estimation of Observer Error-Rates Using the {EM}
+  Algorithm.
+\newblock \emph{Journal of the Royal Statistical Society: Series C (Applied
+  Statistics)}, 28(1): 20--28.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and
+  Toutanova}]{devlin2019bert}
+Devlin, J.; Chang, M.-W.; Lee, K.; and Toutanova, K. 2019.
+\newblock {BERT}: Pre-training of Deep Bidirectional Transformers for Language
+  Understanding.
+\newblock In \emph{Proceedings of NAACL-HLT}, 4171--4186.
+
+\bibitem[{Gao, Yao, and Chen(2021)}]{gao2021simcse}
+Gao, T.; Yao, X.; and Chen, D. 2021.
+\newblock {SimCSE}: Simple Contrastive Learning of Sentence Embeddings.
+\newblock In \emph{Proceedings of EMNLP}, 6894--6910.
+
+\bibitem[{Graf et~al.(2021)Graf, Hofer, Niethammer, and
+  Kwitt}]{graf2021dissecting}
+Graf, F.; Hofer, C.; Niethammer, M.; and Kwitt, R. 2021.
+\newblock Dissecting Supervised Contrastive Learning.
+\newblock In \emph{Proceedings of ICML}, 3821--3830.
+
+\bibitem[{Guo, Schlichtkrull, and Vlachos(2022)}]{guo2022survey}
+Guo, Z.; Schlichtkrull, M.; and Vlachos, A. 2022.
+\newblock A Survey on Automated Fact-Checking.
+\newblock \emph{Transactions of the Association for Computational Linguistics},
+  10: 178--206.
+
+\bibitem[{He, Hollenbeck, and Proserpio(2022)}]{he2022fakemarket}
+He, S.; Hollenbeck, B.; and Proserpio, D. 2022.
+\newblock The Market for Fake Reviews.
+\newblock \emph{Marketing Science}, 41(5): 896--921.
+
+\bibitem[{Hu and Chaudhry(2020)}]{hu2020livestream}
+Hu, M.; and Chaudhry, S.~H. 2020.
+\newblock The Role of Live Streaming in Building Relational Bonds with
+  Consumers.
+\newblock \emph{European Journal of Information Management}.
+
+\bibitem[{Hu and Liu(2004)}]{hu2004mining}
+Hu, M.; and Liu, B. 2004.
+\newblock Mining and Summarizing Customer Reviews.
+\newblock In \emph{Proceedings of KDD}, 168--177.
+
+\bibitem[{Jiang et~al.(2022)Jiang, Nguyen, Ishwar, and Aeron}]{jiang2022hscl}
+Jiang, R.; Nguyen, T.; Ishwar, P.; and Aeron, S. 2022.
+\newblock Supervised Contrastive Learning with Hard Negative Samples.
+\newblock In \emph{Proceedings of ICLR}.
+
+\bibitem[{Jindal and Liu(2008)}]{jindal2008spam}
+Jindal, N.; and Liu, B. 2008.
+\newblock Opinion Spam and Analysis.
+\newblock In \emph{Proceedings of WSDM}, 219--230.
+
+\bibitem[{Johnson, Douze, and J{\'e}gou(2019)}]{johnson2019faiss}
+Johnson, J.; Douze, M.; and J{\'e}gou, H. 2019.
+\newblock Billion-Scale Similarity Search with {GPUs}.
+\newblock \emph{IEEE Transactions on Big Data}, 7(3): 535--547.
+
+\bibitem[{Karamanolakis, Hsu, and Gravano(2019)}]{karamanolakis2019keyword}
+Karamanolakis, G.; Hsu, D.; and Gravano, L. 2019.
+\newblock Leveraging Just a Few Keywords for Fine-Grained Aspect Detection
+  through Weakly Supervised Co-Training.
+\newblock In \emph{Proceedings of EMNLP-IJCNLP}, 4611--4621.
+
+\bibitem[{Karpukhin et~al.(2020)Karpukhin, Oguz, Min, Lewis, Wu, Edunov, Chen,
+  and Yih}]{karpukhin2020dpr}
+Karpukhin, V.; Oguz, B.; Min, S.; Lewis, P.; Wu, L.; Edunov, S.; Chen, D.; and
+  Yih, W.-t. 2020.
+\newblock Dense Passage Retrieval for Open-Domain Question Answering.
+\newblock In \emph{Proceedings of EMNLP}, 6769--6781.
+
+\bibitem[{Khosla et~al.(2020)Khosla, Teterwak, Wang, Sarna, Tian, Isola,
+  Maschinot, Liu, and Krishnan}]{khosla2020supcon}
+Khosla, P.; Teterwak, P.; Wang, C.; Sarna, A.; Tian, Y.; Isola, P.; Maschinot,
+  A.; Liu, C.; and Krishnan, D. 2020.
+\newblock Supervised Contrastive Learning.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~33, 18661--18673.
+
+\bibitem[{Kim et~al.(2024)}]{kim2024lahn}
+Kim, J.; et~al. 2024.
+\newblock Label-Aware Hard Negative Sampling Strategies for Implicit Hate
+  Speech Detection.
+\newblock In \emph{Findings of NAACL}.
+
+\bibitem[{Li et~al.(2025)Li, Xu, Qian, Wang, Yuan, and Zeng}]{li2025sarcasm}
+Li, Q.; Xu, D.~J.; Qian, H.; Wang, L.; Yuan, M.; and Zeng, D.~D. 2025.
+\newblock A Fusion Pre-trained Approach for Identifying the Cause of Sarcasm
+  Remarks.
+\newblock \emph{INFORMS Journal on Computing}, 37(2): 465--479.
+
+\bibitem[{Li and Hitt(2008)}]{li2008selfselection}
+Li, X.; and Hitt, L.~M. 2008.
+\newblock Self-Selection and Information Role of Online Product Reviews.
+\newblock \emph{Information Systems Research}, 19(4): 456--474.
+
+\bibitem[{Liu(2012)}]{liu2012sentiment}
+Liu, B. 2012.
+\newblock \emph{Sentiment Analysis and Opinion Mining}.
+\newblock Morgan and Claypool.
+
+\bibitem[{Long, Wang, and Pan(2023)}]{long2023retrievalicl}
+Long, Q.; Wang, W.; and Pan, S.~J. 2023.
+\newblock Adapt in Contexts: Retrieval-Augmented Domain Adaptation via
+  In-Context Learning.
+\newblock In \emph{Proceedings of EMNLP}, 6525--6542.
+
+\bibitem[{Lu and Chen(2021)}]{lu2021livestream}
+Lu, B.; and Chen, Z. 2021.
+\newblock Live or Wired? How the Communication Channel Shapes Consumer
+  Engagement.
+\newblock \emph{International Journal of Electronic Commerce}, 25(3): 275--301.
+
+\bibitem[{Luca and Zervas(2016)}]{luca2016fake}
+Luca, M.; and Zervas, G. 2016.
+\newblock Fake It Till You Make It: Reputation, Competition, and {Yelp} Review
+  Fraud.
+\newblock \emph{Management Science}, 62(12): 3412--3427.
+
+\bibitem[{Mavlanova, Benbunan-Fich, and
+  Koufaris(2012)}]{mavlanova2012signaling}
+Mavlanova, T.; Benbunan-Fich, R.; and Koufaris, M. 2012.
+\newblock Signaling Theory and Information Asymmetry in Online Commerce.
+\newblock \emph{Information and Management}, 49(5): 240--247.
+
+\bibitem[{Mayzlin, Dover, and Chevalier(2014)}]{mayzlin2014promotional}
+Mayzlin, D.; Dover, Y.; and Chevalier, J. 2014.
+\newblock Promotional Reviews: An Empirical Investigation of Online Review
+  Manipulation.
+\newblock \emph{American Economic Review}, 104(8): 2421--2455.
+
+\bibitem[{Mei et~al.(2025)Mei, Chen, Lin, Byrne, and Tomalin}]{mei2025rahmd}
+Mei, J.; Chen, J.; Lin, W.; Byrne, B.; and Tomalin, M. 2025.
+\newblock Retrieval-Augmented Hateful Meme Detection with Large Multimodal
+  Models.
+\newblock In \emph{Proceedings of EMNLP}.
+
+\bibitem[{Mei et~al.(2024)Mei, Chen, Lin et~al.}]{mei2024rgcl}
+Mei, J.; Chen, J.; Lin, W.; et~al. 2024.
+\newblock Improving Hateful Meme Detection through Retrieval-Guided Contrastive
+  Learning.
+\newblock In \emph{Proceedings of ACL}.
+
+\bibitem[{Mukherjee et~al.(2013)Mukherjee, Venkataraman, Liu, and
+  Glance}]{mukherjee2013yelp}
+Mukherjee, A.; Venkataraman, V.; Liu, B.; and Glance, N. 2013.
+\newblock What Yelp Fake Review Filter Might Be Doing?
+\newblock In \emph{Proceedings of ICWSM}, 409--418.
+
+\bibitem[{Pang and Lee(2008)}]{pang2008opinion}
+Pang, B.; and Lee, L. 2008.
+\newblock Opinion Mining and Sentiment Analysis.
+\newblock \emph{Foundations and Trends in Information Retrieval}, 2(1-2):
+  1--135.
+
+\bibitem[{Parikh et~al.(2016)Parikh, T{\"a}ckstr{\"o}m, Das, and
+  Uszkoreit}]{parikh2016decomp}
+Parikh, A.; T{\"a}ckstr{\"o}m, O.; Das, D.; and Uszkoreit, J. 2016.
+\newblock A Decomposable Attention Model for Natural Language Inference.
+\newblock In \emph{Proceedings of EMNLP}, 2249--2255.
+
+\bibitem[{Park and Lin(2020)}]{park2020internetcelebrity}
+Park, H.; and Lin, L.~M. 2020.
+\newblock The Effects of Match-ups on the Consumer Attitudes toward Internet
+  Celebrities and Their Live Streaming Contents in the Context of Product
+  Endorsement.
+\newblock \emph{Industrial Management and Data Systems}, 120(6): 1215--1234.
+
+\bibitem[{Putta et~al.(2025)}]{putta2025claimcheck}
+Putta, P.; et~al. 2025.
+\newblock ClaimCheck: Real-Time Fact-Checking with Retrieval-Augmented Large
+  Language Models.
+\newblock In \emph{Proceedings of the Workshop on Knowledge-Augmented NLP}.
+
+\bibitem[{Ratner et~al.(2017)Ratner, Bach, Ehrenberg, Fries, Wu, and
+  R{\'e}}]{ratner2017snorkel}
+Ratner, A.; Bach, S.~H.; Ehrenberg, H.; Fries, J.; Wu, S.; and R{\'e}, C. 2017.
+\newblock Snorkel: Rapid Training Data Creation with Weak Supervision.
+\newblock In \emph{Proceedings of the VLDB Endowment}, volume~11, 269--282.
+
+\bibitem[{Riquelme and Rom{\'a}n(2014)}]{riquelme2014perceived}
+Riquelme, I.~P.; and Rom{\'a}n, S. 2014.
+\newblock Is the Influence of Privacy and Security on Online Trust the Same for
+  All Type of Consumers?
+\newblock \emph{Journal of Retailing and Consumer Services}, 21(6): 1015--1025.
+
+\bibitem[{Robinson et~al.(2021)Robinson, Chuang, Sra, and
+  Jegelka}]{robinson2020hardneg}
+Robinson, J.; Chuang, C.-Y.; Sra, S.; and Jegelka, S. 2021.
+\newblock Contrastive Learning with Hard Negative Samples.
+\newblock In \emph{Proceedings of ICLR}.
+
+\bibitem[{Schuster, Fisch, and Barzilay(2021)}]{schuster2021vitaminc}
+Schuster, T.; Fisch, A.; and Barzilay, R. 2021.
+\newblock Get Your Vitamin {C}! Robust Fact Verification with Contrastive
+  Evidence.
+\newblock In \emph{Proceedings of NAACL-HLT}, 624--643.
+
+\bibitem[{{State Administration for Market
+  Regulation}(2025)}]{samr2025livestream}
+{State Administration for Market Regulation}. 2025.
+\newblock Measures for the Supervision and Administration of Livestream
+  E-Commerce (Draft for Comment).
+\newblock Regulatory consultation document.
+
+\bibitem[{Sun et~al.(2019)Sun, Shao, Li, Guo, and Nie}]{sun2019livestream}
+Sun, Y.; Shao, X.; Li, X.; Guo, Y.; and Nie, K. 2019.
+\newblock How Live Streaming Influences Purchase Intentions in Social Commerce:
+  An {IT} Affordance Perspective.
+\newblock \emph{Electronic Commerce Research and Applications}, 37: 100886.
+
+\bibitem[{Thorne et~al.(2018)Thorne, Vlachos, Christodoulopoulos, and
+  Mittal}]{thorne2018fever}
+Thorne, J.; Vlachos, A.; Christodoulopoulos, C.; and Mittal, A. 2018.
+\newblock {FEVER}: A Large-scale Dataset for Fact Extraction and Verification.
+\newblock In \emph{Proceedings of NAACL-HLT}, 809--819.
+
+\bibitem[{Vlachos and Riedel(2014)}]{vlachos2014factchecking}
+Vlachos, A.; and Riedel, S. 2014.
+\newblock Fact Checking: Task Definition and Dataset Construction.
+\newblock In \emph{Proceedings of the ACL Workshop on Language Technologies and
+  Computational Social Science}, 18--22.
+
+\bibitem[{Vladika and Matthes(2024)}]{vladika2024survey}
+Vladika, J.; and Matthes, F. 2024.
+\newblock Scientific Fact-Checking: A Survey of Resources and Approaches.
+\newblock \emph{ACM Computing Surveys}.
+
+\bibitem[{Wadden et~al.(2020)Wadden, Lin, Lo, Wang, van Zuylen, Cohan, and
+  Hajishirzi}]{wadden2020scifact}
+Wadden, D.; Lin, S.; Lo, K.; Wang, L.~L.; van Zuylen, M.; Cohan, A.; and
+  Hajishirzi, H. 2020.
+\newblock Fact or Fiction: Verifying Scientific Claims.
+\newblock In \emph{Proceedings of EMNLP}, 7534--7550.
+
+\bibitem[{Wang and Isola(2020)}]{wang2020alignment}
+Wang, T.; and Isola, P. 2020.
+\newblock Understanding Contrastive Representation Learning through Alignment
+  and Uniformity on the Hypersphere.
+\newblock In \emph{Proceedings of ICML}, 9929--9939.
+
+\bibitem[{Wang et~al.(2025)}]{wang2025moderation}
+Wang, Y.; et~al. 2025.
+\newblock Embedding-Based Retrieval for Scalable Multimodal Content Moderation.
+\newblock \emph{arXiv preprint}.
+
+\bibitem[{Wongkitrungrueng and Assarut(2020)}]{wongkitrungrueng2020livestream}
+Wongkitrungrueng, A.; and Assarut, N. 2020.
+\newblock The Role of Live Streaming in Building Consumer Trust and Engagement
+  with Social Commerce Sellers.
+\newblock \emph{Journal of Business Research}, 117: 543--556.
+
+\bibitem[{Xiao et~al.(2023)Xiao, Liu, Zhang, and Muennighoff}]{xiao2023cpack}
+Xiao, S.; Liu, Z.; Zhang, P.; and Muennighoff, N. 2023.
+\newblock {C-Pack}: Packed Resources for General Chinese Embeddings.
+\newblock \emph{arXiv preprint arXiv:2309.07597}.
+
+\end{thebibliography}

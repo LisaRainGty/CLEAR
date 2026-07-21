@@ -1,0 +1,51 @@
+# macOS / filesystem noise
+.DS_Store
+._*
+**/._*
+~$*
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Secrets
+.env
+.env.*
+env.sh
+*.key
+*.pem
+id_*
+
+# Large local-only layers (jsonl training files ARE committed for CLEAR review)
+data/raw/**
+data/processed/**
+data/index/**
+data/final/**
+!data/raw/README.md
+!data/processed/README.md
+!data/index/README.md
+!data/final/README.md
+
+# Checkpoints / embeddings
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.npy
+*.pkl
+
+# LaTeX junk
+*.aux
+*.fls
+*.fdb_latexmk
+*.out
+*.xdv
+*.synctex.gz
+paper/*.log
+
+.vscode/
+.idea/
+results/legacy_pre_sources_only/

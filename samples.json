@@ -1,0 +1,820 @@
+[
+  {
+    "pair_id": "p3702755032744198404__APPAREL_主要功能",
+    "attribute_id": "APPAREL_主要功能",
+    "attribute_name": "主要功能",
+    "split": "train",
+    "claim": {
+      "has_claim_srt": true,
+      "passage": "抗疲劳防蓝光眼镜, 玩手机玩电脑时间长, 眼睛酸胀痛的戴它",
+      "segments": [
+        {
+          "text": "抗疲劳防蓝光眼镜, 玩手机玩电脑时间长, 眼睛酸胀痛的戴它"
+        }
+      ]
+    },
+    "evidence_params": [
+      {
+        "param_key": "功能",
+        "raw_text": "防蓝光"
+      }
+    ],
+    "evidence_ocr": [
+      {
+        "raw_text": "护眼抗疲劳过滤蓝光"
+      },
+      {
+        "raw_text": "过滤有害蓝光"
+      },
+      {
+        "raw_text": "过滤蓝光"
+      },
+      {
+        "raw_text": "修饰脸型，显脸小"
+      },
+      {
+        "raw_text": "分波段科学防蓝光，易引起眼部不适385-475nm波段的蓝光进行吸收和反射，同时保留利于调节生物节律475-505nm波段的蓝光。"
+      },
+      {
+        "raw_text": "耐汗"
+      },
+      {
+        "raw_text": "腐蚀"
+      },
+      {
+        "raw_text": "视觉提升脸部线条，显瘦减龄"
+      }
+    ],
+    "evidence_vlm": [],
+    "evidence_count": {
+      "params": 1,
+      "ocr": 8,
+      "vlm": 0
+    },
+    "y": 1,
+    "c": 0.8,
+    "contrastive_mask": true,
+    "confidence": "medium",
+    "reviews": [
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_德芬妲超轻百搭韩版轻防蓝光黑色眼镜茶色平光镜大框网红素颜#297",
+        "text": "根本没有防蓝光功效",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/1/10 9:20:49",
+        "relation": "refute",
+        "reason": "明确否定防蓝光功效"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_德芬妲超轻百搭韩版轻防蓝光黑色眼镜茶色平光镜大框网红素颜#297",
+        "text": "没有一点！",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/1/10 9:20:49",
+        "relation": "refute",
+        "reason": "断言无防蓝光效果"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_德芬妲超轻百搭韩版轻防蓝光黑色眼镜茶色平光镜大框网红素颜#311",
+        "text": "根本不防蓝光",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/1/8 19:03:29",
+        "relation": "refute",
+        "reason": "直接称不防蓝光"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_德芬妲超轻百搭韩版轻防蓝光黑色眼镜茶色平光镜大框网红素颜#425",
+        "text": "不是说防蓝光吗？",
+        "polarity": "neg",
+        "review_polarity": "neu",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/12/31 18:00:55",
+        "relation": "refute",
+        "reason": "质疑防蓝光承诺"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_德芬妲超轻百搭韩版轻防蓝光黑色眼镜茶色平光镜大框网红素颜#483",
+        "text": "不知道是不是真的防蓝光",
+        "polarity": "neg",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/12/26 9:06:06",
+        "relation": "refute",
+        "reason": "质疑防蓝光真实性"
+      }
+    ]
+  },
+  {
+    "pair_id": "p3708135402599744245__GEN_最大风速",
+    "attribute_id": "GEN_最大风速",
+    "attribute_name": "最大风速",
+    "split": "train",
+    "claim": {
+      "has_claim_srt": true,
+      "passage": "风力特别大",
+      "segments": [
+        {
+          "text": "风力特别大"
+        }
+      ]
+    },
+    "evidence_params": [
+      {
+        "param_key": "最大风速",
+        "raw_text": "10m/s以下"
+      }
+    ],
+    "evidence_ocr": [
+      {
+        "raw_text": "110000/min"
+      },
+      {
+        "raw_text": "风性能提升32%"
+      }
+    ],
+    "evidence_vlm": [],
+    "evidence_count": {
+      "params": 1,
+      "ocr": 2,
+      "vlm": 0
+    },
+    "y": 1,
+    "c": 0.8,
+    "contrastive_mask": true,
+    "confidence": "medium",
+    "reviews": [
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#36",
+        "text": "根本不像主播说的那样风力小",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/19 12:19:00",
+        "relation": "refute",
+        "reason": "反驳风力大"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#299",
+        "text": "好假根本不像说的那样风大",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/10/14 22:06:40",
+        "relation": "refute",
+        "reason": "反驳风力大"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#89",
+        "text": "风速也不是商家说的大",
+        "polarity": "neg",
+        "review_polarity": "neu",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/12/14 18:15:52",
+        "relation": "refute",
+        "reason": "反驳风力大"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#16",
+        "text": "风力非常小",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/24 16:42:11",
+        "relation": "refute",
+        "reason": "风力非常小"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#175",
+        "text": "风力太小",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/11/10 22:30:55",
+        "relation": "refute",
+        "reason": "风力太小"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#213",
+        "text": "吹风机没有风力",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/11/4 17:23:32",
+        "relation": "refute",
+        "reason": "没有风力"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#259",
+        "text": "风力太小了",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/10/30 15:50:19",
+        "relation": "refute",
+        "reason": "风力太小了"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#274",
+        "text": "风量太小",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/10/21 20:03:09",
+        "relation": "refute",
+        "reason": "风量太小"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#17",
+        "text": "风力好小",
+        "polarity": "neg",
+        "review_polarity": "neu",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/22 16:50:47",
+        "relation": "refute",
+        "reason": "风力好小"
+      },
+      {
+        "review_id": "飞瓜数据_20241003-20250331商品详情_商品评价列表_【德系臻选】电吹风吹风机速干家用宿舍冷热风蓝光负离子大功率AY31#298",
+        "text": "这风力太夸大了",
+        "polarity": "neg",
+        "review_polarity": "neu",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/10/15 0:14:42",
+        "relation": "refute",
+        "reason": "夸大风力"
+      }
+    ]
+  },
+  {
+    "pair_id": "p3490652681037608601__FOOD_风味",
+    "attribute_id": "FOOD_风味",
+    "attribute_name": "风味",
+    "split": "test",
+    "claim": {
+      "has_claim_srt": true,
+      "passage": "它这个味道呢,是那种微酸微辣口味,麻辣鲜香,酸辣爽口,真心不错。",
+      "segments": [
+        {
+          "text": "它这个味道呢,是那种微酸微辣口味,麻辣鲜香,酸辣爽口,真心不错。"
+        }
+      ]
+    },
+    "evidence_params": [
+      {
+        "param_key": "辛辣程度",
+        "raw_text": "微辣"
+      }
+    ],
+    "evidence_ocr": [
+      {
+        "raw_text": "口感顺滑"
+      },
+      {
+        "raw_text": "嚼劲十足"
+      }
+    ],
+    "evidence_vlm": [
+      {
+        "raw_quote": "第2图文字标注'精选红薯'及'口感顺滑'"
+      },
+      {
+        "raw_quote": "第2图文字标注'嚼劲十足'"
+      },
+      {
+        "raw_quote": "第3图文字标注'量多料多'"
+      },
+      {
+        "raw_quote": "第7图四菜品分别标注'酸辣粉''烩菜''炒粉''凉菜'，底部标注'粉汤'"
+      }
+    ],
+    "evidence_count": {
+      "params": 1,
+      "ocr": 2,
+      "vlm": 4
+    },
+    "y": 1,
+    "c": 0.75,
+    "contrastive_mask": true,
+    "confidence": "high",
+    "reviews": [
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮#83",
+        "text": "个人感觉不是纯红薯粉",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/12/12 15:44:35",
+        "relation": "refute",
+        "reason": "称非纯红薯粉，质疑风味来源"
+      },
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮#165",
+        "text": "一点红薯粉味都没有",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/11/25 14:50:35",
+        "relation": "refute",
+        "reason": "否认有红薯粉味，直接反驳风味宣称"
+      },
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮#99",
+        "text": "以前在老家吃过纯红薯粉 显然不是这种",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2024/12/4 15:05:07",
+        "relation": "refute",
+        "reason": "对比老家纯红薯粉，否定当前风味真实性"
+      }
+    ]
+  },
+  {
+    "pair_id": "p3571193789647317734__BEAUTY_功效",
+    "attribute_id": "BEAUTY_功效",
+    "attribute_name": "功效",
+    "split": "train",
+    "claim": {
+      "has_claim_srt": true,
+      "passage": "这里等于 半个粉底的效果 但它不是粉底",
+      "segments": [
+        {
+          "text": "这里等于 半个粉底的效果 但它不是粉底"
+        }
+      ]
+    },
+    "evidence_params": [
+      {
+        "param_key": "功效",
+        "raw_text": "保湿"
+      }
+    ],
+    "evidence_ocr": [
+      {
+        "raw_text": "明星成分强韧屏障\\妆前养肤"
+      },
+      {
+        "raw_text": "隔离防护"
+      },
+      {
+        "raw_text": "滋润服帖"
+      },
+      {
+        "raw_text": "自然清透"
+      },
+      {
+        "raw_text": "活化嫩肤"
+      },
+      {
+        "raw_text": "妆前提亮"
+      },
+      {
+        "raw_text": "清透养肤"
+      },
+      {
+        "raw_text": "强韧屏障"
+      },
+      {
+        "raw_text": "对敏感肌友好"
+      },
+      {
+        "raw_text": "光感"
+      },
+      {
+        "raw_text": "保湿检测"
+      },
+      {
+        "raw_text": "抗皱检测"
+      },
+      {
+        "raw_text": "产品均通过卫生安全测试、微生物等实验，符合国家(化妆品安全技术规范》等相关标准后上市售卖"
+      }
+    ],
+    "evidence_vlm": [],
+    "evidence_count": {
+      "params": 1,
+      "ocr": 13,
+      "vlm": 0
+    },
+    "y": 1,
+    "c": 0.8,
+    "contrastive_mask": true,
+    "confidence": "medium",
+    "reviews": [
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#141",
+        "text": "没有说的那么好",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/22 6:55:33",
+        "relation": "refute",
+        "reason": "称无主播说的效果，针对'半个粉底效果'命题"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#177",
+        "text": "虚假宣传",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/19 14:24:43",
+        "relation": "refute",
+        "reason": "明确指虚假宣传"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#303",
+        "text": "没有主播说的效果那么好",
+        "polarity": "neg",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/11 13:31:58",
+        "relation": "refute",
+        "reason": "直接对比'主播说的效果'与实际不符"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#311",
+        "text": "没有直播说的那效果",
+        "polarity": "neg",
+        "review_polarity": "neu",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/10 18:52:27",
+        "relation": "refute",
+        "reason": "否定直播所述效果"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#343",
+        "text": "效果与直播差别大",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/8 15:04:28",
+        "relation": "refute",
+        "reason": "指出效果与直播差别大"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#202",
+        "text": "与主播讲的有差别",
+        "polarity": "neg",
+        "review_polarity": "neu",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/17 15:23:17",
+        "relation": "refute",
+        "reason": "称与主播讲的有差别"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#279",
+        "text": "不像直播问讲的那样遮暇效果好",
+        "polarity": "neg",
+        "review_polarity": "neu",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/2/12 15:44:18",
+        "relation": "refute",
+        "reason": "质疑遮暇效果不如直播宣称"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#459",
+        "text": "这是一点白了都没有啊",
+        "polarity": "neg",
+        "review_polarity": "neg",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/1/19 17:13:59",
+        "relation": "refute",
+        "reason": "否认提亮/变白效果，对应'半个粉底效果'"
+      },
+      {
+        "review_id": "飞瓜数据_20241011-20250408商品详情_商品评价列表_【隔离】娜涟NALY光感隔离霜提亮肤色学生化妆师推荐保湿隔离霜#572",
+        "text": "没有直播间老师用的那种效果呗",
+        "polarity": "neg",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2025/1/4 11:45:16",
+        "relation": "refute",
+        "reason": "否定直播演示效果"
+      }
+    ]
+  },
+  {
+    "pair_id": "p3797339017276686795__SHOEBAG_款式",
+    "attribute_id": "SHOEBAG_款式",
+    "attribute_name": "款式",
+    "split": "train",
+    "claim": {
+      "has_claim_srt": true,
+      "passage": "如果你想要个精致小包 你想要Spinano这一只包包的话 就是买这个",
+      "segments": [
+        {
+          "text": "如果你想要个精致小包 你想要Spinano这一只包包的话 就是买这个"
+        }
+      ]
+    },
+    "evidence_params": [
+      {
+        "param_key": "商品标题",
+        "raw_text": "【超值购】COACH/蔻驰奶茶迷你波士顿斜挎包单肩包CW330-SVXCU"
+      }
+    ],
+    "evidence_ocr": [
+      {
+        "raw_text": "拉链开合"
+      },
+      {
+        "raw_text": "单肩、斜挎、手提"
+      }
+    ],
+    "evidence_vlm": [
+      {
+        "raw_quote": "主图呈现顶部双提手、前开盖式结构、圆筒形包身轮廓"
+      },
+      {
+        "raw_quote": "细节展示图显示包身侧面弧形收腰、顶部双提手固定于金属铆钉"
+      },
+      {
+        "raw_quote": "商品展示图正面与斜面均显示经典波士顿包（Bowling Bag）造型：短圆筒、双提手、翻盖前开"
+      },
+      {
+        "raw_quote": "内部图从顶部俯视可见包口为横向拉链开合，包身保持圆筒形态"
+      }
+    ],
+    "evidence_count": {
+      "params": 1,
+      "ocr": 2,
+      "vlm": 4
+    },
+    "y": 0,
+    "c": 0.71,
+    "contrastive_mask": true,
+    "confidence": "high",
+    "reviews": [
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#1",
+        "text": "很百搭",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/3/7 10:53:30",
+        "relation": "support",
+        "reason": "百搭支持款式"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#10",
+        "text": "包包非常好看，也是一直想入的款",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/16 23:57:10",
+        "relation": "support",
+        "reason": "想入的款支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#17",
+        "text": "精致实用",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/14 23:58:55",
+        "relation": "support",
+        "reason": "精致实用支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#18",
+        "text": "很不错的一款包包",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/14 8:44:33",
+        "relation": "support",
+        "reason": "不错支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#21",
+        "text": "包果然讨女生欢心",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/12 9:19:11",
+        "relation": "support",
+        "reason": "讨女生欢心支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#29",
+        "text": "随意搭配衣服",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/9 13:30:16",
+        "relation": "support",
+        "reason": "搭配衣服支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#3",
+        "text": "包包很好看",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/27 10:07:00",
+        "relation": "support",
+        "reason": "好看支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#41",
+        "text": "包包很好看也很小巧",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/3 22:58:03",
+        "relation": "support",
+        "reason": "小巧支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#46",
+        "text": "非常精致小巧的包包",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/2/2 10:08:08",
+        "relation": "support",
+        "reason": "精致小巧支持"
+      },
+      {
+        "review_id": "飞瓜数据_20241004-20250401商品详情_商品评价列表_COACH蔻驰官方正品迷你波士顿时尚单肩手提包斜挎包女神节礼物#67",
+        "text": "挺好看可以背背",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/1/17 15:58:54",
+        "relation": "support",
+        "reason": "可以背背支持"
+      }
+    ]
+  },
+  {
+    "pair_id": "p3671347504429007019__FOOD_饮品种类",
+    "attribute_id": "FOOD_饮品种类",
+    "attribute_name": "饮品种类",
+    "split": "train",
+    "claim": {
+      "has_claim_srt": true,
+      "passage": "要不加糖不加奶的纯咖啡黑咖啡,选二号弹出来的位置就是它",
+      "segments": [
+        {
+          "text": "要不加糖不加奶的纯咖啡黑咖啡,选二号弹出来的位置就是它"
+        }
+      ]
+    },
+    "evidence_params": [
+      {
+        "param_key": "产品名称",
+        "raw_text": "黑咖啡"
+      }
+    ],
+    "evidence_ocr": [
+      {
+        "raw_text": "黑咖啡"
+      },
+      {
+        "raw_text": "拿铁"
+      },
+      {
+        "raw_text": "苏打水"
+      },
+      {
+        "raw_text": "冰美式"
+      },
+      {
+        "raw_text": "冷热双泡双重口感"
+      },
+      {
+        "raw_text": "速消黑咖啡"
+      }
+    ],
+    "evidence_vlm": [
+      {
+        "raw_quote": "第1图主图左侧玻璃杯盛深褐色液体加冰块"
+      },
+      {
+        "raw_quote": "第3图左杯标'COLD'盛冰咖啡，右杯标'HOT'盛热咖啡"
+      },
+      {
+        "raw_quote": "第8图01项为拿铁（加奶+奶油+焦糖），02项为柠檬苏打冰咖，03项为冰美式"
+      }
+    ],
+    "evidence_count": {
+      "params": 1,
+      "ocr": 6,
+      "vlm": 3
+    },
+    "y": 0,
+    "c": 0.73,
+    "contrastive_mask": true,
+    "confidence": "high",
+    "reviews": [
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_越南西贡进口速溶黑咖啡60gx5盒（2g_30杯）_盒无蔗糖美式速溶咖啡#194",
+        "text": "黑咖啡没跑了",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": true,
+        "review_time": "2024/11/27 10:33:38",
+        "relation": "support",
+        "reason": "确认黑咖啡"
+      },
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_越南西贡进口速溶黑咖啡60gx5盒（2g_30杯）_盒无蔗糖美式速溶咖啡#125",
+        "text": "这款黑咖啡",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/1/13 6:07:55",
+        "relation": "support",
+        "reason": "提及黑咖啡"
+      },
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_越南西贡进口速溶黑咖啡60gx5盒（2g_30杯）_盒无蔗糖美式速溶咖啡#132",
+        "text": "这款，非常好的咖啡",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2025/1/1 21:45:07",
+        "relation": "support",
+        "reason": "认可咖啡品质"
+      },
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_越南西贡进口速溶黑咖啡60gx5盒（2g_30杯）_盒无蔗糖美式速溶咖啡#270",
+        "text": "黑咖啡☕️☕️☕️",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2024/11/10 13:05:50",
+        "relation": "support",
+        "reason": "强调黑咖啡"
+      },
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_越南西贡进口速溶黑咖啡60gx5盒（2g_30杯）_盒无蔗糖美式速溶咖啡#276",
+        "text": "好喝",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2024/11/7 19:10:20",
+        "relation": "support",
+        "reason": "评价好喝"
+      },
+      {
+        "review_id": "飞瓜数据_20241005-20250402商品详情_商品评价列表_越南西贡进口速溶黑咖啡60gx5盒（2g_30杯）_盒无蔗糖美式速溶咖啡#296",
+        "text": "买了三合一和纯咖啡俩种",
+        "polarity": "pos",
+        "review_polarity": "pos",
+        "mention_strength": "strong",
+        "explicit_fact_hit": false,
+        "review_time": "2024/10/5 11:47:22",
+        "relation": "support",
+        "reason": "对比两种类型"
+      }
+    ]
+  }
+]
