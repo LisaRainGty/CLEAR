@@ -47,6 +47,9 @@ parsed (`n_err_val = n_err_test = 0`).  A transient failure makes the job
 non-zero and resumable; the next invocation reuses exact successful payloads and
 requests only the missing cache entries.  Missing responses are never replaced
 by a default score in a paper table.
+If a rerun fails, the controller removes any stale artifact at that job's
+canonical output path while retaining its status and log for audit; this keeps
+an older result from masquerading as the failed invocation's output.
 
 The output caps are fixed per endpoint at 320 tokens for Qwen-Flash/GPT-5.4,
 1,024 for Gemini-3.5-Flash and 4,096 for Kimi-K2.6.  Longest-prompt probes showed

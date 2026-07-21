@@ -438,6 +438,15 @@ def run_job(job: Job, env: dict[str, str], quiet: bool) -> int:
                 except json.JSONDecodeError:
                     pass
         returncode = proc.wait()
+    removed_failed_outputs = []
+    if returncode:
+        # A failed rerun must not leave an older artifact at the canonical
+        # output path.  Status/log/cache retain the audit trail and allow an
+        # exact retry; paper aggregators can only see outputs from rc=0 jobs.
+        for output in job.outputs:
+            if output.is_file() or output.is_symlink():
+                output.unlink()
+                removed_failed_outputs.append(str(output.relative_to(ROOT)))
     with result_path.open("w", encoding="utf-8") as handle:
         for row in result_lines:
             row["_suite_job"] = job.name
@@ -449,6 +458,7 @@ def run_job(job: Job, env: dict[str, str], quiet: bool) -> int:
         "log": str(log_path.relative_to(ROOT)),
         "result_file": str(result_path.relative_to(ROOT)),
         "outputs": [str(path.relative_to(ROOT)) for path in job.outputs],
+        "removed_failed_outputs": removed_failed_outputs,
         "dataset_sha256": hashlib.sha256(DATASET.read_bytes()).hexdigest(),
         "evidence_policy": POLICY,
     }

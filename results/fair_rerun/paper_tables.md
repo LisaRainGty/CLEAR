@@ -5,7 +5,7 @@
 - Dataset SHA-256: `1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76`
 - Rows: 4883
 - Argument records: 0
-- Accepted fresh RESULT rows: 43
+- Accepted fresh RESULT rows: 48
 - Rejected incomplete/off-protocol RESULT rows: 0
 
 ## Table 1. Dataset split and statistics
@@ -94,8 +94,8 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | Canonical | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
 | w/o RACL | 81.21±1.00 | 71.58±1.94 | 70.93±1.70 | 89.19±0.46 | 3 |
 | w/o reliability | 80.78±1.24 | 72.00±0.58 | 73.42±0.98 | 89.77±0.69 | 3 |
-| w/o class balance | PENDING | PENDING | PENDING | PENDING | PENDING |
-| w/o four-tuple | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o class balance | 80.98±0.22 | 70.80±1.66 | 70.04±0.95 | 88.89±0.07 | 3 |
+| w/o four-tuple | 80.86±0.90 | 72.05±1.87 | 72.28±2.58 | 88.99±1.15 | 3 |
 | BERT backbone | PENDING | PENDING | PENDING | PENDING | PENDING |
 
 ## Table 8. Dual-stream ablations
