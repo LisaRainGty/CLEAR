@@ -180,15 +180,21 @@ def main():
     pv = arr(val, rv, "risk_score"); yv = np.array([int(r["y"]) for r in val], float)
     pt = arr(test, rt, "risk_score"); yt = np.array([int(r["y"]) for r in test], float)
     ct = np.array([float(r.get("c", 0.05)) for r in test], float)
+    n_err_val = sum(1 for x in rv if x.get("__error__"))
     n_err = sum(1 for x in rt if x.get("__error__"))
 
     thr = best_threshold_macroF1(yv, pv)
     res = {"tag": args.tag, "model": args.model, "mode": args.mode, "shots": args.shots,
-           "n_err_val": int(sum(1 for x in rv if x.get("__error__"))),
+           "n_err_val": int(n_err_val),
            "n_err_test": int(n_err), **metrics_block(yt, pt, ct, thr),
            # 同时报固定 0.5 阈值下的 decision 指标，便于核对模型自带判定
            "macro_f1_dec05": round(macro_f1(yt, arr(test, rt, "decision").astype(int)), 4)}
     attach_run_provenance(res, args, args.model)
+    if n_err_val or n_err:
+        raise RuntimeError(
+            f"incomplete hosted-LLM evaluation: val_errors={n_err_val}, "
+            f"test_errors={n_err}; successful payloads remain cached for an exact retry"
+        )
     print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
     if args.eval_out:
         Path(args.eval_out).parent.mkdir(parents=True, exist_ok=True)

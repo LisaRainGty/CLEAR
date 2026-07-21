@@ -42,6 +42,19 @@ before any pre-existing cache hits.  This optimisation changes neither prompts
 nor fold-specific few-shot examples and cannot transfer labels or thresholds
 between folds.
 
+Hosted-LLM jobs are successful only when every validation and test response is
+parsed (`n_err_val = n_err_test = 0`).  A transient failure makes the job
+non-zero and resumable; the next invocation reuses exact successful payloads and
+requests only the missing cache entries.  Missing responses are never replaced
+by a default score in a paper table.
+
+The output caps are fixed per endpoint at 320 tokens for Qwen-Flash/GPT-5.4,
+1,024 for Gemini-3.5-Flash and 4,096 for Kimi-K2.6.  Longest-prompt probes showed
+that the two reasoning endpoints could otherwise exhaust the cap before closing
+the required JSON object.  The prompt, evidence, temperature and output schema
+remain identical; caps were chosen solely for parse completeness before looking
+at evaluation metrics.
+
 Each completed job writes an independent log, result JSONL, status JSON and
 prediction/embedding bundle under `results/fair_rerun/` and
 `embeddings/fair_rerun/`.  `scripts/aggregate_paper_results.py` compiles these

@@ -114,6 +114,16 @@ def main():
         out[mode] = run_mode(args.model, mode, args.shots, args.seed,
                              train, val, test, args.concurrency, args.max_tokens, ns_pre)
         print(f"LLM_{mode.upper()}_DONE", label, "n_err=", out[mode]["n_err"], flush=True)
+    incomplete = {
+        mode: {"val": out[mode]["n_err_val"], "test": out[mode]["n_err"]}
+        for mode in [m.strip() for m in args.modes.split(",") if m.strip()]
+        if out[mode]["n_err_val"] or out[mode]["n_err"]
+    }
+    if incomplete:
+        raise RuntimeError(
+            "incomplete hosted-LLM cross-domain evaluation; exact retry required: "
+            + json.dumps(incomplete, ensure_ascii=False)
+        )
     path = os.path.join(args.outdir, f"llm_{args.model}_{args.mode}_{label}_s{args.seed}.pt")
     torch.save(out, path)
     print("LLM_SAVED", path, flush=True)

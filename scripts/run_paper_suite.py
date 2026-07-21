@@ -269,6 +269,15 @@ def build_jobs(stages: set[str]) -> list[Job]:
 
     if "llm" in stages:
         # API runs may incur cost, so this stage is explicit rather than part of --stages all.
+        # Hosted reasoning models need enough completion budget to finish the
+        # same compact JSON schema.  These caps were fixed using longest-prompt
+        # parse probes, not downstream labels or metrics.
+        output_budgets = {
+            "Qwen-Flash": 320,
+            "GPT-5.4": 320,
+            "Gemini-3.5-Flash": 1024,
+            "Kimi-K2.6": 4096,
+        }
         for model, short in (("Qwen-Flash", "qwen_flash"), ("GPT-5.4", "gpt54"),
                              ("Gemini-3.5-Flash", "gemini35"), ("Kimi-K2.6", "kimi")):
             for mode in ("zero", "fewshot"):
@@ -277,6 +286,7 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 jobs.append(Job(f"llm_{tag}", "llm", (
                     py, "-m", "models.run_llm_baselines", "--dataset", str(DATASET),
                     "--model", model, "--mode", mode, "--shots", "5", "--tag", tag,
+                    "--max_tokens", str(output_budgets[model]),
                     "--seed", "0", "--evidence_policy", POLICY, "--eval_out", str(out),
                 ), (out,)))
         # Table 4 uses Qwen-Flash as the representative zero/five-shot LLM.
