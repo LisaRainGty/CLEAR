@@ -1,0 +1,178 @@
+# 论文全部实验表：三源证据公平重跑
+
+> 本文件只汇总 `sources_only` (PARAM + OCR + VLM) 公平重跑。`PENDING` 表示对应 GPU/API 任务尚未成功完成，不会用历史异口径数字填补。
+
+- Dataset SHA-256: `1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76`
+- Rows: 4883
+- Argument records: 0
+- Fresh RESULT rows: 28
+
+## Table 1. Dataset split and statistics
+
+| Split | N | Positive | Positive rate | Rooms |
+|---|---:|---:|---:|---:|
+| train | 3636 | 879 | 24.17% | 92 |
+| val | 392 | 122 | 31.12% | 5 |
+| test | 855 | 249 | 29.12% | 11 |
+| **All** | **4883** | **1250** | **25.60%** | **108** |
+
+Evidence-source availability (0/1/2/3): 1483/1826/1118/456; reliability c mean/median/range: 0.456/0.480/[0.180, 0.820].
+Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-comment pairs: 2278 (46.65%).
+
+## Table 2. Category distribution
+
+| Category | N |
+|---|---:|
+| apparel_and_underwear | 1274 |
+| baby_kids_and_pets | 715 |
+| beauty_and_personal_care | 225 |
+| digital_and_electronics | 270 |
+| food_and_beverages | 426 |
+| general | 827 |
+| jewelry_and_collectibles | 84 |
+| shoes_and_bags | 476 |
+| smart_home | 324 |
+| sports_and_outdoor | 262 |
+
+## Table 3. In-domain main comparison
+
+| 方法/设定 | acc | pos_f1 | auprc | auroc | n |
+|---|---:|---:|---:|---:|---:|
+| ESIM | 74.23±0.24 | 67.37±1.00 | 51.92±0.34 | 80.78±0.05 | 3 |
+| Decomposable Attention | 75.79±1.50 | 60.01±3.09 | 59.61±3.40 | 82.52±0.87 | 3 |
+| BERT-NLI | 79.42±0.91 | 67.83±3.24 | 67.77±1.35 | 87.71±0.28 | 3 |
+| TextCNN | 77.70±0.64 | 61.25±2.24 | 61.35±0.65 | 84.60±0.52 | 3 |
+| BiLSTM | 77.93±0.20 | 64.53±1.36 | 68.13±0.32 | 86.82±0.28 | 3 |
+| BERT-CLS | 80.16±0.54 | 70.79±1.28 | 68.55±0.88 | 88.39±0.17 | 3 |
+| RoBERTa-CLS | 80.74±0.40 | 70.86±2.07 | 68.94±1.87 | 88.73±0.06 | 3 |
+| BGE frozen + LR | 79.42 | 68.00 | 67.34 | 87.01 | 1 |
+| BGE frozen + SVM | 75.20 | 66.98 | 61.68 | 85.14 | 1 |
+| BGE frozen + MLP | 76.84 | 66.78 | 63.50 | 86.07 | 1 |
+| BGE frozen + kNN | 76.49 | 59.23 | 56.56 | 78.94 | 1 |
+| Qwen-Flash zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Qwen-Flash five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| GPT-5.4 zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| GPT-5.4 five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Gemini-3.5-Flash zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Gemini-3.5-Flash five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kimi-K2.6 zero-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kimi-K2.6 five-shot | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Qwen2.5-7B QLoRA SFT | PENDING | PENDING | PENDING | PENDING | PENDING |
+| CLAIMARC | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
+
+## Table 4a. Leave-one-category transfer
+
+| System | Acc | F1pos | Macro-F1 | AUPRC | AUROC | folds |
+|---|---:|---:|---:|---:|---:|---:|
+| PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+
+## Table 4b. Leave-20-streamer transfer
+
+| System | Acc | F1pos | Macro-F1 | AUPRC | AUROC | folds |
+|---|---:|---:|---:|---:|---:|---:|
+| PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+
+## Table 5. Gradient-free target-library injection
+
+| Domain protocol | Condition | AP | AUC | F1 |
+|---|---|---:|---:|---:|
+| rooms | PENDING | PENDING | PENDING | PENDING |
+
+## Table 6. Representation geometry
+
+| Variant | Silhouette | Hard purity@10 | Alignment | Uniformity |
+|---|---:|---:|---:|---:|
+| w/o contrast | PENDING | PENDING | PENDING | PENDING |
+| SupCon | PENDING | PENDING | PENDING | PENDING |
+| RACL | PENDING | PENDING | PENDING | PENDING |
+
+## Table 7. Core ablations
+
+| 方法/设定 | acc | pos_f1 | auprc | auroc | n |
+|---|---:|---:|---:|---:|---:|
+| Canonical | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
+| w/o RACL | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o reliability | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o class balance | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o four-tuple | PENDING | PENDING | PENDING | PENDING | PENDING |
+| BERT backbone | PENDING | PENDING | PENDING | PENDING | PENDING |
+
+## Table 8. Dual-stream ablations
+
+| 方法/设定 | acc | pos_f1 | auprc | auroc | n |
+|---|---:|---:|---:|---:|---:|
+| Canonical | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
+| w/o fusion | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Claim only | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Evidence only | PENDING | PENDING | PENDING | PENDING | PENDING |
+
+## Table 9. RACL mining
+
+| 方法/设定 | acc | pos_f1 | auprc | auroc | n |
+|---|---:|---:|---:|---:|---:|
+| Canonical | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
+| Hard positive | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Same-attribute negative | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Same-evidence-type negative | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kp=1 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kp=5 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kn=1 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kn=10 | PENDING | PENDING | PENDING | PENDING | PENDING |
+
+## Table 10. Reliability counterfactuals
+
+| 方法/设定 | acc | pos_f1 | auprc | auroc | n |
+|---|---:|---:|---:|---:|---:|
+| Canonical c | 80.78±0.56 | 71.52±1.40 | 70.18±1.40 | 88.92±0.13 | 3 |
+| Uniform | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Inverse | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Permuted | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Binary | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Count only | PENDING | PENDING | PENDING | PENDING | PENDING |
+| sqrt(c) | PENDING | PENDING | PENDING | PENDING | PENDING |
+
+## Table 11
+
+The current manuscript has no Table 11 (numbering gap).
+
+## Table 12. LoRA-efficient hyperparameter sensitivity (all three-source)
+
+| 方法/设定 | acc | pos_f1 | auprc | auroc | n |
+|---|---:|---:|---:|---:|---:|
+| Canonical LoRA (N2, h8, r16, lambda=.5, tau=.07, Kp3/Kn5, BCE) | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Fusion blocks N=1 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Fusion blocks N=3 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Fusion blocks N=4 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Attention heads=4 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Attention heads=16 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| LoRA rank=8 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| LoRA rank=32 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| lambda_CL=0.1 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| lambda_CL=0.3 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| lambda_CL=1.0 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| tau=0.05 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| tau=0.10 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| tau=0.20 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kp/Kn=(1,1) | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kp/Kn=(5,10) | PENDING | PENDING | PENDING | PENDING | PENDING |
+| ASL | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Focal loss | PENDING | PENDING | PENDING | PENDING | PENDING |
+| FFN GeLU | PENDING | PENDING | PENDING | PENDING | PENDING |
+| cross-attention claim to evidence | PENDING | PENDING | PENDING | PENDING | PENDING |
+| cross-attention evidence to claim | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Independent projections | PENDING | PENDING | PENDING | PENDING | PENDING |
+
+## Table 13. Reliability-formula sensitivity (matched seed 0)
+
+| 方法/设定 | acc | pos_f1 | auprc | auroc | n |
+|---|---:|---:|---:|---:|---:|
+| Canonical | 81.29 | 73.15 | 69.83 | 88.82 | 1 |
+| k=1.5 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| k=6 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| lambda=0.1 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| lambda=0.6 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| rho=0.2 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| rho=0.6 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| phi=1.0 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| phi=1.5 | PENDING | PENDING | PENDING | PENDING | PENDING |
+

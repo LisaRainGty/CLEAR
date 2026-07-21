@@ -1,0 +1,23 @@
+{
+  "action": "validated_existing",
+  "path": "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+  "sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "rows": 4883,
+  "split_rows": {
+    "train": 3636,
+    "val": 392,
+    "test": 855
+  },
+  "split_positive": {
+    "train": 879,
+    "val": 122,
+    "test": 249
+  },
+  "source_availability_0_1_2_3": {
+    "0": 1483,
+    "1": 1826,
+    "2": 1118,
+    "3": 456
+  },
+  "argument_records": 0
+}

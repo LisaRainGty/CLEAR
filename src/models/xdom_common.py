@@ -5,13 +5,14 @@
   - rooms    : 留出一组 room_id（按评论规模分层选 20 个）；
   - time     : 时间增量（评论最早 review_time 作时间代理，cutoff1/cutoff2 切分）。
 
-所有协议都汇总 train/val/test 三个划分后重新分区，忽略记录里预置的 split 字段，
-保证所有被比较的模型（CLAIMARC / BERT / RoBERTa / ESIM / LLM）拿到完全相同的
-train/val/test，从而指标可比。
+所有协议都汇总 train/val/test 三个划分后重新分区，忽略记录里预置的 split 字段。
+目标域全部作为只读 test，其余源域样本再按 room_id 整组拆成 train/val；
+保证 CLAIMARC / BERT / RoBERTa / ESIM / LLM 拿到完全相同且无直播间交叉的源域划分。
 """
 from __future__ import annotations
 
 import re
+from collections import defaultdict
 from datetime import datetime
 
 import numpy as np
@@ -66,6 +67,31 @@ def holdout_rooms(dataset, n=20):
     return [rooms[i] for i in sorted(set(idx.tolist()))]
 
 
+def _grouped_source_split(records, seed, val_fraction=0.10):
+    """Create a deterministic room-disjoint source train/validation split."""
+    by_room = defaultdict(list)
+    for row in records:
+        room = str(row.get("room_id", ""))
+        if not room:
+            raise ValueError("cross-domain source record is missing room_id")
+        by_room[room].append(row)
+    rooms = sorted(by_room)
+    rng = np.random.RandomState(seed)
+    rng.shuffle(rooms)
+    n_val_rooms = max(1, int(round(len(rooms) * val_fraction)))
+    val_rooms = rooms[:n_val_rooms]
+    val_set = set(val_rooms)
+    train = [row for row in records if str(row.get("room_id", "")) not in val_set]
+    val = [row for row in records if str(row.get("room_id", "")) in val_set]
+    if not train or not val:
+        raise ValueError("unable to create non-empty room-disjoint source split")
+    if {int(row.get("y", 0)) for row in train} != {0, 1}:
+        raise ValueError("source train split does not contain both labels")
+    if {int(row.get("y", 0)) for row in val} != {0, 1}:
+        raise ValueError("source validation split does not contain both labels")
+    return train, val
+
+
 def build_splits(dataset, mode, holdout="", seed=0,
                  cutoff1="2025-01-01", cutoff2="2025-02-15"):
     full = load_split(dataset)
@@ -74,16 +100,14 @@ def build_splits(dataset, mode, holdout="", seed=0,
     if mode == "category":
         held = [r for r in allrecs if r.get("category") == holdout]
         rest = [r for r in allrecs if r.get("category") != holdout]
-        rng.shuffle(rest)
-        nval = max(50, len(rest) // 10)
-        return {"train": rest[nval:], "val": rest[:nval], "test": held}
+        train, val = _grouped_source_split(rest, seed)
+        return {"train": train, "val": val, "test": held}
     if mode == "rooms":
         held_set = {x.strip() for x in holdout.split(",") if x.strip()}
         held = [r for r in allrecs if r.get("room_id") in held_set]
         rest = [r for r in allrecs if r.get("room_id") not in held_set]
-        rng.shuffle(rest)
-        nval = max(50, len(rest) // 10)
-        return {"train": rest[nval:], "val": rest[:nval], "test": held}
+        train, val = _grouped_source_split(rest, seed)
+        return {"train": train, "val": val, "test": held}
     if mode == "time":
         c1, c2 = _parse_time(cutoff1), _parse_time(cutoff2)
         early, late, bg = [], [], []

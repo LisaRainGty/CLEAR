@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import os
 
 import numpy as np
 import torch
@@ -22,18 +23,22 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
 
-from models.data import load_split
+from models.data import apply_evidence_policy, load_split
 from models.baselines import claim_text, evidence_text
+from models.provenance import attach_run_provenance
 from models.train import macro_f1, best_threshold_macroF1, ece, cls_loss
 from sklearn.metrics import f1_score, roc_auc_score, average_precision_score
 
-BERT = "/root/models/bert-base-chinese"
-MAXLEN = 256
+BERT = os.environ.get("CLAIMARC_BERT_PATH", "bert-base-chinese")
+MAXLEN_SINGLE = 512
+MAXLEN_PAIR = 384
 
 
 def get_tok():
     from transformers import AutoTokenizer
-    return AutoTokenizer.from_pretrained(BERT)
+    from models.baselines_ft import resolve
+    path = resolve("bert-base-chinese") if BERT == "bert-base-chinese" else BERT
+    return AutoTokenizer.from_pretrained(path), path
 
 
 class SingleDS(Dataset):
@@ -45,7 +50,8 @@ class SingleDS(Dataset):
 
     def __getitem__(self, i):
         r = self.recs[i]
-        enc = self.tok(claim_text(r), evidence_text(r), truncation=True, max_length=MAXLEN,
+        enc = self.tok(claim_text(r), evidence_text(r), truncation=True,
+                       max_length=MAXLEN_SINGLE,
                        padding="max_length", return_tensors="pt")
         return (enc["input_ids"][0], enc["attention_mask"][0],
                 float(r.get("y", 0)), float(r.get("c", 0.05)))
@@ -59,7 +65,8 @@ class PairDS(Dataset):
         return len(self.recs)
 
     def _e(self, t):
-        e = self.tok(t, truncation=True, max_length=MAXLEN, padding="max_length", return_tensors="pt")
+        e = self.tok(t, truncation=True, max_length=MAXLEN_PAIR,
+                     padding="max_length", return_tensors="pt")
         return e["input_ids"][0], e["attention_mask"][0]
 
     def __getitem__(self, i):
@@ -167,7 +174,8 @@ def run(args):
     import random
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     sp = load_split(args.dataset)
-    tok = get_tok(); vocab = tok.vocab_size
+    apply_evidence_policy(sp, args.evidence_policy)
+    tok, tokenizer_path = get_tok(); vocab = tok.vocab_size
     pair = args.kind == "dam"
     DS = PairDS if pair else SingleDS
     coll = coll_pair if pair else coll_single
@@ -204,7 +212,28 @@ def run(args):
     if best_state:
         model.load_state_dict({k: v.to(device) for k, v in best_state.items()})
     res = evaluate(model, vl, te, device, pair, args.kind, args.seed)
+    attach_run_provenance(res, args, tokenizer_path)
     print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
+    if args.save_pred:
+        pv, yv, cv = infer(model, vl, device, pair)
+        p, y, c = infer(model, te, device, pair)
+        torch.save({
+            "thr": res["thr"],
+            "provenance": {k: res.get(k) for k in (
+                "dataset", "dataset_sha256", "evidence_policy", "resolved_model",
+                "label_field", "split_field", "split_group", "seed", "tag",
+            )},
+            "val": {
+                "p": pv, "y": yv, "c": cv,
+                "pair_id": [r.get("pair_id", "") for r in sp["val"]],
+            },
+            "test": {
+                "p": p, "y": y, "c": c,
+                "attr": [r.get("attribute_id", "") for r in sp["test"]],
+                "pair_id": [r.get("pair_id", "") for r in sp["test"]],
+            },
+        }, args.save_pred)
+        print(f"[save_pred] -> {args.save_pred}", flush=True)
     return res
 
 
@@ -218,6 +247,8 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--loss", default="bce", choices=["bce", "focal", "asl"])
     ap.add_argument("--gamma_neg", type=float, default=4.0)
+    ap.add_argument("--evidence_policy", default="sources_only")
+    ap.add_argument("--save_pred", default="")
     args = ap.parse_args()
     run(args)
 

@@ -30,7 +30,7 @@ Usage:
   python -m models.geom_probe2 --bundles none=emb_none_s0.pt supcon=emb_supcon_s0.pt racl=emb_racl_s0.pt \
          --out results_artifacts/geom2.json
   # or sweep seeds and aggregate mean/std:
-  python -m models.geom_probe2 --emb_dir data/final/emb_geom --seeds 0 1 2 --out ...
+  python -m models.geom_probe2 --emb_dir embeddings/fair_rerun/emb_geom --seeds 0 1 2 --out ...
 """
 from __future__ import annotations
 import argparse, json, os

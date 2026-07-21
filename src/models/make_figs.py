@@ -13,8 +13,8 @@
   fig_geometry /
   fig_knn_purity (RQ2)  -> make_geom_figs.py
 
-在导出过嵌入 / 结果 JSON 的 GPU 主机上运行（读 ~/claimarc/data/final 下的 *.pt 与
-paper_results.jsonl），输出 PDF+PNG 到 ~/claimarc/figs。
+在导出过嵌入 / 结果 JSON 的 GPU 主机上运行，默认读取本项目 embeddings/ 与
+results/artifacts/，输出 PDF+PNG 到 paper/figs/。
 """
 import os, json
 import numpy as np
@@ -38,8 +38,10 @@ rcParams.update({
     "grid.linestyle": "--",
 })
 
-D = os.path.expanduser("~/claimarc/data/final")
-OUT = os.path.expanduser("~/claimarc/figs")
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+D = os.environ.get("CLAIMARC_EMBED_DIR", os.path.join(ROOT, "embeddings", "fair_rerun"))
+RESULTS = os.environ.get("CLAIMARC_RESULT_DIR", os.path.join(ROOT, "results", "fair_rerun", "jobs"))
+OUT = os.environ.get("CLAIMARC_FIG_DIR", os.path.join(ROOT, "paper", "figs"))
 os.makedirs(OUT, exist_ok=True)
 
 C_POS = "#d1495b"   # y=1 误导
@@ -62,9 +64,9 @@ def load_pt(fn):
 
 def read_jsonl(fn):
     rows = []
-    p = os.path.join(D, fn)
+    p = os.path.join(RESULTS, fn)
     if not os.path.exists(p):
-        p = os.path.join(os.path.expanduser("~/claimarc"), fn)
+        p = os.path.join(ROOT, fn)
     if not os.path.exists(p):
         return rows
     for ln in open(p):
@@ -102,18 +104,42 @@ def _fit_T(logit_v, yv):
     return float(r.x)
 
 
-def fig_calibration(bundle="emb_geom_racl_s0.pt"):
-    """Reliability diagram from a canonical bundle (train.py --save_emb)."""
-    d = load_pt(bundle)
-    if d is None:
-        print(f"SKIP calib: {bundle} not found"); return
-    te, va = d["test"], d.get("val", d["test"])
-    yt = np.asarray(te["y"], float); pt = np.asarray(te["p"], float)
-    yv = np.asarray(va["y"], float); pv = np.asarray(va["p"], float)
+def fig_calibration():
+    """Reliability diagram from the fair canonical three-seed probability mean."""
+    names = [f"emb_geom/emb_geom_racl_s{seed}.pt" for seed in range(3)]
+    bundles = [load_pt(name) for name in names]
+    if any(bundle is None for bundle in bundles):
+        raise FileNotFoundError("complete fair canonical bundles are required for calibration")
+    yt = np.asarray(bundles[0]["test"]["y"], float)
+    yv = np.asarray(bundles[0]["val"]["y"], float)
+    test_ids = list(bundles[0]["test"].get("pair_id", []))
+    val_ids = list(bundles[0]["val"].get("pair_id", []))
+    for bundle in bundles[1:]:
+        if not np.array_equal(yt, np.asarray(bundle["test"]["y"], float)) \
+                or not np.array_equal(yv, np.asarray(bundle["val"]["y"], float)):
+            raise ValueError("canonical seed bundles disagree on labels")
+        if test_ids != list(bundle["test"].get("pair_id", [])) \
+                or val_ids != list(bundle["val"].get("pair_id", [])):
+            raise ValueError("canonical seed bundles disagree on pair order")
+    pt = np.mean([np.asarray(bundle["test"]["p"], float) for bundle in bundles], axis=0)
+    pv = np.mean([np.asarray(bundle["val"]["p"], float) for bundle in bundles], axis=0)
     eps = 1e-6
     lg = lambda p: np.log(np.clip(p, eps, 1 - eps) / (1 - np.clip(p, eps, 1 - eps)))
     T = _fit_T(lg(pv), yv)
     pt_cal = 1 / (1 + np.exp(-lg(pt) / T))
+
+    def calibration_stats(p):
+        xs, ys, ws = _reliability(yt, p)
+        return {
+            "ece": float(np.sum(ws * np.abs(xs - ys))),
+            "brier": float(np.mean((p - yt) ** 2)),
+        }
+    cal_result = {"temperature": T, "raw": calibration_stats(pt),
+                  "temperature_scaled": calibration_stats(pt_cal),
+                  "bundles": names, "aggregation": "three_seed_probability_mean"}
+    cal_path = os.path.join(ROOT, "results", "fair_rerun", "ece_calibrated.json")
+    os.makedirs(os.path.dirname(cal_path), exist_ok=True)
+    json.dump(cal_result, open(cal_path, "w"), ensure_ascii=False, indent=2)
 
     fig, ax = plt.subplots(figsize=(5.2, 5))
     ax.plot([0, 1], [0, 1], color="black", linewidth=1, linestyle=":", label="perfect calibration")
@@ -131,22 +157,26 @@ def fig_calibration(bundle="emb_geom_racl_s0.pt"):
 
 # ---------------------------------------------------------------- hyperparam
 def fig_hparam():
-    rows = read_jsonl("../paper_results.jsonl") or read_jsonl("paper_results.jsonl")
+    rows = []
+    if os.path.isdir(RESULTS):
+        for name in sorted(os.listdir(RESULTS)):
+            if name.startswith("hp_") and name.endswith(".jsonl"):
+                rows.extend(read_jsonl(name))
     by = {r["tag"]: r for r in rows if "tag" in r}
 
     def g(tag, key="auprc"):
         return by.get(tag, {}).get(key, np.nan)
 
     lam_x = [0.1, 0.3, 0.5, 1.0]
-    lam_y = [g("abl_lambda_0.1"), g("claimarc"), g("abl_lambda_0.5"), g("abl_lambda_1.0")]
-    tau_x = [0.05, 0.07, 0.10]
-    tau_y = [g("abl_tau_0.05"), g("claimarc"), g("abl_tau_0.10")]
-    n_x = [1, 2, 4]
-    n_y = [g("abl_nfusion_1"), g("claimarc"), g("abl_nfusion_4")]
+    lam_y = [g("hp_lambda0p1"), g("hp_lambda0p3"), g("hp_lora_canonical"), g("hp_lambda1p0")]
+    tau_x = [0.05, 0.07, 0.10, 0.20]
+    tau_y = [g("hp_tau0p05"), g("hp_lora_canonical"), g("hp_tau0p10"), g("hp_tau0p20")]
+    n_x = [1, 2, 3, 4]
+    n_y = [g("hp_fusion1"), g("hp_lora_canonical"), g("hp_fusion3"), g("hp_fusion4")]
     lora_x = [8, 16, 32]
-    lora_y = [g("abl_lora_8"), g("claimarc"), g("abl_lora_32")]
+    lora_y = [g("hp_rank8"), g("hp_lora_canonical"), g("hp_rank32")]
     K_x = [1, 3, 5]  # (1,1),(3,5)默认,(5,10)
-    K_y = [g("abl_K_1_1"), g("claimarc"), g("abl_K_5_10")]
+    K_y = [g("hp_k1_1"), g("hp_lora_canonical"), g("hp_k5_10")]
 
     fig, axes = plt.subplots(1, 5, figsize=(17, 3.4))
     series = [

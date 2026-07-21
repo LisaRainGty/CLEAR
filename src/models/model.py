@@ -9,6 +9,8 @@
 """
 from __future__ import annotations
 
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -109,6 +111,15 @@ class CLAIMARC(nn.Module):
             self.encoder = get_peft_model(self.encoder, cfg)
         self._unfreeze_encoder_extras(vocab_size, n_special, use_lora,
                                       enc_train=enc_train, unfreeze_top=unfreeze_top)
+        # Preserve the paper's original full-fine-tuning computation by default.
+        # Checkpointed recomputation is an explicit OOM fallback and is recorded
+        # separately because it can change the floating-point training trajectory.
+        use_gc = os.environ.get("CLAIMARC_GRADIENT_CHECKPOINTING", "0") == "1"
+        if (enc_train == "full" and use_gc
+                and hasattr(self.encoder, "gradient_checkpointing_enable")):
+            self.encoder.gradient_checkpointing_enable()
+            if hasattr(self.encoder, "config"):
+                self.encoder.config.use_cache = False
         self.fusion = nn.ModuleList([
             FusionLayer(d, heads=heads, dropout=fusion_dropout, xattn_dir=xattn_dir,
                         indep_proj=indep_proj, ffn=ffn) for _ in range(n_fusion)])

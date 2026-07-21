@@ -21,7 +21,9 @@ import numpy as np
 from sklearn.metrics import f1_score, roc_auc_score, average_precision_score
 
 from common.llm import chat_json, run_many
-from models.data import load_split
+from models.data import apply_evidence_policy, load_split
+from models.baselines import evidence_text as shared_evidence_text
+from models.provenance import attach_run_provenance
 from models.train import macro_f1, best_threshold_macroF1, ece
 
 
@@ -40,15 +42,7 @@ def claim_text(r):
 
 
 def evidence_text(r):
-    parts = []
-    for label, key, field in (("参数", "evidence_params", "raw_text"),
-                              ("详情图OCR", "evidence_ocr", "raw_text"),
-                              ("主图/详情图视觉", "evidence_vlm", "raw_quote")):
-        for it in r.get(key, []) or []:
-            t = trim(str(it.get(field, "") or ""), 300)
-            if t:
-                parts.append(f"[{label}] {t}")
-    return "\n".join(parts)
+    return trim(shared_evidence_text(r), 2200)
 
 
 SYSTEM = "你是严谨的中文直播电商宣传风险核验助手，只输出 JSON。"
@@ -131,6 +125,7 @@ def metrics_block(y, p, c, thr):
     pred = (p >= thr).astype(int)
     return {
         "thr": round(float(thr), 3),
+        "acc": round(float(np.mean(pred == y)), 4),
         "macro_f1": round(macro_f1(y, pred), 4),
         "pos_f1": round(f1_score(y, pred, zero_division=0), 4),
         "wF1": round(macro_f1(y, pred, w=np.clip(c, 0.05, None)), 4),
@@ -152,9 +147,11 @@ def main():
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max_tokens", type=int, default=320)
     ap.add_argument("--eval_out", default="")
+    ap.add_argument("--evidence_policy", default="sources_only")
     args = ap.parse_args()
 
     sp = load_split(args.dataset)
+    apply_evidence_policy(sp, args.evidence_policy)
     val, test, train = sp["val"], sp["test"], sp["train"]
     ns = f"llmbase_{args.tag}"
     fewshot_block = build_fewshot(train, args.shots, args.seed) if args.mode == "fewshot" else ""
@@ -172,13 +169,30 @@ def main():
 
     thr = best_threshold_macroF1(yv, pv)
     res = {"tag": args.tag, "model": args.model, "mode": args.mode, "shots": args.shots,
+           "n_err_val": int(sum(1 for x in rv if x.get("__error__"))),
            "n_err_test": int(n_err), **metrics_block(yt, pt, ct, thr),
            # 同时报固定 0.5 阈值下的 decision 指标，便于核对模型自带判定
            "macro_f1_dec05": round(macro_f1(yt, arr(test, rt, "decision").astype(int)), 4)}
-    print("RESULT_LLM", json.dumps(res, ensure_ascii=False), flush=True)
+    attach_run_provenance(res, args, args.model)
+    print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
     if args.eval_out:
         Path(args.eval_out).parent.mkdir(parents=True, exist_ok=True)
-        json.dump(res, open(args.eval_out, "w"), ensure_ascii=False, indent=2)
+        artifact = {
+            **res,
+            "cache_namespaces": {"val": ns + "_val", "test": ns + "_test"},
+            "validation": {
+                "pair_id": [str(r.get("pair_id", "")) for r in val],
+                "y": yv.astype(int).tolist(), "p": pv.tolist(),
+                "parsed_response": rv,
+            },
+            "test": {
+                "pair_id": [str(r.get("pair_id", "")) for r in test],
+                "y": yt.astype(int).tolist(), "p": pt.tolist(),
+                "c": ct.tolist(), "parsed_response": rt,
+            },
+        }
+        with open(args.eval_out, "w", encoding="utf-8") as handle:
+            json.dump(artifact, handle, ensure_ascii=False, indent=2)
 
 
 if __name__ == "__main__":

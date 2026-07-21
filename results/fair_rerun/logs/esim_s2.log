@@ -1,0 +1,9 @@
+2026-07-21 21:18:52,552 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 21:18:52,554 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 21:18:52,596 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+[esim ep0] loss=0.5184 val_mF1=0.6505
+[esim ep1] loss=0.3579 val_mF1=0.6669
+[esim ep2] loss=0.3043 val_mF1=0.6740
+[esim ep3] loss=0.2932 val_mF1=0.6742
+RESULT {"tag": "esim", "seed": 2, "thr": 0.68, "acc": 0.7392, "macro_f1": 0.7244, "pos_f1": 0.6606, "wF1": 0.6864, "auprc": 0.5224, "auroc": 0.808, "ece": 0.1828, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/esim_s2.pt

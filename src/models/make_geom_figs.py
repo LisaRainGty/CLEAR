@@ -8,8 +8,7 @@ produced by geom_probe2, and writes:
   fig_knn_purity    kNN label purity vs k + retrieval-margin distribution
 
 Run on the GPU host (has umap-learn + matplotlib):
-  python -m models.make_geom_figs --emb_dir data/final/emb_geom \
-         --geom_json results_artifacts/geom2.json --outdir figs --seed 0
+  python -m models.make_geom_figs --seed 0
 """
 from __future__ import annotations
 import argparse, json, os
@@ -26,6 +25,7 @@ plt.rcParams.update({"font.size": 11, "savefig.bbox": "tight", "savefig.dpi": 20
 ORDER = ["none", "supcon", "racl"]
 LABELS = {"none": "w/o contrast", "supcon": "SupCon (2020)", "racl": "RACL (ours)"}
 COLORS = {"none": "#9aa0a6", "supcon": "#4c78a8", "racl": "#d1495b"}
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def _g(bundle, split="test"):
@@ -130,18 +130,14 @@ def fig_knn_purity(bundles, geom, outdir):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--emb_dir", default="data/final/emb_geom")
-    ap.add_argument("--geom_json", default="results_artifacts/geom2.json")
-    ap.add_argument("--outdir", default="figs")
+    ap.add_argument("--emb_dir", default=os.path.join(ROOT, "embeddings", "fair_rerun", "emb_geom"))
+    ap.add_argument("--geom_json", default=os.path.join(ROOT, "results", "fair_rerun", "geom2.json"))
+    ap.add_argument("--outdir", default=os.path.join(ROOT, "paper", "figs"))
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
     os.makedirs(args.outdir, exist_ok=True)
     bundles = load_bundles(args.emb_dir, args.seed)
     geom = json.load(open(args.geom_json)) if os.path.exists(args.geom_json) else {}
-    if geom:
-        fig_geometry(geom, args.outdir)
-        if bundles:
-            fig_knn_purity(bundles, geom, args.outdir)
     if bundles:
         fig_umap_label(bundles, args.outdir, seed=args.seed)
 

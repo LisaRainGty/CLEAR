@@ -1,0 +1,5741 @@
+{
+  "mode": "executed",
+  "archive": "/Volumes/My Passport/claimarc_final_副本/claimarc_main_nonpublication_archive_20260721",
+  "recoverable": true,
+  "candidate_paths": 1433,
+  "candidate_bytes": 4191163811,
+  "items": [
+    {
+      "path": "._README.md",
+      "bytes": 4096
+    },
+    {
+      "path": "._env.sh",
+      "bytes": 4096
+    },
+    {
+      "path": "._requirements-train.txt",
+      "bytes": 4096
+    },
+    {
+      "path": "CHECKSUMS.sha256",
+      "bytes": 3434192
+    },
+    {
+      "path": "MANIFEST.tsv",
+      "bytes": 3542954
+    },
+    {
+      "path": "configs/._experiment_registry.json",
+      "bytes": 4096
+    },
+    {
+      "path": "configs/._paper_fair.json",
+      "bytes": 4096
+    },
+    {
+      "path": "data/._cache",
+      "bytes": 4096
+    },
+    {
+      "path": "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_all_20260615.jsonl",
+      "bytes": 14784173
+    },
+    {
+      "path": "data/samples.json",
+      "bytes": 29212
+    },
+    {
+      "path": "docs/._DATA_PIPELINE.md",
+      "bytes": 4096
+    },
+    {
+      "path": "docs/._DATA_PROVENANCE.md",
+      "bytes": 4096
+    },
+    {
+      "path": "docs/._FAIR_COMPARISON_PROTOCOL.md",
+      "bytes": 4096
+    },
+    {
+      "path": "docs/._PAPER_EXPERIMENT_INVENTORY.md",
+      "bytes": 4096
+    },
+    {
+      "path": "docs/._REMOTE_RERUN.md",
+      "bytes": 4096
+    },
+    {
+      "path": "docs/._REPRODUCIBILITY.md",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/._fair_rerun",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/emb_geom_none_s0.pt",
+      "bytes": 5441299
+    },
+    {
+      "path": "embeddings/emb_geom_none_s1.pt",
+      "bytes": 5440659
+    },
+    {
+      "path": "embeddings/emb_geom_none_s2.pt",
+      "bytes": 5440915
+    },
+    {
+      "path": "embeddings/emb_geom_racl_s0.pt",
+      "bytes": 5440659
+    },
+    {
+      "path": "embeddings/emb_geom_racl_s1.pt",
+      "bytes": 5441107
+    },
+    {
+      "path": "embeddings/emb_geom_racl_s2.pt",
+      "bytes": 5441171
+    },
+    {
+      "path": "embeddings/emb_geom_supcon_s0.pt",
+      "bytes": 5440737
+    },
+    {
+      "path": "embeddings/emb_geom_supcon_s1.pt",
+      "bytes": 5440481
+    },
+    {
+      "path": "embeddings/emb_geom_supcon_s2.pt",
+      "bytes": 5440609
+    },
+    {
+      "path": "results/._fair_rerun",
+      "bytes": 4096
+    },
+    {
+      "path": "results/alpha_sweep.json",
+      "bytes": 7247
+    },
+    {
+      "path": "results/artifacts",
+      "bytes": 177426
+    },
+    {
+      "path": "results/campaign6_results.jsonl",
+      "bytes": 20372
+    },
+    {
+      "path": "results/campaign7_results.jsonl",
+      "bytes": 13276
+    },
+    {
+      "path": "results/campaign8_results.jsonl",
+      "bytes": 2632
+    },
+    {
+      "path": "scripts/.___pycache__",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._aggregate_paper_results.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._audit_reproducibility.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._clean_publication_tree.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._error_analysis.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._paired_bootstrap.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._run_paper_suite.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._run_remote_queue.sh",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._selective_prediction.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/._smoke_gpu.py",
+      "bytes": 4096
+    },
+    {
+      "path": "scripts/__pycache__",
+      "bytes": 137248
+    },
+    {
+      "path": "src/.___pycache__",
+      "bytes": 4096
+    },
+    {
+      "path": "src/__pycache__",
+      "bytes": 22030
+    },
+    {
+      "path": "data/final/all_results.jsonl",
+      "bytes": 24942
+    },
+    {
+      "path": "data/final/all_results_cap.jsonl",
+      "bytes": 3045
+    },
+    {
+      "path": "data/final/all_results_claim_noswa.jsonl",
+      "bytes": 3360
+    },
+    {
+      "path": "data/final/all_results_final.jsonl",
+      "bytes": 14415
+    },
+    {
+      "path": "data/final/all_results_fullset.jsonl",
+      "bytes": 3891
+    },
+    {
+      "path": "data/final/all_results_tune.jsonl",
+      "bytes": 7073
+    },
+    {
+      "path": "data/final/all_results_v2.jsonl",
+      "bytes": 9941
+    },
+    {
+      "path": "data/final/all_results_verify.jsonl",
+      "bytes": 6290
+    },
+    {
+      "path": "data/final/all_results_verifytest.jsonl",
+      "bytes": 4675
+    },
+    {
+      "path": "data/final/analysis.json",
+      "bytes": 1768
+    },
+    {
+      "path": "data/final/args_small_post.log",
+      "bytes": 5647
+    },
+    {
+      "path": "data/final/argument_aug_nohup.log",
+      "bytes": 2876
+    },
+    {
+      "path": "data/final/campaign6_results.jsonl",
+      "bytes": 20372
+    },
+    {
+      "path": "data/final/campaign7_results.jsonl",
+      "bytes": 13276
+    },
+    {
+      "path": "data/final/campaign8_results.jsonl",
+      "bytes": 2632
+    },
+    {
+      "path": "data/final/cap_c_lora16_s0.pt",
+      "bytes": 1552293
+    },
+    {
+      "path": "data/final/cap_c_lora16_s1.pt",
+      "bytes": 1552933
+    },
+    {
+      "path": "data/final/cap_c_lora16_s2.pt",
+      "bytes": 1552229
+    },
+    {
+      "path": "data/final/cap_c_top12_s0.pt",
+      "bytes": 1552925
+    },
+    {
+      "path": "data/final/cap_c_top12_s1.pt",
+      "bytes": 1552989
+    },
+    {
+      "path": "data/final/cap_c_top6_s0.pt",
+      "bytes": 1552981
+    },
+    {
+      "path": "data/final/cap_c_top6_s1.pt",
+      "bytes": 1552917
+    },
+    {
+      "path": "data/final/cap_c_top6_s2.pt",
+      "bytes": 1552981
+    },
+    {
+      "path": "data/final/claim_evidence_adjudication_hq_broad_claimful_enriched_v1.jsonl",
+      "bytes": 1846427
+    },
+    {
+      "path": "data/final/claim_evidence_adjudication_hq_broad_claimful_v1.jsonl",
+      "bytes": 1831673
+    },
+    {
+      "path": "data/final/claim_evidence_adjudication_hq_silver_v1.jsonl",
+      "bytes": 842436
+    },
+    {
+      "path": "data/final/claim_evidence_adjudication_hq_silver_v1_200.jsonl",
+      "bytes": 104094
+    },
+    {
+      "path": "data/final/claim_evidence_adjudication_hq_silver_v1_smoke.jsonl",
+      "bytes": 1530
+    },
+    {
+      "path": "data/final/cleancl",
+      "bytes": 779007750
+    },
+    {
+      "path": "data/final/cleancl2",
+      "bytes": 28344112
+    },
+    {
+      "path": "data/final/cleancl2_nohup.log",
+      "bytes": 24002
+    },
+    {
+      "path": "data/final/cleancl_nohup.log",
+      "bytes": 27031
+    },
+    {
+      "path": "data/final/cleancl_post.log",
+      "bytes": 254081
+    },
+    {
+      "path": "data/final/cv_arg_expert_fusion_det_fairbase.log",
+      "bytes": 823
+    },
+    {
+      "path": "data/final/cv_args_distill_disagree_w01_fs1_s0.log",
+      "bytes": 15870
+    },
+    {
+      "path": "data/final/cv_args_distill_w03_fs1_s0.log",
+      "bytes": 15834
+    },
+    {
+      "path": "data/final/cv_args_small.log",
+      "bytes": 24797
+    },
+    {
+      "path": "data/final/cv_args_small_det.log",
+      "bytes": 24611
+    },
+    {
+      "path": "data/final/cv_args_small_e3_c10.json",
+      "bytes": 2088
+    },
+    {
+      "path": "data/final/cv_args_small_fairbase.log",
+      "bytes": 7311
+    },
+    {
+      "path": "data/final/cv_args_small_fairbase_allbaselines.log",
+      "bytes": 159998
+    },
+    {
+      "path": "data/final/cv_args_small_fairbase_fs1.log",
+      "bytes": 24451
+    },
+    {
+      "path": "data/final/cv_args_tgracl_agree_c10_fs1_s0.log",
+      "bytes": 16040
+    },
+    {
+      "path": "data/final/cv_args_tgracl_agreepos_c10_fs1_s0.log",
+      "bytes": 5219
+    },
+    {
+      "path": "data/final/cv_fs1_srcfirst_drop_src0args_s0.log",
+      "bytes": 13525
+    },
+    {
+      "path": "data/final/cv_fs1_srcfirst_drop_srcdom_s0.log",
+      "bytes": 13395
+    },
+    {
+      "path": "data/final/cv_fs2_noargs_args_s0.log",
+      "bytes": 26565
+    },
+    {
+      "path": "data/final/cv_fs2_srcfirst_a120_s0.log",
+      "bytes": 13445
+    },
+    {
+      "path": "data/final/cv_fusion_main_vs_allbaselines_5k.log",
+      "bytes": 3134
+    },
+    {
+      "path": "data/final/cv_fusion_search_det_fairbase_5k.log",
+      "bytes": 3607
+    },
+    {
+      "path": "data/final/cv_main_hybrid_fs1_5k.log",
+      "bytes": 702
+    },
+    {
+      "path": "data/final/cv_main_hybrid_search_fs1_2k.log",
+      "bytes": 1997
+    },
+    {
+      "path": "data/final/cv_main_hybrid_select_fs1_2k.log",
+      "bytes": 2535
+    },
+    {
+      "path": "data/final/cv_noargs_small_det.log",
+      "bytes": 24548
+    },
+    {
+      "path": "data/final/cv_noargs_small_e3_c10_fs1_s0.log",
+      "bytes": 13104
+    },
+    {
+      "path": "data/final/cv_reliability_head_fs2_s0.log",
+      "bytes": 3339
+    },
+    {
+      "path": "data/final/cv_small_e3_c10.json",
+      "bytes": 829
+    },
+    {
+      "path": "data/final/cv_small_e3_c10_v3.json",
+      "bytes": 2097
+    },
+    {
+      "path": "data/final/cv_srcfirst_a120_fs0_fs1_s0.log",
+      "bytes": 26713
+    },
+    {
+      "path": "data/final/cv_threshold_diag_fs0.log",
+      "bytes": 2759
+    },
+    {
+      "path": "data/final/cv_threshold_diag_fs1.log",
+      "bytes": 2758
+    },
+    {
+      "path": "data/final/data_quality_audit_20260612.json",
+      "bytes": 7813
+    },
+    {
+      "path": "data/final/dataset_claim.jsonl",
+      "bytes": 7461565
+    },
+    {
+      "path": "data/final/dataset_food_smoke.jsonl",
+      "bytes": 1971273
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1.jsonl",
+      "bytes": 4734155
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_200.jsonl",
+      "bytes": 617660
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_200_report.json",
+      "bytes": 2329
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_balanced.jsonl",
+      "bytes": 4728965
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_balanced_report.json",
+      "bytes": 2388
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_report.json",
+      "bytes": 2388
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_sourceful.jsonl",
+      "bytes": 4001200
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_sourceful_report.json",
+      "bytes": 2372
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_strict.jsonl",
+      "bytes": 2959696
+    },
+    {
+      "path": "data/final/dataset_hq_adjudicated_v1_strict_report.json",
+      "bytes": 1883
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_sourceful_v1.jsonl",
+      "bytes": 6509500
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_sourceful_v1_learnability.json",
+      "bytes": 1601
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_sourceful_v1_report.json",
+      "bytes": 2423
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_strict_v1.jsonl",
+      "bytes": 5059191
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_strict_v1_learnability.json",
+      "bytes": 1600
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_strict_v1_report.json",
+      "bytes": 1948
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_v1.jsonl",
+      "bytes": 9419897
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_v1_learnability.json",
+      "bytes": 1597
+    },
+    {
+      "path": "data/final/dataset_hq_broad_adjudicated_v1_report.json",
+      "bytes": 2490
+    },
+    {
+      "path": "data/final/dataset_hq_broad_claimful_enriched_v1.jsonl",
+      "bytes": 9987653
+    },
+    {
+      "path": "data/final/dataset_hq_broad_claimful_enriched_v1_report.json",
+      "bytes": 269
+    },
+    {
+      "path": "data/final/dataset_hq_broad_claimful_v1.jsonl",
+      "bytes": 8968749
+    },
+    {
+      "path": "data/final/dataset_hq_broad_claimful_v1_report.json",
+      "bytes": 948
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_sourceful_v1.jsonl",
+      "bytes": 10256702
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_sourceful_v1_report.json",
+      "bytes": 2510
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_plus_neglow_percsupp_v1.jsonl",
+      "bytes": 9768834
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_plus_neglow_percsupp_v1_learnability.json",
+      "bytes": 1636
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_plus_neglow_v1.jsonl",
+      "bytes": 9408884
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_plus_neglow_v1_learnability.json",
+      "bytes": 1627
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_plus_perception_v1.jsonl",
+      "bytes": 8113143
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_plus_perception_v1_learnability.json",
+      "bytes": 1630
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_v1.jsonl",
+      "bytes": 7265325
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_v1_learnability.json",
+      "bytes": 1612
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_strict_v1_report.json",
+      "bytes": 2030
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_v1.jsonl",
+      "bytes": 10256702
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_v1_learnability.json",
+      "bytes": 1609
+    },
+    {
+      "path": "data/final/dataset_hq_broad_enriched_adjudicated_v1_report.json",
+      "bytes": 2505
+    },
+    {
+      "path": "data/final/dataset_hq_broad_sourceful_v1.jsonl",
+      "bytes": 6264560
+    },
+    {
+      "path": "data/final/dataset_hq_broad_sourceful_v1_report.json",
+      "bytes": 864
+    },
+    {
+      "path": "data/final/dataset_hq_core_v1.jsonl",
+      "bytes": 2748884
+    },
+    {
+      "path": "data/final/dataset_hq_core_v1_report.json",
+      "bytes": 1429
+    },
+    {
+      "path": "data/final/dataset_hq_silver_v1.jsonl",
+      "bytes": 4683160
+    },
+    {
+      "path": "data/final/dataset_hq_silver_v1_report.json",
+      "bytes": 1467
+    },
+    {
+      "path": "data/final/dataset_hq_v1.jsonl",
+      "bytes": 2748884
+    },
+    {
+      "path": "data/final/dataset_hq_v1_report.json",
+      "bytes": 1363
+    },
+    {
+      "path": "data/final/dataset_verify.jsonl",
+      "bytes": 3739947
+    },
+    {
+      "path": "data/final/dataset_verify_faithful.jsonl",
+      "bytes": 3688553
+    },
+    {
+      "path": "data/final/dataset_verify_faithful_args.jsonl",
+      "bytes": 4753398
+    },
+    {
+      "path": "data/final/dataset_verify_faithful_args_pilot.jsonl",
+      "bytes": 23961
+    },
+    {
+      "path": "data/final/dataset_verify_faithful_args_srcfirst_a120.jsonl",
+      "bytes": 4813350
+    },
+    {
+      "path": "data/final/dataset_verify_faithful_args_srcfirst_a120_drop_src0args.jsonl",
+      "bytes": 4565436
+    },
+    {
+      "path": "data/final/dual_srcfirst_fs0.log",
+      "bytes": 17492
+    },
+    {
+      "path": "data/final/dual_srcfirst_fs1.log",
+      "bytes": 16859
+    },
+    {
+      "path": "data/final/dual_srcfirst_fs2.log",
+      "bytes": 15017
+    },
+    {
+      "path": "data/final/emb_c6",
+      "bytes": 7247
+    },
+    {
+      "path": "data/final/emb_clarc_s0.pt",
+      "bytes": 1552269
+    },
+    {
+      "path": "data/final/emb_clarc_s1.pt",
+      "bytes": 1552845
+    },
+    {
+      "path": "data/final/emb_clarc_s2.pt",
+      "bytes": 1552269
+    },
+    {
+      "path": "data/final/emb_clarc_s3.pt",
+      "bytes": 1553101
+    },
+    {
+      "path": "data/final/emb_clarc_s4.pt",
+      "bytes": 1552269
+    },
+    {
+      "path": "data/final/emb_full.pt",
+      "bytes": 3188973
+    },
+    {
+      "path": "data/final/emb_gneg_s0.pt",
+      "bytes": 1552261
+    },
+    {
+      "path": "data/final/emb_nocl_s0.pt",
+      "bytes": 1552261
+    },
+    {
+      "path": "data/final/ensemble_results.jsonl",
+      "bytes": 1794
+    },
+    {
+      "path": "data/final/inject_rooms.json",
+      "bytes": 4397
+    },
+    {
+      "path": "data/final/label_learnability_20260612.json",
+      "bytes": 4693
+    },
+    {
+      "path": "data/final/label_learnability_adjudicated_profiles_20260612.json",
+      "bytes": 4725
+    },
+    {
+      "path": "data/final/llm_qwen_flash_args_conservative_full_fs1.log",
+      "bytes": 204
+    },
+    {
+      "path": "data/final/llm_qwen_flash_args_conservative_shard0_fs1.log",
+      "bytes": 1775
+    },
+    {
+      "path": "data/final/llm_qwen_flash_args_conservative_shard1_fs1.log",
+      "bytes": 1775
+    },
+    {
+      "path": "data/final/llm_qwen_flash_args_conservative_shard2_fs1.log",
+      "bytes": 1775
+    },
+    {
+      "path": "data/final/llm_qwen_flash_args_conservative_shard3_fs1.log",
+      "bytes": 1775
+    },
+    {
+      "path": "data/final/llm_qwen_flash_args_full_fs1.log",
+      "bytes": 358
+    },
+    {
+      "path": "data/final/pipeline_funnel_audit_20260612.json",
+      "bytes": 6077
+    },
+    {
+      "path": "data/final/pred_bert_s0.pt",
+      "bytes": 16907
+    },
+    {
+      "path": "data/final/pred_bert_s1.pt",
+      "bytes": 17035
+    },
+    {
+      "path": "data/final/pred_bert_s2.pt",
+      "bytes": 17035
+    },
+    {
+      "path": "data/final/pred_bert_s3.pt",
+      "bytes": 17035
+    },
+    {
+      "path": "data/final/pred_bert_s4.pt",
+      "bytes": 17035
+    },
+    {
+      "path": "data/final/pred_bertbce_s0.pt",
+      "bytes": 17117
+    },
+    {
+      "path": "data/final/pred_bertbce_s1.pt",
+      "bytes": 17117
+    },
+    {
+      "path": "data/final/pred_bertbce_s2.pt",
+      "bytes": 17117
+    },
+    {
+      "path": "data/final/pred_bertbce_s3.pt",
+      "bytes": 17117
+    },
+    {
+      "path": "data/final/pred_bertbce_s4.pt",
+      "bytes": 17117
+    },
+    {
+      "path": "data/final/pred_esim_s0.pt",
+      "bytes": 16907
+    },
+    {
+      "path": "data/final/pred_esim_s1.pt",
+      "bytes": 16907
+    },
+    {
+      "path": "data/final/pred_esim_s2.pt",
+      "bytes": 16907
+    },
+    {
+      "path": "data/final/pred_esim_s3.pt",
+      "bytes": 16907
+    },
+    {
+      "path": "data/final/pred_esim_s4.pt",
+      "bytes": 16843
+    },
+    {
+      "path": "data/final/pred_roberta_s0.pt",
+      "bytes": 17053
+    },
+    {
+      "path": "data/final/pred_roberta_s1.pt",
+      "bytes": 17117
+    },
+    {
+      "path": "data/final/pred_roberta_s2.pt",
+      "bytes": 17053
+    },
+    {
+      "path": "data/final/pred_roberta_s3.pt",
+      "bytes": 17053
+    },
+    {
+      "path": "data/final/pred_roberta_s4.pt",
+      "bytes": 17053
+    },
+    {
+      "path": "data/final/pred_robertabce_s0.pt",
+      "bytes": 17135
+    },
+    {
+      "path": "data/final/pred_robertabce_s1.pt",
+      "bytes": 17199
+    },
+    {
+      "path": "data/final/pred_robertabce_s2.pt",
+      "bytes": 17135
+    },
+    {
+      "path": "data/final/pred_robertabce_s3.pt",
+      "bytes": 17135
+    },
+    {
+      "path": "data/final/pred_robertabce_s4.pt",
+      "bytes": 17199
+    },
+    {
+      "path": "data/final/raw_pipeline_integrity_audit_20260612.json",
+      "bytes": 29344
+    },
+    {
+      "path": "data/final/raw_pipeline_integrity_audit_20260612_v2.json",
+      "bytes": 28723
+    },
+    {
+      "path": "data/final/results.json",
+      "bytes": 1701
+    },
+    {
+      "path": "data/final/results_final.json",
+      "bytes": 4678
+    },
+    {
+      "path": "data/final/results_final.md",
+      "bytes": 1801
+    },
+    {
+      "path": "data/final/results_table.md",
+      "bytes": 890
+    },
+    {
+      "path": "data/final/selective_canon.json",
+      "bytes": 1839
+    },
+    {
+      "path": "data/final/stageA_schema_repair_v1_report.json",
+      "bytes": 52519
+    },
+    {
+      "path": "data/final/table1_stats.json",
+      "bytes": 1235
+    },
+    {
+      "path": "data/final/table1_stats.md",
+      "bytes": 907
+    },
+    {
+      "path": "data/final/tune_t_l16_t07_lam05_s0.pt",
+      "bytes": 1552421
+    },
+    {
+      "path": "data/final/tune_t_l16_t07_lam05_s1.pt",
+      "bytes": 1553125
+    },
+    {
+      "path": "data/final/tune_t_l16_t07_lam05_s2.pt",
+      "bytes": 1552421
+    },
+    {
+      "path": "data/final/tune_t_l8_nocl_s0.pt",
+      "bytes": 1552885
+    },
+    {
+      "path": "data/final/tune_t_l8_nocl_s1.pt",
+      "bytes": 1552309
+    },
+    {
+      "path": "data/final/tune_t_l8_nocl_s2.pt",
+      "bytes": 1552309
+    },
+    {
+      "path": "data/final/tune_t_l8_t05_lam05_s0.pt",
+      "bytes": 1553117
+    },
+    {
+      "path": "data/final/tune_t_l8_t05_lam05_s1.pt",
+      "bytes": 1552413
+    },
+    {
+      "path": "data/final/tune_t_l8_t05_lam05_s2.pt",
+      "bytes": 1552413
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam03_s0.pt",
+      "bytes": 1553117
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam03_s1.pt",
+      "bytes": 1552349
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam03_s2.pt",
+      "bytes": 1552413
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam05_s0.pt",
+      "bytes": 1553053
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam05_s1.pt",
+      "bytes": 1552349
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam05_s2.pt",
+      "bytes": 1552413
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam10_s0.pt",
+      "bytes": 1552349
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam10_s1.pt",
+      "bytes": 1552413
+    },
+    {
+      "path": "data/final/tune_t_l8_t10_lam10_s2.pt",
+      "bytes": 1552413
+    },
+    {
+      "path": "data/final/v2",
+      "bytes": 112121822
+    },
+    {
+      "path": "data/final/vemb_clarc_s0.pt",
+      "bytes": 1558805
+    },
+    {
+      "path": "data/final/vemb_clarc_s1.pt",
+      "bytes": 1558229
+    },
+    {
+      "path": "data/final/vemb_clarc_s2.pt",
+      "bytes": 1558741
+    },
+    {
+      "path": "data/final/vpred_bert_s0.pt",
+      "bytes": 17681
+    },
+    {
+      "path": "data/final/vpred_bert_s1.pt",
+      "bytes": 17425
+    },
+    {
+      "path": "data/final/vpred_bert_s2.pt",
+      "bytes": 17425
+    },
+    {
+      "path": "data/final/vpred_bertbce_s0.pt",
+      "bytes": 17635
+    },
+    {
+      "path": "data/final/vpred_bertbce_s1.pt",
+      "bytes": 17571
+    },
+    {
+      "path": "data/final/vpred_bertbce_s2.pt",
+      "bytes": 17699
+    },
+    {
+      "path": "data/final/vpred_esim_s0.pt",
+      "bytes": 17361
+    },
+    {
+      "path": "data/final/vpred_esim_s1.pt",
+      "bytes": 17361
+    },
+    {
+      "path": "data/final/vpred_esim_s2.pt",
+      "bytes": 17425
+    },
+    {
+      "path": "data/final/vpred_robertabce_s0.pt",
+      "bytes": 17717
+    },
+    {
+      "path": "data/final/vpred_robertabce_s1.pt",
+      "bytes": 17589
+    },
+    {
+      "path": "data/final/vpred_robertabce_s2.pt",
+      "bytes": 17589
+    },
+    {
+      "path": "data/processed/_prev_llm",
+      "bytes": 1934957
+    },
+    {
+      "path": "data/processed/_sweep",
+      "bytes": 7627999
+    },
+    {
+      "path": "data/processed/stageB_product_v2_candidate",
+      "bytes": 79028908
+    },
+    {
+      "path": "data/processed/stageB_product_v2_candidate_20260613",
+      "bytes": 211840541
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT300_PLUS_NEG300_NOIMG_20260614.md",
+      "bytes": 2806
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT820_NOIMG_20260614.md",
+      "bytes": 2757
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT820_PLUS_NEGALIGNED377_NOIMG_20260614.md",
+      "bytes": 2937
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT820_PLUS_NEGALIGNED377_VLM120_20260614.md",
+      "bytes": 3072
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT820_PLUS_NEGALIGNED377_VLM120_PLUSWEAK194_20260614.md",
+      "bytes": 3283
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT820_PLUS_NEGALIGNED377_VLM120_PLUSWEAK194_VLM7_20260614.md",
+      "bytes": 3404
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT820_PLUS_NEGALIGNED377_VLM139_20260614.md",
+      "bytes": 3072
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_CLAIMREEXTRACT820_PLUS_NEGALIGNED377_VLM60_20260614.md",
+      "bytes": 3068
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEGATIVE_CONTROL_CLAIMNONNEG50_20260614.md",
+      "bytes": 2288
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEGATIVE_CONTROL_CLAIMNONNEG50_AUDIT_20260614.md",
+      "bytes": 1790
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEGATIVE_CONTROL_CLAIMNONNEG_NEXT120_20260614.md",
+      "bytes": 2325
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEGATIVE_CONTROL_CLAIMNONNEG_REST30_20260614.md",
+      "bytes": 2060
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEGATIVE_CONTROL_N0_300_NOIMG_20260614.md",
+      "bytes": 2458
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEGATIVE_CONTROL_N0_ALIGNED377_NOIMG_20260614.md",
+      "bytes": 2501
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT1000_AFTER500_FEWERCLAIMS300_NOIMG_20260614.md",
+      "bytes": 2671
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT1000_AFTER500_PILOT40_20260614.md",
+      "bytes": 2278
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT200_LOWNOISE60_20260614.md",
+      "bytes": 2302
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT200_LOWNOISE60_AUDIT_20260614.md",
+      "bytes": 1017
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT200_LOWNOISE_NEXT60_20260614.md",
+      "bytes": 2398
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT200_LOWNOISE_NEXT60_AUDIT_20260614.md",
+      "bytes": 1467
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT200_REST45_20260614.md",
+      "bytes": 2275
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT500_FULL_LOWNOISE_NEXT80_20260614.md",
+      "bytes": 2508
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT500_PARTIAL151_LOWNOISE60_20260614.md",
+      "bytes": 2491
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_NEXT500_PARTIAL259_LOWNOISE_NEXT60_20260614.md",
+      "bytes": 2404
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_20260614.md",
+      "bytes": 3016
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_AUDIT_20260614.md",
+      "bytes": 1461
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT120_NEG50_20260614.md",
+      "bytes": 3473
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT120_NEG50_AUDIT_20260614.md",
+      "bytes": 2663
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT120_NEG80_20260614.md",
+      "bytes": 3591
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT120_NEG80_AUDIT_20260614.md",
+      "bytes": 2780
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG200_NEXT500FULL_L200_20260614.md",
+      "bytes": 4371
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG200_NEXT500FULL_L200_AUDIT_20260614.md",
+      "bytes": 1799
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_20260614.md",
+      "bytes": 3720
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_AUDIT_20260614.md",
+      "bytes": 2780
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_NEXT500FULL_L200_20260614.md",
+      "bytes": 4241
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_NEXT500FULL_L200_AUDIT_20260614.md",
+      "bytes": 1797
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_NEXT500P151L60_20260614.md",
+      "bytes": 3927
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_NEXT500P151L60_AUDIT_20260614.md",
+      "bytes": 2912
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_NEXT500P259L120_20260614.md",
+      "bytes": 4087
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT200_NEG80_NEXT500P259L120_AUDIT_20260614.md",
+      "bytes": 1796
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT60_NEG50_20260614.md",
+      "bytes": 3327
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_NEXT60_NEG50_AUDIT_20260614.md",
+      "bytes": 2432
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_PLUS_NEXT60_20260614.md",
+      "bytes": 3206
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_SEED120_PLUS_NEXT60_AUDIT_20260614.md",
+      "bytes": 1781
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_VLM120_PLUS_BIGEXPAND_20260614.md",
+      "bytes": 8876
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_VLM120_PLUS_WEAKBATCH23_20260614.md",
+      "bytes": 3382
+    },
+    {
+      "path": "docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_VLM120_PLUS_WEAKBATCH2_20260614.md",
+      "bytes": 3165
+    },
+    {
+      "path": "embeddings/fair_rerun/._ablations",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/._baseline_predictions",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/._emb_geom",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/._hparams_lora",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/._xdom",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/._xdom_llm",
+      "bytes": 4096
+    },
+    {
+      "path": "results/audit/._paper_data_lineage_rebuild.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/audit/._paper_training_set_build.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/audit/._publication_cleanup.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/audit/._reproducibility_report.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._controller_all.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._controller_canonical_s0.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._jobs",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._logs",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._paper_tables.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._paper_tables.md",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._status",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._suite_environment.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/._suite_failures.json",
+      "bytes": 4096
+    },
+    {
+      "path": "src/common/.___pycache__",
+      "bytes": 4096
+    },
+    {
+      "path": "src/common/__pycache__",
+      "bytes": 29090
+    },
+    {
+      "path": "src/data_quality/.___pycache__",
+      "bytes": 4096
+    },
+    {
+      "path": "src/data_quality/._build_paper_training_set.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/data_quality/._merge_stagec_evidence.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/data_quality/._rebuild_paper_dataset.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/data_quality/__pycache__",
+      "bytes": 212524
+    },
+    {
+      "path": "src/labels/.___pycache__",
+      "bytes": 4096
+    },
+    {
+      "path": "src/labels/__pycache__",
+      "bytes": 17405
+    },
+    {
+      "path": "src/models/.___pycache__",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._alpha_sweep.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._baselines.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._baselines_frozen.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._baselines_ft.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._baselines_neural.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._make_figs.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._make_geom_figs.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._make_inject_fig.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._make_selective_fig.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._metrics_rich.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._model.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._qwen_sft.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._run_llm_baselines.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._xdom_agg.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._xdom_common.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._xdom_fold.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._xdom_inject.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/._xdom_llm.py",
+      "bytes": 4096
+    },
+    {
+      "path": "src/models/__pycache__",
+      "bytes": 632843
+    },
+    {
+      "path": "data/final/repaired_v1/_remote_results",
+      "bytes": 78146
+    },
+    {
+      "path": "data/final/repaired_v1/acmt_product_v2_candidate_20260613_report.json",
+      "bytes": 3879
+    },
+    {
+      "path": "data/final/repaired_v1/acmt_product_v2_candidate_softcap24_report.json",
+      "bytes": 3759
+    },
+    {
+      "path": "data/final/repaired_v1/acmt_product_v2_report.json",
+      "bytes": 3666
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_full_v2_20260613_report.json",
+      "bytes": 677
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_full_v3_valuegate_20260613_report.json",
+      "bytes": 696
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_productv2_direct_strict_100_report.json",
+      "bytes": 421
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_productv2_direct_strict_stratified120_report.json",
+      "bytes": 677
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_productv2_factaware_p0_v10_20260613_report.json",
+      "bytes": 818
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_productv2_factaware_p0_v11_20260613_report.json",
+      "bytes": 818
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_productv2_factaware_p0_v9_20260613_report.json",
+      "bytes": 818
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_productv2_factaware_p1_v11_20260613_report.json",
+      "bytes": 818
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_claim_skeleton_productv2_reextract_p0_v7_20260613_report.json",
+      "bytes": 763
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_full_v2_hp3_20260613_filter_report.json",
+      "bytes": 20722
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_full_v2_raw_20260613_report.json",
+      "bytes": 479
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_full_v3_valuegate_hp3_20260613_filter_report.json",
+      "bytes": 21033
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_full_v3_valuegate_raw_20260613_report.json",
+      "bytes": 499
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p0_v11_20260613_hp2_filter_report.json",
+      "bytes": 31245
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p0_v11_20260613_hp2_refined_report.json",
+      "bytes": 20395
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p0_v11_20260613_hp3_filter_report.json",
+      "bytes": 26905
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p0_v11_20260613_hp_filter_report.json",
+      "bytes": 29253
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p0_v11_20260613_report.json",
+      "bytes": 427
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p1_v11_20260613_hp2_filter_report.json",
+      "bytes": 24452
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p1_v11_20260613_hp3_filter_report.json",
+      "bytes": 19116
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_factaware_p1_v11_20260613_report.json",
+      "bytes": 427
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_reextract_p0_v7_20260613_hp_filter_report.json",
+      "bytes": 25350
+    },
+    {
+      "path": "data/final/repaired_v1/atomic_records_productv2_reextract_p0_v7_20260613_report.json",
+      "bytes": 424
+    },
+    {
+      "path": "data/final/repaired_v1/big_claim_reextract_v1_20260614.jsonl",
+      "bytes": 6269877
+    },
+    {
+      "path": "data/final/repaired_v1/big_repair_meta_v1_20260614.jsonl",
+      "bytes": 51219696
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_productv2_direct_strict_full_v10_report.json",
+      "bytes": 21283
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_productv2_direct_strict_full_v8_report.json",
+      "bytes": 21525
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_productv2_direct_strict_full_v9_report.json",
+      "bytes": 21558
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_candidate_20260613_report.json",
+      "bytes": 19192
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_candidate_full_v2_20260613_report.json",
+      "bytes": 17995
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_candidate_full_v2_partial_20260613_report.json",
+      "bytes": 17995
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_candidate_probe30_20260613_report.json",
+      "bytes": 18065
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_pilot20_b1rerun_report.json",
+      "bytes": 12444
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_pilot20_direct_report.json",
+      "bytes": 17029
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_pilot20_direct_strict_report.json",
+      "bytes": 17968
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_pilot20_promptv2_report.json",
+      "bytes": 17876
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_productv2_direct_strict_100_report.json",
+      "bytes": 17979
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_productv2_direct_strict_stratified120_report.json",
+      "bytes": 18011
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v2_report.json",
+      "bytes": 19110
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v3_productv2_full_report.json",
+      "bytes": 19241
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v3_valuegate_candidate_full_20260613_report.json",
+      "bytes": 18059
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v4_productv2_full_report.json",
+      "bytes": 19565
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v5_productv2_full_report.json",
+      "bytes": 19519
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v6_productv2_full_report.json",
+      "bytes": 19502
+    },
+    {
+      "path": "data/final/repaired_v1/claim_attribute_validation_v7_productv2_full_report.json",
+      "bytes": 19334
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_p0_20260613_report.json",
+      "bytes": 361
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_p0_20260613_validated_report.json",
+      "bytes": 407
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_p0_20260613_validated_v7_report.json",
+      "bytes": 410
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_p0_20260613_validated_v8_report.json",
+      "bytes": 410
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_p0_pilot5_20260613_report.json",
+      "bytes": 361
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_p0_pilot5_v2_20260613_report.json",
+      "bytes": 364
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p0_full_20260613_report.json",
+      "bytes": 383
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p0_full_20260613_validated_v10_report.json",
+      "bytes": 448
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p0_full_20260613_validated_v11_report.json",
+      "bytes": 448
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p0_full_20260613_validated_v9_report.json",
+      "bytes": 447
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p0_pilot60_20260613_report.json",
+      "bytes": 382
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p0_pilot60_20260613_validated_v8_report.json",
+      "bytes": 447
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p0_pilot60_20260613_validated_v9_report.json",
+      "bytes": 447
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p1_full_20260613_report.json",
+      "bytes": 383
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_factaware_p1_full_20260613_validated_v11_report.json",
+      "bytes": 448
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_p0_pilot60_20260613_report.json",
+      "bytes": 373
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_productv2_strict_v2_p0_pilot60_20260613_validated_v8_report.json",
+      "bytes": 429
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_v4_pilot_aux_manifest.jsonl",
+      "bytes": 8686
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_v4_pilot_report.json",
+      "bytes": 494
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_v4_top120_aux_manifest.jsonl",
+      "bytes": 46676
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_v4_top120_productv2_aux_manifest.jsonl",
+      "bytes": 51152
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_v4_top120_productv2_promoted_auxtrain.jsonl",
+      "bytes": 37495
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_v4_top120_productv2_report.json",
+      "bytes": 733
+    },
+    {
+      "path": "data/final/repaired_v1/claim_reextract_v4_top120_report.json",
+      "bytes": 533
+    },
+    {
+      "path": "data/final/repaired_v1/combined_queue_vlm120_plus_weakbatch23_v1_20260614.jsonl",
+      "bytes": 25439877
+    },
+    {
+      "path": "data/final/repaired_v1/combined_queue_vlm120_plus_weakbatch2_v1_20260614.jsonl",
+      "bytes": 21068008
+    },
+    {
+      "path": "data/final/repaired_v1/comment_triggered_srt_reextract_queue_v1.jsonl",
+      "bytes": 8810413
+    },
+    {
+      "path": "data/final/repaired_v1/data_quality_rawtext_llmcurated_v1.json",
+      "bytes": 11352
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v2_hp3_20260613.jsonl",
+      "bytes": 17680827
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v2_hp3_20260613_report.json",
+      "bytes": 1157
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v2_hp3_above_floor_20260613.jsonl",
+      "bytes": 6779774
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v2_hp3_above_floor_or_cov2_neg_20260613.jsonl",
+      "bytes": 12716740
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v2_hp3_cov2_20260613.jsonl",
+      "bytes": 12172062
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v2_hp3_non_objective_name_20260613.jsonl",
+      "bytes": 17223819
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v2_hp3_variants_20260613_report.json",
+      "bytes": 783
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_direct_pos_cov2_hp3_20260613.jsonl",
+      "bytes": 18330502
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_direct_pos_cov2_hp3_20260613_report.json",
+      "bytes": 882
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_hp3_20260613.jsonl",
+      "bytes": 19793722
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_hp3_20260613_report.json",
+      "bytes": 1189
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_no_audience_season_func_hp3_20260613.jsonl",
+      "bytes": 18913574
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_no_audience_season_func_hp3_20260613_report.json",
+      "bytes": 1260
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_non_objective_cov2_hp3_20260613.jsonl",
+      "bytes": 19251665
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_non_objective_cov2_hp3_20260613_report.json",
+      "bytes": 1278
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_positive_only_hp3_20260613.jsonl",
+      "bytes": 18433008
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_positive_only_hp3_20260613_report.json",
+      "bytes": 1055
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_style_material_cov2_hp3_20260613.jsonl",
+      "bytes": 18046820
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_style_material_cov2_hp3_20260613_report.json",
+      "bytes": 803
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_style_material_hp3_20260613.jsonl",
+      "bytes": 18144234
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_candidate_full_v3_valuegate_style_material_hp3_20260613_report.json",
+      "bytes": 884
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp.jsonl",
+      "bytes": 27113142
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_args.jsonl",
+      "bytes": 29615913
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle.jsonl",
+      "bytes": 27192472
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock.jsonl",
+      "bytes": 25225219
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_cov2_no_vlmheavy.jsonl",
+      "bytes": 9281606
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_sourceful_cov1.jsonl",
+      "bytes": 20398139
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_sourceful_cov2.jsonl",
+      "bytes": 9940670
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic.jsonl",
+      "bytes": 28147324
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_cov2_no_vlmheavy.jsonl",
+      "bytes": 6711295
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1.jsonl",
+      "bytes": 26896750
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v10clean.jsonl",
+      "bytes": 5199656
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v10clean_report.json",
+      "bytes": 808
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v6clean.jsonl",
+      "bytes": 20933519
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v7clean.jsonl",
+      "bytes": 20477432
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v8clean.jsonl",
+      "bytes": 5314182
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v8clean_report.json",
+      "bytes": 806
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v9clean.jsonl",
+      "bytes": 5242417
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov1_v9clean_report.json",
+      "bytes": 806
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov2.jsonl",
+      "bytes": 19013703
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov2_v6clean.jsonl",
+      "bytes": 14393964
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov2_v7clean.jsonl",
+      "bytes": 14000213
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov2_v8clean.jsonl",
+      "bytes": 3326920
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic_sourceful_cov2_v8clean_report.json",
+      "bytes": 793
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_sourceful_cov1.jsonl",
+      "bytes": 23187992
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_sourceful_cov2.jsonl",
+      "bytes": 12834039
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_sourceful_cov1.jsonl",
+      "bytes": 21822184
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_sourceful_cov1_c010.jsonl",
+      "bytes": 5680798
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_sourceful_cov1_no_floor.jsonl",
+      "bytes": 7515051
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_sourceful_cov1_no_weakfam.jsonl",
+      "bytes": 19753120
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_full_strictv2_refined_hp_sourceful_cov2.jsonl",
+      "bytes": 9209742
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_pilot120.jsonl",
+      "bytes": 363538
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_pilot120_strictv2.jsonl",
+      "bytes": 363023
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_pilot120_strictv2_refined.jsonl",
+      "bytes": 365445
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_strictv2_refined.jsonl",
+      "bytes": 4978503
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_strictv2_refined_hp.jsonl",
+      "bytes": 4907848
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_strictv2_refined_hp_args.jsonl",
+      "bytes": 5318278
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_strictv2_refined_hp_sourceful.jsonl",
+      "bytes": 3619500
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_strictv2_refined_hp_sourceful_weighted.jsonl",
+      "bytes": 1105970
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_direct_strict_stratified120_strictv2_refined_hp_weighted.jsonl",
+      "bytes": 1809244
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p0_v11_20260613_hp2.jsonl",
+      "bytes": 2557294
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p0_v11_20260613_hp2_refined.jsonl",
+      "bytes": 2658928
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p0_v11_20260613_hp2_refined_report.json",
+      "bytes": 1092
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p0_v11_20260613_hp2_report.json",
+      "bytes": 1068
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p0_v11_20260613_hp3.jsonl",
+      "bytes": 2548871
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p0_v11_20260613_hp3_report.json",
+      "bytes": 1068
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p1_v11_20260613_hp2.jsonl",
+      "bytes": 1320685
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p1_v11_20260613_hp2_report.json",
+      "bytes": 1065
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p1_v11_20260613_hp3.jsonl",
+      "bytes": 1317192
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_factaware_p1_v11_20260613_hp3_report.json",
+      "bytes": 1065
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_hpmerge_v2_20260613.jsonl",
+      "bytes": 24090286
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_hpmerge_v2_20260613_report.json",
+      "bytes": 1790
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_newpair_hpmerge_v2_20260613.jsonl",
+      "bytes": 21921923
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_newpair_hpmerge_v2_20260613_report.json",
+      "bytes": 1851
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_pos015_hpmerge_v2_20260613.jsonl",
+      "bytes": 24010177
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_pos015_hpmerge_v2_20260613_report.json",
+      "bytes": 1826
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_supportneg_hpmerge_v2_20260613.jsonl",
+      "bytes": 22712387
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_supportneg_hpmerge_v2_20260613_report.json",
+      "bytes": 1882
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_v3_directpos_hpmerge_v2_20260613.jsonl",
+      "bytes": 24549806
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_v3_directpos_hpmerge_v2_20260613_report.json",
+      "bytes": 1907
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_v3_posonly_hpmerge_v2_20260613.jsonl",
+      "bytes": 24583324
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_v3_posonly_hpmerge_v2_20260613_report.json",
+      "bytes": 1893
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_v3_valuegate_hpmerge_v2_20260613.jsonl",
+      "bytes": 25021026
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_candidate_v3_valuegate_hpmerge_v2_20260613_report.json",
+      "bytes": 1875
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos00c12_neg44_20260613.jsonl",
+      "bytes": 22844954
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos00c12_neg44_20260613_report.json",
+      "bytes": 1735
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos45_neg40_20260613.jsonl",
+      "bytes": 21865149
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos45_neg40_20260613_report.json",
+      "bytes": 1725
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos45_neg44_20260613.jsonl",
+      "bytes": 22264199
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos45_neg44_20260613_report.json",
+      "bytes": 1728
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos50_neg44_20260613.jsonl",
+      "bytes": 22083764
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_pos50_neg44_20260613_report.json",
+      "bytes": 1727
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_v1_20260613.jsonl",
+      "bytes": 22021993
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_hardclean_plus_teacher_consistent_hpmerge_v1_20260613_report.json",
+      "bytes": 1699
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_reextract_p0_v7_20260613_hp.jsonl",
+      "bytes": 1613552
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0_v11_hp2_20260613.jsonl",
+      "bytes": 23475576
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0_v11_hp2_20260613_report.json",
+      "bytes": 12524
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0_v11_hp2_refined_20260613.jsonl",
+      "bytes": 23601546
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0_v11_hp2_refined_20260613_report.json",
+      "bytes": 12556
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0_v11_hp3_20260613.jsonl",
+      "bytes": 23467153
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0_v11_hp3_20260613_report.json",
+      "bytes": 12504
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0p1_v11_hp3_20260613.jsonl",
+      "bytes": 24749443
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_plus_factaware_p0p1_v11_hp3_20260613_report.json",
+      "bytes": 13552
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_v1_20260613.jsonl",
+      "bytes": 20878928
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_hardclean_v1_20260613_report.json",
+      "bytes": 12351
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_plus_factaware_p0_v11_hp2_20260613.jsonl",
+      "bytes": 23490813
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_plus_factaware_p0_v11_hp2_refined_20260613.jsonl",
+      "bytes": 23592447
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_v6clean_plus_factaware_p0p1_v11_hp2_20260613.jsonl",
+      "bytes": 24811498
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_vlmatomic_sourceful_cov1_v6clean_report.json",
+      "bytes": 812
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_vlmatomic_sourceful_cov1_v7clean_report.json",
+      "bytes": 812
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_vlmatomic_sourceful_cov2_v6clean_report.json",
+      "bytes": 797
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_atomic_productv2_vlmatomic_sourceful_cov2_v7clean_report.json",
+      "bytes": 796
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_all_v1.jsonl",
+      "bytes": 29449243
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_claimful_sourceful_v1.jsonl",
+      "bytes": 7018549
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_claimful_v1.jsonl",
+      "bytes": 10270799
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_claimful_v1.jsonl",
+      "bytes": 7948259
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repair_emptycheck_20260613.jsonl",
+      "bytes": 6781925
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repair_fixture_auditmode_20260613.jsonl",
+      "bytes": 6787251
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repair_fixture_conservative_20260613.jsonl",
+      "bytes": 6778197
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_conservative_full400_v3_20260613.jsonl",
+      "bytes": 5945972
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_conservative_v2_20260613.jsonl",
+      "bytes": 6605710
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_full400_v3_20260613.jsonl",
+      "bytes": 6619156
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_full400_v3_raclu_residual_candidate_v1_20260613.jsonl",
+      "bytes": 5830389
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_full400_v3_raclu_residual_candidate_v1_20260613.report.json",
+      "bytes": 11242
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_full400_v3_raclu_residual_conservative_v1_20260613.jsonl",
+      "bytes": 5830510
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_full400_v3_raclu_residual_conservative_v1_20260613.report.json",
+      "bytes": 11355
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_full400_v3_raclu_residual_stateful_nodrop_v1_20260613.jsonl",
+      "bytes": 7538667
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_full400_v3_raclu_residual_stateful_nodrop_v1_20260613.report.json",
+      "bytes": 4402
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_mechanism_repaired_softdropbad_v2_20260613.jsonl",
+      "bytes": 6748303
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_p0adjudicated_v1.jsonl",
+      "bytes": 7226757
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_p0p1adjudicated_v1.jsonl",
+      "bytes": 7242500
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_p0p1p2adjudicated_v1.jsonl",
+      "bytes": 7246848
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_p0p1p2verified_v1.jsonl",
+      "bytes": 7244253
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_p0p1verified_v1.jsonl",
+      "bytes": 7236687
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_p0verified_v1.jsonl",
+      "bytes": 7256499
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_source_recovered_v3.jsonl",
+      "bytes": 7080910
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_source_recovered_v3_dropunresolved.jsonl",
+      "bytes": 6781925
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_llmcurated_v1.jsonl",
+      "bytes": 7246590
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_rawtext_v1.jsonl",
+      "bytes": 7271298
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_hq_product_v1.jsonl",
+      "bytes": 7176248
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_product_train_v2.jsonl",
+      "bytes": 10243732
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_complete_after_claim_review_v1_20260613.jsonl",
+      "bytes": 8174950
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_complete_broad_reviewable_v1_20260613.jsonl",
+      "bytes": 4514923
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_complete_claim_evidence_v1_20260613.jsonl",
+      "bytes": 4538422
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_complete_strict_v1_20260613.jsonl",
+      "bytes": 1854875
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_faithful_natural_v1_20260613.jsonl",
+      "bytes": 45620031
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_faithful_product_scope_v1_20260613.jsonl",
+      "bytes": 38347409
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_triplet_aligned_label_supported_v2_20260613.jsonl",
+      "bytes": 2182929
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_triplet_aligned_plus_p0repair_v2_20260613.jsonl",
+      "bytes": 3898233
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_attrpol_proposal_triplet_aligned_v2_20260613.jsonl",
+      "bytes": 3769313
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_claim_reextract_v4_pilot_merged.jsonl",
+      "bytes": 6785512
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_claim_reextract_v4_top120_merged.jsonl",
+      "bytes": 6825813
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_claim_reextract_v4_top120_productv2_merged.jsonl",
+      "bytes": 6819420
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_all_20260615.jsonl",
+      "bytes": 40336894
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+      "bytes": 19199663
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract23_noimg_main_v1_20260614.jsonl",
+      "bytes": 8319
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract23_noimg_stateful_v1_20260614.jsonl",
+      "bytes": 70492
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_main_v1_20260614.jsonl",
+      "bytes": 53516
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_main_v2_20260614.jsonl",
+      "bytes": 42666
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_main_v3_20260614.jsonl",
+      "bytes": 39750
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_main_v4_20260614.jsonl",
+      "bytes": 39750
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_main_v5_20260614.jsonl",
+      "bytes": 36624
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_stateful_v1_20260614.jsonl",
+      "bytes": 163309
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_stateful_v2_20260614.jsonl",
+      "bytes": 163329
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_stateful_v3_20260614.jsonl",
+      "bytes": 163346
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_stateful_v4_20260614.jsonl",
+      "bytes": 163346
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_stateful_v5_20260614.jsonl",
+      "bytes": 163356
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_main_v1_20260614.jsonl",
+      "bytes": 59429
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_main_v2_20260614.jsonl",
+      "bytes": 43716
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_main_v3_20260614.jsonl",
+      "bytes": 39892
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_main_v4_20260614.jsonl",
+      "bytes": 39892
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_stateful_v1_20260614.jsonl",
+      "bytes": 189206
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_stateful_v2_20260614.jsonl",
+      "bytes": 189235
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_stateful_v3_20260614.jsonl",
+      "bytes": 189248
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_stateful_v4_20260614.jsonl",
+      "bytes": 189248
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_main_v1_20260614.jsonl",
+      "bytes": 49340
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_main_v2_20260614.jsonl",
+      "bytes": 15945
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_stateful_v1_20260614.jsonl",
+      "bytes": 98023
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_stateful_v2_20260614.jsonl",
+      "bytes": 98093
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak17_noimg_main_v1_20260614.jsonl",
+      "bytes": 43502
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_full_p0_strongweak17_noimg_stateful_v1_20260614.jsonl",
+      "bytes": 90825
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next200_lownoise60_main_v1_20260614.jsonl",
+      "bytes": 50352
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next200_lownoise60_stateful_v1_20260614.jsonl",
+      "bytes": 237750
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next200_lownoise_next60_main_v1_20260614.jsonl",
+      "bytes": 98454
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next200_lownoise_next60_stateful_v1_20260614.jsonl",
+      "bytes": 275392
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next200_rest45_main_v1_20260614.jsonl",
+      "bytes": 63636
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next200_rest45_stateful_v1_20260614.jsonl",
+      "bytes": 173690
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next500_partial151_lownoise60_main_v1_20260614.jsonl",
+      "bytes": 42996
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_claimreextract_next500_partial151_lownoise60_stateful_v1_20260614.jsonl",
+      "bytes": 229760
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_evidence_repair8_main_v1_20260614.jsonl",
+      "bytes": 14751
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_evidence_repair8_stateful_v1_20260614.jsonl",
+      "bytes": 36647
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_main_v1_20260614.jsonl",
+      "bytes": 19152
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_main_v2_20260614.jsonl",
+      "bytes": 8765
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_main_v3_20260614.jsonl",
+      "bytes": 8765
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_main_v4_20260614.jsonl",
+      "bytes": 8765
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_stateful_v1_20260614.jsonl",
+      "bytes": 51935
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_stateful_v2_20260614.jsonl",
+      "bytes": 52222
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_stateful_v3_20260614.jsonl",
+      "bytes": 52222
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise40_silver12_vlm_stateful_v4_20260614.jsonl",
+      "bytes": 52217
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise_next40_silver11_vlm_main_v1_20260614.jsonl",
+      "bytes": 22157
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise_next40_silver11_vlm_main_v2_20260614.jsonl",
+      "bytes": 18570
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise_next40_silver11_vlm_main_v3_20260614.jsonl",
+      "bytes": 18570
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise_next40_silver11_vlm_stateful_v1_20260614.jsonl",
+      "bytes": 54901
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise_next40_silver11_vlm_stateful_v2_20260614.jsonl",
+      "bytes": 54917
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_lownoise_next40_silver11_vlm_stateful_v3_20260614.jsonl",
+      "bytes": 54917
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_negative_control_claimnonneg50_main_v1_20260614.jsonl",
+      "bytes": 61069
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_negative_control_claimnonneg50_stateful_v1_20260614.jsonl",
+      "bytes": 162830
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_negative_control_claimnonneg_rest30_main_v1_20260614.jsonl",
+      "bytes": 33564
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_negative_control_claimnonneg_rest30_stateful_v1_20260614.jsonl",
+      "bytes": 79906
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_all_claimfound_plus_vlm_main_v1_20260614.jsonl",
+      "bytes": 115290
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_all_claimfound_plus_vlm_stateful_v1_20260614.jsonl",
+      "bytes": 122934
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_all_claimfound_plus_vlm_v1_20260614.report.json",
+      "bytes": 1976
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_lownoise80_plus_vlm_main_v1_20260614.jsonl",
+      "bytes": 109584
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_lownoise80_plus_vlm_main_v2_20260614.jsonl",
+      "bytes": 102199
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_lownoise80_plus_vlm_stateful_v1_20260614.jsonl",
+      "bytes": 109584
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_lownoise80_plus_vlm_stateful_v2_20260614.jsonl",
+      "bytes": 109845
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_lownoise80_plus_vlm_v1_20260614.report.json",
+      "bytes": 1502
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_seed120_lownoise80_plus_vlm_v2_20260614.report.json",
+      "bytes": 1845
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_weak_batch2_main_v1_20260614.jsonl",
+      "bytes": 81717
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_weak_batch2_stateful_v1_20260614.jsonl",
+      "bytes": 530675
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_weak_batch3_main_v1_20260614.jsonl",
+      "bytes": 151963
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_full_pair_weak_batch3_stateful_v1_20260614.jsonl",
+      "bytes": 659241
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_objective_contradicted_product_v1.jsonl",
+      "bytes": 4732776
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_objective_contradicted_v1.jsonl",
+      "bytes": 5013087
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_planbaseline_duallabel_20260614.report.json",
+      "bytes": 642
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_planbaseline_duallabel_all_20260614.jsonl",
+      "bytes": 16711149
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_planbaseline_duallabel_supervised_20260614.jsonl",
+      "bytes": 8062578
+    },
+    {
+      "path": "data/final/repaired_v1/dataset_quality_repaired_v1.json",
+      "bytes": 14781
+    },
+    {
+      "path": "data/final/repaired_v1/expansion_candidate_pools_v4",
+      "bytes": 18992966
+    },
+    {
+      "path": "data/final/repaired_v1/fact_records_full_v2_candidate_20260613_report.json",
+      "bytes": 244
+    },
+    {
+      "path": "data/final/repaired_v1/fact_records_full_v3_valuegate_20260613_report.json",
+      "bytes": 704
+    },
+    {
+      "path": "data/final/repaired_v1/filtered_views_p0p1_v1",
+      "bytes": 22099855
+    },
+    {
+      "path": "data/final/repaired_v1/filtered_views_p0p1_v1_report.json",
+      "bytes": 4223
+    },
+    {
+      "path": "data/final/repaired_v1/filtered_views_v1",
+      "bytes": 21918519
+    },
+    {
+      "path": "data/final/repaired_v1/filtered_views_v1_report.json",
+      "bytes": 3955
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_BIGEXPAND3000_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 37027873
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_BIGEXPAND3000_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4997
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_BIGEXPAND3000_v1_20260614.jsonl",
+      "bytes": 6659118
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_BIGEXPAND3000_v1_20260614.jsonl.report.json",
+      "bytes": 236
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_BIGREMAIN_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 4420933
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_BIGREMAIN_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4670
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_FULLREMAIN_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 58805658
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_FULLREMAIN_joint_review_queue_v1_20260614.report.json",
+      "bytes": 5028
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_FULLREMAIN_v1_20260614.jsonl",
+      "bytes": 9744459
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_lownoise40_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 852866
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_lownoise40_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4585
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_lownoise_next40_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 899940
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_lownoise_next40_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4865
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_rest19_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 400873
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_rest19_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4547
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_v1_20260614.jsonl",
+      "bytes": 384086
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak120_v1_20260614.jsonl.report.json",
+      "bytes": 182
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak20_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 387290
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak20_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4163
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak20_v1_20260614.jsonl",
+      "bytes": 62813
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak20_v1_20260614.jsonl.report.json",
+      "bytes": 179
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_fewerclaims_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 13967755
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_fewerclaims_joint_review_queue_v1_20260614.report.json",
+      "bytes": 5142
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_pilot40_direct_v1_20260614.jsonl",
+      "bytes": 0
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_pilot40_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 672412
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_pilot40_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4917
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_pilot40_v1_20260614.jsonl",
+      "bytes": 125335
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_pilot40_v1_20260614.jsonl.report.json",
+      "bytes": 261
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_pilot40_validated_v1_20260614.jsonl",
+      "bytes": 51131
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_pilot40_validated_v1_20260614.report.json",
+      "bytes": 393
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_v1_20260614.jsonl",
+      "bytes": 2469929
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next1000_after500_v1_20260614.jsonl.report.json",
+      "bytes": 258
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_lownoise60_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 1240500
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_lownoise60_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4949
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_lownoise_next60_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 1325917
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_lownoise_next60_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4847
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_rest45_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 925393
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_rest45_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4883
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_v1_20260614.jsonl",
+      "bytes": 489724
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next200_v1_20260614.jsonl.report.json",
+      "bytes": 188
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_full_lownoise_next80_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 1489582
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_full_lownoise_next80_joint_review_queue_v1_20260614.report.json",
+      "bytes": 5037
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_partial151_lownoise60_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 1262608
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_partial151_lownoise60_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4960
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_partial259_lownoise_next60_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 1207845
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_partial259_lownoise_next60_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4922
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_v1_20260614.jsonl",
+      "bytes": 1501095
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_strongweak_next500_v1_20260614.jsonl.report.json",
+      "bytes": 248
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_weak_next1000_after1500_pilot300_fewerclaims_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 3756736
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_weak_next1000_after1500_pilot300_fewerclaims_joint_review_queue_v1_20260614.report.json",
+      "bytes": 5007
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_weak_next1000_after1500_pilot300_v1_20260614.jsonl",
+      "bytes": 487768
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_full_p0_weak_next1000_after1500_pilot300_v1_20260614.jsonl.report.json",
+      "bytes": 261
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 440068
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_joint_review_queue_v1_20260614.report.json",
+      "bytes": 4717
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot44_direct_v1_20260614.jsonl",
+      "bytes": 2065
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot44_flat_claims_v1_20260614.jsonl",
+      "bytes": 119409
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot44_v1_20260614.jsonl",
+      "bytes": 93709
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot44_v1_20260614.jsonl.report.json",
+      "bytes": 167
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot44_validated_v1_20260614.jsonl",
+      "bytes": 62987
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot44_validation_v1_20260614.report.json",
+      "bytes": 394
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot6_v1_20260614.jsonl",
+      "bytes": 14049
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_pilot6_v1_20260614.jsonl.report.json",
+      "bytes": 163
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch2_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 3458915
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch2_joint_review_queue_v1_20260614.report.json",
+      "bytes": 5050
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch2_off300_lim300_v1_20260614.jsonl",
+      "bytes": 457509
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch2_off300_lim300_v1_20260614.jsonl.report.json",
+      "bytes": 259
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch3_joint_review_queue_v1_20260614.jsonl",
+      "bytes": 4371869
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch3_joint_review_queue_v1_20260614.report.json",
+      "bytes": 5015
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch3_off600_lim400_v1_20260614.jsonl",
+      "bytes": 683783
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_reextract_weak_after1500_batch3_off600_lim400_v1_20260614.jsonl.report.json",
+      "bytes": 259
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_BIGEXPAND3000_v1_20260614.jsonl",
+      "bytes": 48358026
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_BIGEXPAND3000_v1_20260614.report.json",
+      "bytes": 5685
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_FULLREMAIN_v1_20260614.jsonl",
+      "bytes": 31621120
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_FULLREMAIN_v1_20260614.report.json",
+      "bytes": 5632
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak120_v1_20260614.jsonl",
+      "bytes": 2734314
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak120_v1_20260614.report.json",
+      "bytes": 5534
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next1000_after1500_v1_20260614.jsonl",
+      "bytes": 17137235
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next1000_after1500_v1_20260614.report.json",
+      "bytes": 5651
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next1000_after500_v1_20260614.jsonl",
+      "bytes": 17183313
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next1000_after500_v1_20260614.report.json",
+      "bytes": 5815
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next200_v1_20260614.jsonl",
+      "bytes": 4270144
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next200_v1_20260614.report.json",
+      "bytes": 5572
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next500_v1_20260614.jsonl",
+      "bytes": 9894690
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_full_p0_strongweak_next500_v1_20260614.report.json",
+      "bytes": 5569
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_v1_20260614.jsonl",
+      "bytes": 676510
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_v1_20260614.regression.jsonl",
+      "bytes": 676510
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_v1_20260614.regression.report.json",
+      "bytes": 5747
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_repair_queue_v1_20260614.report.json",
+      "bytes": 5480
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_srt_prefilter_v1_20260614.jsonl",
+      "bytes": 90737188
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claim_srt_prefilter_v1_20260614.report.json",
+      "bytes": 274455
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract23_noimg_promotion_v1_20260614.report.json",
+      "bytes": 1097
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract23_noimg_repair_silver_v1_20260614.jsonl",
+      "bytes": 62173
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_promotion_v1_20260614.report.json",
+      "bytes": 1489
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_promotion_v2_20260614.report.json",
+      "bytes": 1526
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_promotion_v3_20260614.report.json",
+      "bytes": 1570
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_promotion_v4_20260614.report.json",
+      "bytes": 1724
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_promotion_v5_20260614.report.json",
+      "bytes": 1737
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_repair_silver_v1_20260614.jsonl",
+      "bytes": 109795
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_repair_silver_v2_20260614.jsonl",
+      "bytes": 120664
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_repair_silver_v3_20260614.jsonl",
+      "bytes": 123597
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_repair_silver_v4_20260614.jsonl",
+      "bytes": 123597
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise40_noimg_repair_silver_v5_20260614.jsonl",
+      "bytes": 126732
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_promotion_v1_20260614.report.json",
+      "bytes": 1643
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_promotion_v2_20260614.report.json",
+      "bytes": 1767
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_promotion_v3_20260614.report.json",
+      "bytes": 1807
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_promotion_v4_20260614.report.json",
+      "bytes": 1807
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_repair_silver_v1_20260614.jsonl",
+      "bytes": 129777
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_repair_silver_v2_20260614.jsonl",
+      "bytes": 145520
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_repair_silver_v3_20260614.jsonl",
+      "bytes": 149356
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_repair_silver_v4_20260614.jsonl",
+      "bytes": 149356
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_promotion_v1_20260614.report.json",
+      "bytes": 1416
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_promotion_v2_20260614.report.json",
+      "bytes": 1461
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_repair_silver_v1_20260614.jsonl",
+      "bytes": 48682
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak120_rest19_noimg_repair_silver_v2_20260614.jsonl",
+      "bytes": 82149
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak17_noimg_promotion_v1_20260614.report.json",
+      "bytes": 1255
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_full_p0_strongweak17_noimg_repair_silver_v1_20260614.jsonl",
+      "bytes": 47323
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next200_lownoise60_promotion_v1_20260614.report.json",
+      "bytes": 1545
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next200_lownoise60_repair_silver_v1_20260614.jsonl",
+      "bytes": 187398
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next200_lownoise_next60_promotion_v1_20260614.report.json",
+      "bytes": 1716
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next200_lownoise_next60_repair_silver_v1_20260614.jsonl",
+      "bytes": 176938
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next200_rest45_promotion_v1_20260614.report.json",
+      "bytes": 1593
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next200_rest45_repair_silver_v1_20260614.jsonl",
+      "bytes": 110053
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next500_partial151_lownoise60_promotion_v1_20260614.report.json",
+      "bytes": 1797
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_claimreextract_next500_partial151_lownoise60_repair_silver_v1_20260614.jsonl",
+      "bytes": 186765
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair8_promotion_v1_20260614.report.json",
+      "bytes": 1045
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair8_repair_silver_v1_20260614.jsonl",
+      "bytes": 21895
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_FULLREMAIN_v1_20260614.jsonl",
+      "bytes": 991315
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_FULLREMAIN_v1_20260614.report.json",
+      "bytes": 5533
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_NEWEXPAND_v1_20260614.jsonl",
+      "bytes": 1157021
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_NEWEXPAND_v1_20260614.report.json",
+      "bytes": 5469
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_claimreextract820_plus_negaligned377_all_v1_20260614.jsonl",
+      "bytes": 2254133
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_claimreextract820_plus_negaligned377_all_v1_20260614.report.json",
+      "bytes": 5783
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_claimreextract820_plus_negaligned377_remaining19_v1_20260614.jsonl",
+      "bytes": 305016
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_claimreextract820_plus_negaligned377_remaining19_v1_20260614.report.json",
+      "bytes": 1040
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_claimreextract820_plus_negaligned377_v1_20260614.jsonl",
+      "bytes": 1949117
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_claimreextract820_plus_negaligned377_v1_20260614.report.json",
+      "bytes": 5773
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_lownoise40_silver12_v1_20260614.jsonl",
+      "bytes": 251429
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_lownoise40_silver12_v1_20260614.report.json",
+      "bytes": 3531
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_lownoise_next40_silver11_v1_20260614.jsonl",
+      "bytes": 221450
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_lownoise_next40_silver11_v1_20260614.report.json",
+      "bytes": 3411
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_v1_20260614.jsonl",
+      "bytes": 140814
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_v1_20260614.report.json",
+      "bytes": 2684
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_weak194_v1_20260614.jsonl",
+      "bytes": 126786
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_weak194_v1_20260614.report.json",
+      "bytes": 2676
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_weak_batch2_v1_20260614.jsonl",
+      "bytes": 245472
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_weak_batch2_v1_20260614.report.json",
+      "bytes": 4218
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_weak_batch3_v1_20260614.jsonl",
+      "bytes": 283089
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_evidence_repair_queue_weak_batch3_v1_20260614.report.json",
+      "bytes": 4992
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_joint_review_queue_claimreextract300_plus_neg300_reviewed_v1_20260614.jsonl",
+      "bytes": 8193766
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_joint_review_queue_claimreextract300_plus_neg300_reviewed_v1_20260614.report.json",
+      "bytes": 761
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_joint_review_queue_claimreextract820_plus_negaligned377_plusweak194_reviewed_v1_20260614.jsonl",
+      "bytes": 21365829
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_joint_review_queue_claimreextract820_plus_negaligned377_plusweak194_reviewed_v1_20260614.report.json",
+      "bytes": 698
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_joint_review_queue_claimreextract820_plus_negaligned377_reviewed_v1_20260614.jsonl",
+      "bytes": 17609093
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_joint_review_queue_claimreextract820_plus_negaligned377_reviewed_v1_20260614.report.json",
+      "bytes": 811
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_llm_pilot_queue_v1_20260614.jsonl",
+      "bytes": 1122559
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_llm_pilot_queue_v1_20260614.report.json",
+      "bytes": 6304
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_promotion_v1_20260614.report.json",
+      "bytes": 1157
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_promotion_v2_20260614.report.json",
+      "bytes": 1554
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_promotion_v3_20260614.report.json",
+      "bytes": 1630
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_promotion_v4_20260614.report.json",
+      "bytes": 1625
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_repair_silver_v1_20260614.jsonl",
+      "bytes": 32783
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_repair_silver_v2_20260614.jsonl",
+      "bytes": 43457
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_repair_silver_v3_20260614.jsonl",
+      "bytes": 43457
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise40_silver12_vlm_repair_silver_v4_20260614.jsonl",
+      "bytes": 43452
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise_next40_silver11_vlm_promotion_v1_20260614.report.json",
+      "bytes": 1315
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise_next40_silver11_vlm_promotion_v2_20260614.report.json",
+      "bytes": 1360
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise_next40_silver11_vlm_promotion_v3_20260614.report.json",
+      "bytes": 1360
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise_next40_silver11_vlm_repair_silver_v1_20260614.jsonl",
+      "bytes": 32744
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise_next40_silver11_vlm_repair_silver_v2_20260614.jsonl",
+      "bytes": 36347
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_lownoise_next40_silver11_vlm_repair_silver_v3_20260614.jsonl",
+      "bytes": 36347
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_evidence_repair8_vlm_v1_20260614.csv",
+      "bytes": 39378
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_evidence_repair8_vlm_v1_20260614.report.json",
+      "bytes": 972
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_pilot20_noimg_v2_20260614.csv",
+      "bytes": 237094
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_pilot20_noimg_v2_20260614.report.json",
+      "bytes": 1172
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_pilot72_noimg_v1_20260614.csv",
+      "bytes": 298635
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_pilot72_noimg_v1_20260614.report.json",
+      "bytes": 1172
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_pilot72_noimg_v3_20260614.csv",
+      "bytes": 298715
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_pilot72_noimg_v3_20260614.report.json",
+      "bytes": 1172
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_v1_20260614.csv",
+      "bytes": 215825
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_manual_audit_packet_v1_20260614.report.json",
+      "bytes": 1115
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_claimnonneg50_promotion_v1_20260614.report.json",
+      "bytes": 1582
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_claimnonneg50_repair_silver_v1_20260614.jsonl",
+      "bytes": 101761
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_claimnonneg_rest30_promotion_v1_20260614.report.json",
+      "bytes": 1444
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_claimnonneg_rest30_repair_silver_v1_20260614.jsonl",
+      "bytes": 46342
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_claimnonneg80_v1_20260614.jsonl",
+      "bytes": 917588
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_claimnonneg80_v1_20260614.report.json",
+      "bytes": 7034
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_claimnonneg_next120_v1_20260614.jsonl",
+      "bytes": 1220987
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_claimnonneg_next120_v1_20260614.report.json",
+      "bytes": 7160
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_claimnonneg_rest30_v1_20260614.jsonl",
+      "bytes": 321786
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_claimnonneg_rest30_v1_20260614.report.json",
+      "bytes": 6917
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_n0_500_v1_20260614.jsonl",
+      "bytes": 4898159
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_negative_control_queue_n0_500_v1_20260614.report.json",
+      "bytes": 7186
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_recon_weak_batch2_audit_flags_v1_20260614.jsonl",
+      "bytes": 27727
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_recon_weak_batch2_audit_v1_20260614.report.json",
+      "bytes": 2141
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_recon_weak_batch3_audit_flags_v1_20260614.jsonl",
+      "bytes": 41471
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_recon_weak_batch3_audit_v1_20260614.report.json",
+      "bytes": 2165
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_audit_flags_v1_20260614.jsonl",
+      "bytes": 22701
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_audit_v1_20260614.report.json",
+      "bytes": 1045
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract23_noimg_audit_flags_v1_20260614.jsonl",
+      "bytes": 856
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract23_noimg_audit_flags_v2_20260614.jsonl",
+      "bytes": 1262
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract23_noimg_audit_v1_20260614.report.json",
+      "bytes": 1345
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract23_noimg_audit_v2_20260614.report.json",
+      "bytes": 1403
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract820_plus_negaligned377_noimg_flash_v1_audit_20260614.json",
+      "bytes": 2524
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract820_plus_negaligned377_noimg_flash_v1_flags_20260614.jsonl",
+      "bytes": 201105
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_flags_v1_20260614.jsonl",
+      "bytes": 3968
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_flags_v2_20260614.jsonl",
+      "bytes": 5741
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_flags_v3_20260614.jsonl",
+      "bytes": 6140
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_flags_v4_20260614.jsonl",
+      "bytes": 7275
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_flags_v5_20260614.jsonl",
+      "bytes": 8726
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_v1_20260614.report.json",
+      "bytes": 1617
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_v2_20260614.report.json",
+      "bytes": 1666
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_v3_20260614.report.json",
+      "bytes": 1719
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_v4_20260614.report.json",
+      "bytes": 1885
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise40_noimg_audit_v5_20260614.report.json",
+      "bytes": 2027
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_flags_v1_20260614.jsonl",
+      "bytes": 7112
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_flags_v2_20260614.jsonl",
+      "bytes": 8208
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_flags_v3_20260614.jsonl",
+      "bytes": 8732
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_flags_v4_20260614.jsonl",
+      "bytes": 8921
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_v1_20260614.report.json",
+      "bytes": 1800
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_v2_20260614.report.json",
+      "bytes": 2026
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_v3_20260614.report.json",
+      "bytes": 2115
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_lownoise_next40_noimg_audit_v4_20260614.report.json",
+      "bytes": 2222
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_rest19_noimg_audit_flags_v1_20260614.jsonl",
+      "bytes": 2229
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_rest19_noimg_audit_flags_v2_20260614.jsonl",
+      "bytes": 5543
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_rest19_noimg_audit_v1_20260614.report.json",
+      "bytes": 1419
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak120_rest19_noimg_audit_v2_20260614.report.json",
+      "bytes": 1608
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak17_noimg_audit_flags_v1_20260614.jsonl",
+      "bytes": 1668
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_full_p0_strongweak17_noimg_audit_v1_20260614.report.json",
+      "bytes": 1335
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_next1000_after500_fewerclaims300_noimg_flash_v1_audit_20260614.json",
+      "bytes": 2396
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_next1000_after500_fewerclaims300_noimg_flash_v1_flags_20260614.jsonl",
+      "bytes": 209044
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_next1000_after500_fewerclaims820_noimg_flash_v1_audit_20260614.json",
+      "bytes": 2563
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_next1000_after500_fewerclaims820_noimg_flash_v1_flags_20260614.jsonl",
+      "bytes": 135790
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_next1000_after500_pilot40_noimg_flash_audit_flags_v1_20260614.jsonl",
+      "bytes": 6282
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_next1000_after500_pilot40_noimg_flash_audit_v1_20260614.report.json",
+      "bytes": 1730
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_weak_next1000_after1500_pilot300_fewerclaims194_noimg_flash_v1_audit_20260614.json",
+      "bytes": 2318
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_claimreextract_weak_next1000_after1500_pilot300_fewerclaims194_noimg_flash_v1_flags_20260614.jsonl",
+      "bytes": 27888
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair8_vlm_audit_flags_v1_20260614.jsonl",
+      "bytes": 1737
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair8_vlm_audit_v1_20260614.report.json",
+      "bytes": 1203
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_claimreextract820_plus_negaligned377_vlm120_v1_audit_20260614.json",
+      "bytes": 2034
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_claimreextract820_plus_negaligned377_vlm120_v1_flags_20260614.jsonl",
+      "bytes": 25768
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_claimreextract820_plus_negaligned377_vlm139_v1_audit_20260614.json",
+      "bytes": 2038
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_claimreextract820_plus_negaligned377_vlm139_v1_flags_20260614.jsonl",
+      "bytes": 26670
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_claimreextract820_plus_negaligned377_vlm60_v1_audit_20260614.json",
+      "bytes": 1933
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_claimreextract820_plus_negaligned377_vlm60_v1_flags_20260614.jsonl",
+      "bytes": 31851
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_weak194_vlm_v1_audit_20260614.json",
+      "bytes": 1227
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_evidence_repair_weak194_vlm_v1_flags_20260614.jsonl",
+      "bytes": 1000
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_flags_v1_20260614.jsonl",
+      "bytes": 1314
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_flags_v2_20260614.jsonl",
+      "bytes": 1889
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_flags_v3_20260614.jsonl",
+      "bytes": 1984
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_flags_v4_20260614.jsonl",
+      "bytes": 2350
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_v1_20260614.report.json",
+      "bytes": 1270
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_v2_20260614.report.json",
+      "bytes": 1422
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_v3_20260614.report.json",
+      "bytes": 1476
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise40_silver12_vlm_audit_v4_20260614.report.json",
+      "bytes": 1524
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise_next40_silver11_vlm_audit_flags_v1_20260614.jsonl",
+      "bytes": 2283
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise_next40_silver11_vlm_audit_flags_v2_20260614.jsonl",
+      "bytes": 2825
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise_next40_silver11_vlm_audit_flags_v3_20260614.jsonl",
+      "bytes": 2825
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise_next40_silver11_vlm_audit_v1_20260614.report.json",
+      "bytes": 1220
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise_next40_silver11_vlm_audit_v2_20260614.report.json",
+      "bytes": 1361
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_lownoise_next40_silver11_vlm_audit_v3_20260614.report.json",
+      "bytes": 1361
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_negative_control_n0_300_noimg_flash_v1_audit_20260614.json",
+      "bytes": 2061
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_negative_control_n0_300_noimg_flash_v1_flags_20260614.jsonl",
+      "bytes": 119929
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_negative_control_n0_aligned377_noimg_flash_v1_audit_20260614.json",
+      "bytes": 2085
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_negative_control_n0_aligned377_noimg_flash_v1_flags_20260614.jsonl",
+      "bytes": 104472
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_pilot20_noimg_audit_flags_v2_20260614.jsonl",
+      "bytes": 16897
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_pilot20_noimg_audit_v2_20260614.report.json",
+      "bytes": 1394
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_pilot72_noimg_audit_flags_v1_20260614.jsonl",
+      "bytes": 4175
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_pilot72_noimg_audit_flags_v3_20260614.jsonl",
+      "bytes": 4256
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_pilot72_noimg_audit_v1_20260614.report.json",
+      "bytes": 1575
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_pilot72_noimg_audit_v3_20260614.report.json",
+      "bytes": 1562
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_llm_v1_20260614.report.json",
+      "bytes": 939
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_reconstruction_queue_audit_v1_20260614.json",
+      "bytes": 36003
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_seed120_all_claimfound_plus_vlm_repair_silver_v1_20260614.jsonl",
+      "bytes": 7644
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_seed120_lownoise80_plus_vlm_repair_silver_v1_20260614.jsonl",
+      "bytes": 0
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_seed120_lownoise80_plus_vlm_repair_silver_v2_20260614.jsonl",
+      "bytes": 7645
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_weak_batch2_promotion_v1_20260614.report.json",
+      "bytes": 1762
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_weak_batch2_repair_silver_v1_20260614.jsonl",
+      "bytes": 448956
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_weak_batch3_promotion_v1_20260614.report.json",
+      "bytes": 2160
+    },
+    {
+      "path": "data/final/repaired_v1/full_pair_weak_batch3_repair_silver_v1_20260614.jsonl",
+      "bytes": 507281
+    },
+    {
+      "path": "data/final/repaired_v1/gpu_cv",
+      "bytes": 6786983
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_factaware_p0_v11_20260613.json",
+      "bytes": 3188
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_factaware_p1_v11_20260613.json",
+      "bytes": 1590
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_20260613.json",
+      "bytes": 1642
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_args_20260613.json",
+      "bytes": 3266
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_paramtitle_20260613.json",
+      "bytes": 3273
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_paramtitle_ocrblock_20260613.json",
+      "bytes": 3282
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_paramtitle_ocrblock_sourceful_20260613.json",
+      "bytes": 3318
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_paramtitle_sourceful_20260613.json",
+      "bytes": 3298
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_sourceful_slices_20260613.json",
+      "bytes": 4921
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_stagec_repair_20260613.json",
+      "bytes": 4930
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_full_hp_vlmatomic_sourceful_20260613.json",
+      "bytes": 5002
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_hardclean_after_fee_fix_20260613.json",
+      "bytes": 3242
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_hardclean_hp3_20260613.json",
+      "bytes": 8108
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_hardclean_p0_variants_20260613.json",
+      "bytes": 6495
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_reextract_p0_and_v6clean_20260613.json",
+      "bytes": 3251
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_stratified120_20260613.json",
+      "bytes": 3236
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_stratified120_hp_20260613.json",
+      "bytes": 1629
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_stratified120_hp_args_20260613.json",
+      "bytes": 3241
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_stratified120_hp_views_20260613.json",
+      "bytes": 4851
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_v6clean_plus_factaware_p0_v11_20260613.json",
+      "bytes": 3256
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_v6clean_plus_factaware_p0p1_v11_20260613.json",
+      "bytes": 1638
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_v7clean_20260613.json",
+      "bytes": 5009
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_v8clean_20260613.json",
+      "bytes": 3326
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_v9clean_20260613.json",
+      "bytes": 1676
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_atomic_productv2_vlmatomic_v6clean_20260613.json",
+      "bytes": 6675
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_candidate_full_v2_hp3_20260613.json",
+      "bytes": 1626
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_candidate_full_v2_hp3_above_floor_20260613.json",
+      "bytes": 1626
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_candidate_full_v2_hp3_above_floor_or_cov2_neg_20260613.json",
+      "bytes": 1644
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_candidate_full_v2_hp3_cov2_20260613.json",
+      "bytes": 1630
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_candidate_full_v2_hp3_non_objective_name_20260613.json",
+      "bytes": 1642
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_candidate_v2_vs_v3_valuegate_hp3_20260613.json",
+      "bytes": 3242
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_candidate_v3_valuegate_subsets_20260613.json",
+      "bytes": 9819
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_hardclean_plus_candidate_hpmerge_v2_20260613.json",
+      "bytes": 1635
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_hardclean_plus_candidate_newpair_hpmerge_v2_20260613.json",
+      "bytes": 1643
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_hardclean_plus_candidate_pos015_hpmerge_v2_20260613.json",
+      "bytes": 1642
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_hardclean_plus_candidate_supportneg_hpmerge_v2_20260613.json",
+      "bytes": 1647
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_hardclean_plus_candidate_v3_hpmerge_views_20260613.json",
+      "bytes": 6525
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_hardclean_v1_rerun_20260613.json",
+      "bytes": 1620
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_proposal_complete_v1_20260613.json",
+      "bytes": 3241
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_stateful_v2_neg200_next500full_l200_seed1_20260614.json",
+      "bytes": 1644
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_stateful_v2_neg200_next500full_l200_seed21_20260614.json",
+      "bytes": 1642
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_stateful_v2_neg200_next500full_l200_seed7_20260614.json",
+      "bytes": 1643
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_stateful_v2_neg80_vs_neg200_next500full_l200_20260614.json",
+      "bytes": 3263
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_teacher_consistent_hpmerge_grid_20260613.json",
+      "bytes": 9764
+    },
+    {
+      "path": "data/final/repaired_v1/label_learnability_teacher_consistent_hpmerge_v1_20260613.json",
+      "bytes": 4857
+    },
+    {
+      "path": "data/final/repaired_v1/labels_attrpol_v1.jsonl",
+      "bytes": 7991317
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_claim_reextract_v4_top120_productv2.json",
+      "bytes": 4859
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_hq_product_rawtext_v1.json",
+      "bytes": 1614
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_mechanism_repaired_conservative_v2_20260613.json",
+      "bytes": 3275
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_mechanism_repaired_full400_v3_20260613.json",
+      "bytes": 6528
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_mechanism_repaired_softdropbad_v2_20260613.json",
+      "bytes": 4891
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_p0adjudicated_v1.json",
+      "bytes": 4856
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_p0p1_adjudicated_v1.json",
+      "bytes": 3316
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_p0p1p2_adjudicated_v1.json",
+      "bytes": 3324
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_product_train_v2.json",
+      "bytes": 1610
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_raclu_residual_stateful_nodrop_v1_20260613.json",
+      "bytes": 4952
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_raclu_residual_v1_20260613.json",
+      "bytes": 4947
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_rawtext_llmcurated_v1.json",
+      "bytes": 4806
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_repaired_v1.json",
+      "bytes": 6360
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_source_recovered_v3.json",
+      "bytes": 4914
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_source_recovered_v3_dropcompare.json",
+      "bytes": 3281
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_source_recovered_v3_final.json",
+      "bytes": 4930
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract300_plus_neg300_noimg_20260614.json",
+      "bytes": 1635
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_noimg_20260614.json",
+      "bytes": 1646
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm120_20260614.json",
+      "bytes": 1649
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm120_args_20260614.json",
+      "bytes": 1655
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm120_guardedcap_20260614.json",
+      "bytes": 1648
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_20260614.json",
+      "bytes": 1662
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_guardedcap_20260614.json",
+      "bytes": 1663
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_vlm7_20260614.json",
+      "bytes": 1668
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm139_20260614.json",
+      "bytes": 1647
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_stateful_v2_claimreextract820_plus_negaligned377_vlm60_20260614.json",
+      "bytes": 1649
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_vlm120_plus_weakbatch23_20260614.json",
+      "bytes": 1629
+    },
+    {
+      "path": "data/final/repaired_v1/learnability_vlm120_plus_weakbatch2_20260614.json",
+      "bytes": 1628
+    },
+    {
+      "path": "data/final/repaired_v1/llm_p0_verified_evidence_adjudication_v1.jsonl",
+      "bytes": 16495
+    },
+    {
+      "path": "data/final/repaired_v1/llm_p1_verified_evidence_adjudication_v1.jsonl",
+      "bytes": 15627
+    },
+    {
+      "path": "data/final/repaired_v1/llm_p2_verified_evidence_adjudication_v1.jsonl",
+      "bytes": 2873
+    },
+    {
+      "path": "data/final/repaired_v1/llm_recovered_evidence_adjudication_v1.jsonl",
+      "bytes": 113007
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_empty_review_audit_20260613.json",
+      "bytes": 3182
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_empty_review_smoke_20260613.json",
+      "bytes": 3131
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_emptycheck_20260613.report.json",
+      "bytes": 865
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_audit_guard_test_20260613.json",
+      "bytes": 1933
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_auditmode_20260613.report.json",
+      "bytes": 1134
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_conservative_20260613.report.json",
+      "bytes": 2265
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_v2_audit_apply_20260613.json",
+      "bytes": 1745
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_v2_audit_apply_20260613.jsonl",
+      "bytes": 6788072
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_v2_conservative_apply_20260613.json",
+      "bytes": 2443
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_v2_conservative_apply_20260613.jsonl",
+      "bytes": 6784264
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_valid_20260613.jsonl",
+      "bytes": 3981
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_valid_audit_20260613.json",
+      "bytes": 4339
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_valid_v2_audit_20260613.json",
+      "bytes": 4341
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_fixture_valid_v2_pairaligned_20260613.jsonl",
+      "bytes": 2939
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_full400_v2_llm_review_20260613.jsonl",
+      "bytes": 403031
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_full400_v2_llm_review_audit_20260613.json",
+      "bytes": 3783
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_full400_v2_llm_review_batch_20260613.report.json",
+      "bytes": 1142
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot240_v2_llm_review_20260613.jsonl",
+      "bytes": 244064
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot240_v2_llm_review_audit_20260613.json",
+      "bytes": 5917
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot240_v2_llm_review_batch_20260613.report.json",
+      "bytes": 1182
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v1_20260613.jsonl",
+      "bytes": 257120
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v1_20260613.report.json",
+      "bytes": 1687
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v1_prompt_preview_20260613.txt",
+      "bytes": 2223
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_llm_review_20260613.jsonl",
+      "bytes": 82057
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_llm_review_20260613.report.json",
+      "bytes": 1192
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_llm_review_audit_20260613.json",
+      "bytes": 3255
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_pairaligned_20260613.json",
+      "bytes": 1694
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_pairaligned_20260613.jsonl",
+      "bytes": 265353
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke10_review_20260613.jsonl",
+      "bytes": 10231
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke10_review_20260613.report.json",
+      "bytes": 995
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke10_review_audit_20260613.json",
+      "bytes": 4500
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke1_review_20260613.jsonl",
+      "bytes": 177
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke1_review_20260613.report.json",
+      "bytes": 523
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke1_review_key2_20260613.jsonl",
+      "bytes": 1055
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke1_review_key2_20260613.report.json",
+      "bytes": 596
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_pilot80_v2_smoke1_review_key2_audit_20260613.json",
+      "bytes": 3683
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_alignment_guard_test_20260613.json",
+      "bytes": 15797
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_softdropbad_full400_v3_raclu_residual_20260613.jsonl",
+      "bytes": 983418
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_softdropbad_full400_v3_raclu_residual_20260613.report.json",
+      "bytes": 11293
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_softdropbad_full400_v3_raclu_residual_unreviewed79_20260613.jsonl",
+      "bytes": 248957
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_v1_20260613.jsonl",
+      "bytes": 1289776
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_v1_20260613.stats.json",
+      "bytes": 1393
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_v1_prompt_preview_20260613.txt",
+      "bytes": 2223
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_v2_pairaligned_20260613.json",
+      "bytes": 11283
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_queue_v2_pairaligned_20260613.jsonl",
+      "bytes": 1296573
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613.jsonl",
+      "bytes": 304262
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch00.report.json",
+      "bytes": 866
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch10.report.json",
+      "bytes": 899
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch20.report.json",
+      "bytes": 845
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch30.report.json",
+      "bytes": 925
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch40.report.json",
+      "bytes": 947
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch50.report.json",
+      "bytes": 992
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch60.report.json",
+      "bytes": 946
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_20260613_text_batch70.report.json",
+      "bytes": 972
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_raclu_residual300_v1_llm_review_audit_20260613.json",
+      "bytes": 3271
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repair_wrong_schema_audit_20260613.json",
+      "bytes": 11904
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repaired_conservative_full400_v3_20260613.report.json",
+      "bytes": 11076
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repaired_conservative_v2_20260613.report.json",
+      "bytes": 10970
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repaired_softdropbad_full400_v3_20260613.report.json",
+      "bytes": 10595
+    },
+    {
+      "path": "data/final/repaired_v1/mechanism_repaired_softdropbad_v2_20260613.report.json",
+      "bytes": 10579
+    },
+    {
+      "path": "data/final/repaired_v1/merge_stagec_factrecords_v1.report.json",
+      "bytes": 1611
+    },
+    {
+      "path": "data/final/repaired_v1/missing_claim_risk_pairs_v1.jsonl",
+      "bytes": 422301
+    },
+    {
+      "path": "data/final/repaired_v1/p0_adjudicated_v1_report.json",
+      "bytes": 12182
+    },
+    {
+      "path": "data/final/repaired_v1/p0_verified_evidence_v1_report.json",
+      "bytes": 517
+    },
+    {
+      "path": "data/final/repaired_v1/p0p1_adjudicated_v1_report.json",
+      "bytes": 3227
+    },
+    {
+      "path": "data/final/repaired_v1/p0p1p2_adjudicated_v1_report.json",
+      "bytes": 717
+    },
+    {
+      "path": "data/final/repaired_v1/p1_verified_evidence_v1_report.json",
+      "bytes": 592
+    },
+    {
+      "path": "data/final/repaired_v1/p2_verified_evidence_v1_report.json",
+      "bytes": 593
+    },
+    {
+      "path": "data/final/repaired_v1/pair_claim_reextract_p0_evidence_only_top10_v2_20260613.jsonl",
+      "bytes": 5283
+    },
+    {
+      "path": "data/final/repaired_v1/pair_claim_reextract_p0_evidence_only_top10_v3_20260613.jsonl",
+      "bytes": 2522
+    },
+    {
+      "path": "data/final/repaired_v1/pair_records_attrpol_v1.jsonl",
+      "bytes": 84077647
+    },
+    {
+      "path": "data/final/repaired_v1/product_training_v2_report.json",
+      "bytes": 1100
+    },
+    {
+      "path": "data/final/repaired_v1/product_v2_bridge",
+      "bytes": 26756261
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_candidate_softcap24_comment_triggered_claim_reextract_queue_20260613_strict.jsonl",
+      "bytes": 3243745
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_candidate_softcap24_comment_triggered_claim_reextract_queue_20260613_strict_report.json",
+      "bytes": 2022
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613.jsonl",
+      "bytes": 6233731
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613_broad.jsonl",
+      "bytes": 6263717
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613_broad_report.json",
+      "bytes": 2030
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613_report.json",
+      "bytes": 2001
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613_strict.jsonl",
+      "bytes": 3046747
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613_strict_report.json",
+      "bytes": 2009
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613_strict_v2.jsonl",
+      "bytes": 4103300
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_comment_triggered_claim_reextract_queue_20260613_strict_v2_report.json",
+      "bytes": 2139
+    },
+    {
+      "path": "data/final/repaired_v1/productv2_stratified120_ids_report.json",
+      "bytes": 412
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_completion_queues_v1_20260613",
+      "bytes": 15402444
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_faithful_claim_reextract_queue_v1_20260613.jsonl",
+      "bytes": 2228210
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_faithful_natural_v1_20260613.report.json",
+      "bytes": 9469
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_llm_completion_p0_verify_pilot5_20260613.jsonl",
+      "bytes": 4648
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_llm_completion_p0_verify_top50_20260613.jsonl",
+      "bytes": 42345
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_llm_completion_queue_v1_20260613.jsonl",
+      "bytes": 55381740
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_llm_completion_queue_v1_20260613.report.json",
+      "bytes": 8141
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_quality_audit_v1_20260613.report.json",
+      "bytes": 21766
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_second_stage_repair_queues_v1_20260613",
+      "bytes": 1338956
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_audit_v2_20260613.jsonl",
+      "bytes": 2032970
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_audit_v2_20260613.report.json",
+      "bytes": 33844
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_llm_repair_p0_pilot30_20260613.jsonl",
+      "bytes": 27264
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_llm_repair_p0_pilot30_v2_20260613.jsonl",
+      "bytes": 29411
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_llm_repair_p0_pilot30_v3_20260613.jsonl",
+      "bytes": 29081
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_llm_repair_p0_v3_20260613.jsonl",
+      "bytes": 129641
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_llm_repair_p0_v3_withlabel_20260613.jsonl",
+      "bytes": 141919
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_llm_repair_queue_v2_20260613.jsonl",
+      "bytes": 3529083
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_llm_repair_queue_v2_20260613.report.json",
+      "bytes": 14978
+    },
+    {
+      "path": "data/final/repaired_v1/proposal_triplet_alignment_repair_queue_v2_20260613.jsonl",
+      "bytes": 2833929
+    },
+    {
+      "path": "data/final/repaired_v1/raw_pipeline_integrity_audit_p0p1_20260612.json",
+      "bytes": 28596
+    },
+    {
+      "path": "data/final/repaired_v1/raw_text_evidence_recovery_hq_product_v1.jsonl",
+      "bytes": 354699
+    },
+    {
+      "path": "data/final/repaired_v1/raw_text_evidence_recovery_hq_product_v1_report.json",
+      "bytes": 649
+    },
+    {
+      "path": "data/final/repaired_v1/rawtext_llm_curated_v1_report.json",
+      "bytes": 40564
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_manifest_v1.jsonl",
+      "bytes": 2190967
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2.jsonl",
+      "bytes": 1432700
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p0_direct_probe.jsonl",
+      "bytes": 10773
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p0_direct_probe_strict.jsonl",
+      "bytes": 10887
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p0_direct_probe_vlmimg.jsonl",
+      "bytes": 10575
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p0_direct_vlmimg.backup_20260612.jsonl",
+      "bytes": 72301
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p0_direct_vlmimg.jsonl",
+      "bytes": 72301
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p1_direct_merged_v1.jsonl",
+      "bytes": 21498
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p1_direct_merged_v1_report.json",
+      "bytes": 710
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p1_direct_textfallback.jsonl",
+      "bytes": 787
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p1_direct_vlmimg.jsonl",
+      "bytes": 20909
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p2_direct_merged_v1.jsonl",
+      "bytes": 9385
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p2_direct_merged_v1_report.json",
+      "bytes": 694
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p2_direct_textfallback.jsonl",
+      "bytes": 726
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_llm_verify_p2_direct_vlmimg.jsonl",
+      "bytes": 8758
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_missing_claim_verify_p0_probe_v1.jsonl",
+      "bytes": 4942
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_missing_claim_verify_p0_v1.jsonl",
+      "bytes": 17865
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_p0verified_manifest_v1.jsonl",
+      "bytes": 5057
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_p1verified_manifest_v1.jsonl",
+      "bytes": 4559
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_p2verified_manifest_v1.jsonl",
+      "bytes": 854
+    },
+    {
+      "path": "data/final/repaired_v1/regeneration_queue_v2_report.json",
+      "bytes": 12088
+    },
+    {
+      "path": "data/final/repaired_v1/repaired_v1_report.json",
+      "bytes": 31308
+    },
+    {
+      "path": "data/final/repaired_v1/schema_claim_repair_queues_v1_report.json",
+      "bytes": 5286
+    },
+    {
+      "path": "data/final/repaired_v1/schema_remap_review_queue_v1.jsonl",
+      "bytes": 5803364
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovered_v3_dropunresolved_report.json",
+      "bytes": 227093
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovered_v3_report.json",
+      "bytes": 127434
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3.jsonl",
+      "bytes": 1982657
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_llm_verify_p0_pilot.jsonl",
+      "bytes": 18598
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_llm_verify_p0_pilot_v3strict.jsonl",
+      "bytes": 22650
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_llm_verify_p0_v3strict.jsonl",
+      "bytes": 279272
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_llm_verify_p0_v3strict_merged.jsonl",
+      "bytes": 282296
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_llm_verify_p0_v3strict_merged_report.json",
+      "bytes": 403
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_llm_verify_p0_v3strict_textrepair.jsonl",
+      "bytes": 3816
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_p0_missing_after_errors.jsonl",
+      "bytes": 12648
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_queue_v3_report.json",
+      "bytes": 28816
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_v3_auxiliary_manifest.jsonl",
+      "bytes": 18738
+    },
+    {
+      "path": "data/final/repaired_v1/source_recovery_v3_dropunresolved_auxiliary_manifest.jsonl",
+      "bytes": 18738
+    },
+    {
+      "path": "data/final/repaired_v1/stagec_atomic_repair_manifest_20260613.json",
+      "bytes": 2367
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_FULLPOOL_all_20260614_stagec.jsonl",
+      "bytes": 31985804
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_FULLPOOL_supervised_20260614_stagec.jsonl",
+      "bytes": 11458493
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract300_plus_neg300_noimg_20260614.jsonl",
+      "bytes": 1974509
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract300_plus_neg300_noimg_20260614.report.json",
+      "bytes": 11282
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract300_plus_neg300_noimg_contrastive_20260614.jsonl",
+      "bytes": 607316
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract300_plus_neg300_noimg_repair_20260614.jsonl",
+      "bytes": 899980
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract300_plus_neg300_noimg_supervised_20260614.jsonl",
+      "bytes": 1074529
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_noimg_20260614.jsonl",
+      "bytes": 2557046
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_noimg_20260614.report.json",
+      "bytes": 10695
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_noimg_contrastive_20260614.jsonl",
+      "bytes": 511773
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_noimg_repair_20260614.jsonl",
+      "bytes": 1187369
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_noimg_supervised_20260614.jsonl",
+      "bytes": 1369677
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_noimg_20260614.jsonl",
+      "bytes": 3822682
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_noimg_20260614.report.json",
+      "bytes": 11117
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_noimg_contrastive_20260614.jsonl",
+      "bytes": 1024802
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_noimg_repair_20260614.jsonl",
+      "bytes": 1764979
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_noimg_supervised_20260614.jsonl",
+      "bytes": 2057703
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_20260614.jsonl",
+      "bytes": 3818726
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_20260614.report.json",
+      "bytes": 11399
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_contrastive_20260614.jsonl",
+      "bytes": 1093792
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_20260614.jsonl",
+      "bytes": 4521785
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_20260614.report.json",
+      "bytes": 11629
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_contrastive_20260614.jsonl",
+      "bytes": 1340312
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_repair_20260614.jsonl",
+      "bytes": 2195686
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_supervised_20260614.jsonl",
+      "bytes": 2326099
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_vlm7_20260614.jsonl",
+      "bytes": 4518056
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_vlm7_20260614.report.json",
+      "bytes": 11865
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_vlm7_contrastive_20260614.jsonl",
+      "bytes": 1349432
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_vlm7_repair_20260614.jsonl",
+      "bytes": 2200715
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_plusweak194_vlm7_supervised_20260614.jsonl",
+      "bytes": 2317341
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_repair_20260614.jsonl",
+      "bytes": 1858896
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_supervised_20260614.jsonl",
+      "bytes": 1959830
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm120_supervised_args_20260614.jsonl",
+      "bytes": 2254357
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm139_20260614.jsonl",
+      "bytes": 3815026
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm139_20260614.report.json",
+      "bytes": 11399
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm139_contrastive_20260614.jsonl",
+      "bytes": 1101272
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm139_repair_20260614.jsonl",
+      "bytes": 1877993
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm139_supervised_20260614.jsonl",
+      "bytes": 1937033
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm60_20260614.jsonl",
+      "bytes": 3815191
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm60_20260614.report.json",
+      "bytes": 11385
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm60_contrastive_20260614.jsonl",
+      "bytes": 1057359
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm60_repair_20260614.jsonl",
+      "bytes": 1814970
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_claimreextract820_plus_negaligned377_vlm60_supervised_20260614.jsonl",
+      "bytes": 2000221
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg50_20260614.report.json",
+      "bytes": 2530
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg50_all_20260614.jsonl",
+      "bytes": 186794
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg50_audit_20260614.report.json",
+      "bytes": 8781
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg50_contrastive_20260614.jsonl",
+      "bytes": 68902
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg50_repair_20260614.jsonl",
+      "bytes": 68130
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg50_supervised_20260614.jsonl",
+      "bytes": 118664
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_next120_20260614.report.json",
+      "bytes": 2593
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_next120_all_20260614.jsonl",
+      "bytes": 419825
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_next120_contrastive_20260614.jsonl",
+      "bytes": 167339
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_next120_repair_20260614.jsonl",
+      "bytes": 191017
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_next120_supervised_20260614.jsonl",
+      "bytes": 228808
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_rest30_20260614.report.json",
+      "bytes": 2303
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_rest30_all_20260614.jsonl",
+      "bytes": 94100
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_rest30_contrastive_20260614.jsonl",
+      "bytes": 38169
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_rest30_repair_20260614.jsonl",
+      "bytes": 49051
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_claimnonneg_rest30_supervised_20260614.jsonl",
+      "bytes": 45049
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_300_noimg_20260614.jsonl",
+      "bytes": 1033701
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_300_noimg_20260614.report.json",
+      "bytes": 3045
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_300_noimg_contrastive_20260614.jsonl",
+      "bytes": 432897
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_300_noimg_repair_20260614.jsonl",
+      "bytes": 469063
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_300_noimg_supervised_20260614.jsonl",
+      "bytes": 564638
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_aligned377_noimg_20260614.jsonl",
+      "bytes": 1267512
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_aligned377_noimg_20260614.report.json",
+      "bytes": 3109
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_aligned377_noimg_contrastive_20260614.jsonl",
+      "bytes": 521058
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_aligned377_noimg_repair_20260614.jsonl",
+      "bytes": 580022
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_negative_control_n0_aligned377_noimg_supervised_20260614.jsonl",
+      "bytes": 687490
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_fewerclaims300_noimg_20260614.jsonl",
+      "bytes": 940130
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_fewerclaims300_noimg_20260614.report.json",
+      "bytes": 10956
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_fewerclaims300_noimg_contrastive_20260614.jsonl",
+      "bytes": 182673
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_fewerclaims300_noimg_repair_20260614.jsonl",
+      "bytes": 430550
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_fewerclaims300_noimg_supervised_20260614.jsonl",
+      "bytes": 509580
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_pilot40_20260614.jsonl",
+      "bytes": 134527
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_pilot40_20260614.report.json",
+      "bytes": 2828
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_pilot40_contrastive_20260614.jsonl",
+      "bytes": 22629
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_pilot40_repair_20260614.jsonl",
+      "bytes": 45270
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_pilot40_supervised_20260614.jsonl",
+      "bytes": 89257
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_plus_neg300_noimg_20260614.jsonl",
+      "bytes": 1033701
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_plus_neg300_noimg_20260614.report.json",
+      "bytes": 3353
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_plus_neg300_noimg_contrastive_20260614.jsonl",
+      "bytes": 432897
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_plus_neg300_noimg_repair_20260614.jsonl",
+      "bytes": 469063
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next1000_after500_plus_neg300_noimg_supervised_20260614.jsonl",
+      "bytes": 564638
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise60_20260614.report.json",
+      "bytes": 2957
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise60_all_20260614.jsonl",
+      "bytes": 267986
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise60_audit_20260614.report.json",
+      "bytes": 2544
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise60_contrastive_20260614.jsonl",
+      "bytes": 54024
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise60_repair_20260614.jsonl",
+      "bytes": 72972
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise60_supervised_20260614.jsonl",
+      "bytes": 195014
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise_next60_20260614.report.json",
+      "bytes": 3016
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise_next60_all_20260614.jsonl",
+      "bytes": 305096
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise_next60_audit_20260614.report.json",
+      "bytes": 4493
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise_next60_contrastive_20260614.jsonl",
+      "bytes": 105813
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise_next60_repair_20260614.jsonl",
+      "bytes": 68718
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_lownoise_next60_supervised_20260614.jsonl",
+      "bytes": 236378
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_rest45_20260614.report.json",
+      "bytes": 2503
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_rest45_all_20260614.jsonl",
+      "bytes": 195344
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_rest45_contrastive_20260614.jsonl",
+      "bytes": 69155
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_rest45_repair_20260614.jsonl",
+      "bytes": 58153
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next200_rest45_supervised_20260614.jsonl",
+      "bytes": 137191
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_full_lownoise_next80_20260614.report.json",
+      "bytes": 3825
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_full_lownoise_next80_all_20260614.jsonl",
+      "bytes": 268987
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_full_lownoise_next80_contrastive_20260614.jsonl",
+      "bytes": 77901
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_full_lownoise_next80_repair_20260614.jsonl",
+      "bytes": 114395
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_full_lownoise_next80_supervised_20260614.jsonl",
+      "bytes": 154592
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial151_lownoise60_20260614.report.json",
+      "bytes": 2772
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial151_lownoise60_all_20260614.jsonl",
+      "bytes": 259296
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial151_lownoise60_contrastive_20260614.jsonl",
+      "bytes": 47597
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial151_lownoise60_repair_20260614.jsonl",
+      "bytes": 68079
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial151_lownoise60_supervised_20260614.jsonl",
+      "bytes": 191217
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial259_lownoise_next60_20260614.report.json",
+      "bytes": 2698
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial259_lownoise_next60_all_20260614.jsonl",
+      "bytes": 219591
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial259_lownoise_next60_contrastive_20260614.jsonl",
+      "bytes": 55988
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial259_lownoise_next60_repair_20260614.jsonl",
+      "bytes": 85898
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_next500_partial259_lownoise_next60_supervised_20260614.jsonl",
+      "bytes": 133693
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_20260614.report.json",
+      "bytes": 5164
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_all_20260614.jsonl",
+      "bytes": 470150
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_audit_20260614.report.json",
+      "bytes": 4794
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_contrastive_20260614.jsonl",
+      "bytes": 124919
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg50_20260614.report.json",
+      "bytes": 8368
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg50_all_20260614.jsonl",
+      "bytes": 1233374
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg50_audit_20260614.report.json",
+      "bytes": 16720
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg50_contrastive_20260614.jsonl",
+      "bytes": 331365
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg50_repair_20260614.jsonl",
+      "bytes": 333084
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg50_supervised_20260614.jsonl",
+      "bytes": 900290
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg80_20260614.report.json",
+      "bytes": 8605
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg80_all_20260614.jsonl",
+      "bytes": 1327496
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg80_audit_20260614.report.json",
+      "bytes": 17138
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg80_contrastive_20260614.jsonl",
+      "bytes": 369546
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg80_repair_20260614.jsonl",
+      "bytes": 382145
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next120_neg80_supervised_20260614.jsonl",
+      "bytes": 945351
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg200_next500full_l200_20260614.report.json",
+      "bytes": 13698
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg200_next500full_l200_all_20260614.jsonl",
+      "bytes": 2683591
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg200_next500full_l200_audit_20260614.report.json",
+      "bytes": 13511
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg200_next500full_l200_contrastive_20260614.jsonl",
+      "bytes": 752673
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg200_next500full_l200_repair_20260614.jsonl",
+      "bytes": 881825
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg200_next500full_l200_supervised_20260614.jsonl",
+      "bytes": 1801766
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_20260614.report.json",
+      "bytes": 9986
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_all_20260614.jsonl",
+      "bytes": 1524969
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_audit_20260614.report.json",
+      "bytes": 17139
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_contrastive_20260614.jsonl",
+      "bytes": 439569
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500full_l200_20260614.report.json",
+      "bytes": 13602
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500full_l200_all_20260614.jsonl",
+      "bytes": 2263156
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500full_l200_audit_20260614.report.json",
+      "bytes": 13507
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500full_l200_contrastive_20260614.jsonl",
+      "bytes": 585045
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500full_l200_repair_20260614.jsonl",
+      "bytes": 690497
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500full_l200_supervised_20260614.jsonl",
+      "bytes": 1572659
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p151l60_20260614.report.json",
+      "bytes": 12937
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p151l60_all_20260614.jsonl",
+      "bytes": 1788708
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p151l60_audit_20260614.report.json",
+      "bytes": 17973
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p151l60_contrastive_20260614.jsonl",
+      "bytes": 480257
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p151l60_repair_20260614.jsonl",
+      "bytes": 509899
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p151l60_supervised_20260614.jsonl",
+      "bytes": 1278809
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p259l120_20260614.report.json",
+      "bytes": 13198
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p259l120_all_20260614.jsonl",
+      "bytes": 1991216
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p259l120_audit_20260614.report.json",
+      "bytes": 13506
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p259l120_contrastive_20260614.jsonl",
+      "bytes": 516394
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p259l120_repair_20260614.jsonl",
+      "bytes": 575328
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_next500p259l120_supervised_20260614.jsonl",
+      "bytes": 1415888
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_repair_20260614.jsonl",
+      "bytes": 440605
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next200_neg80_supervised_20260614.jsonl",
+      "bytes": 1084364
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next60_neg50_20260614.report.json",
+      "bytes": 6166
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next60_neg50_all_20260614.jsonl",
+      "bytes": 925220
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next60_neg50_audit_20260614.report.json",
+      "bytes": 13594
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next60_neg50_contrastive_20260614.jsonl",
+      "bytes": 247897
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next60_neg50_repair_20260614.jsonl",
+      "bytes": 264011
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_next60_neg50_supervised_20260614.jsonl",
+      "bytes": 661209
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_plus_next60_20260614.report.json",
+      "bytes": 5929
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_plus_next60_all_20260614.jsonl",
+      "bytes": 738367
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_plus_next60_audit_20260614.report.json",
+      "bytes": 6097
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_plus_next60_contrastive_20260614.jsonl",
+      "bytes": 178976
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_plus_next60_repair_20260614.jsonl",
+      "bytes": 195857
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_plus_next60_supervised_20260614.jsonl",
+      "bytes": 542510
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_repair_20260614.jsonl",
+      "bytes": 122777
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_seed120_supervised_20260614.jsonl",
+      "bytes": 347373
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_bigexpand_20260614.report.json",
+      "bytes": 23179
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_bigexpand_all_20260614.jsonl",
+      "bytes": 15709057
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_bigexpand_contrastive_20260614.jsonl",
+      "bytes": 3265843
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_bigexpand_repair_20260614.jsonl",
+      "bytes": 8348032
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_bigexpand_supervised_20260614.jsonl",
+      "bytes": 7361025
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch23_20260614.report.json",
+      "bytes": 12031
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch23_all_20260614.jsonl",
+      "bytes": 5181069
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch23_contrastive_20260614.jsonl",
+      "bytes": 1346433
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch23_repair_20260614.jsonl",
+      "bytes": 2714045
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch23_supervised_20260614.jsonl",
+      "bytes": 2467024
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch2_20260614.report.json",
+      "bytes": 11664
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch2_all_20260614.jsonl",
+      "bytes": 4408846
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch2_contrastive_20260614.jsonl",
+      "bytes": 1183349
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch2_repair_20260614.jsonl",
+      "bytes": 2235398
+    },
+    {
+      "path": "data/final/repaired_v1/stateful_proposal_dataset_v2_vlm120_plus_weakbatch2_supervised_20260614.jsonl",
+      "bytes": 2173448
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp.json",
+      "bytes": 1211
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp.md",
+      "bytes": 739
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle.json",
+      "bytes": 1211
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle.md",
+      "bytes": 739
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock.json",
+      "bytes": 1211
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock.md",
+      "bytes": 739
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic.json",
+      "bytes": 1213
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_full_strictv2_refined_hp_paramtitle_ocrblock_vlmatomic.md",
+      "bytes": 739
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_pilot120.json",
+      "bytes": 461
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_pilot120.md",
+      "bytes": 351
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_pilot120_strictv2.json",
+      "bytes": 460
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_pilot120_strictv2.md",
+      "bytes": 349
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_pilot120_strictv2_refined.json",
+      "bytes": 456
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_pilot120_strictv2_refined.md",
+      "bytes": 349
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_strictv2_refined.json",
+      "bytes": 1186
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_strictv2_refined.md",
+      "bytes": 716
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_strictv2_refined_hp.json",
+      "bytes": 1182
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_direct_strict_stratified120_strictv2_refined_hp.md",
+      "bytes": 713
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_factaware_p0_v11_20260613_hp2.md",
+      "bytes": 177
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_factaware_p0_v11_20260613_hp2_refined.md",
+      "bytes": 177
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_factaware_p0_v11_20260613_hp3.md",
+      "bytes": 177
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_factaware_p1_v11_20260613_hp2.md",
+      "bytes": 175
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_factaware_p1_v11_20260613_hp3.md",
+      "bytes": 175
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_reextract_p0_v7_20260613_hp.json",
+      "bytes": 1081
+    },
+    {
+      "path": "data/final/repaired_v1/table_atomic_productv2_reextract_p0_v7_20260613_hp.md",
+      "bytes": 655
+    },
+    {
+      "path": "data/final/repaired_v1/triplet_alignment_p0repair_promoted_manifest_v2_20260613.jsonl",
+      "bytes": 7381
+    },
+    {
+      "path": "data/final/repaired_v1/triplet_alignment_p0repair_promoted_v2_20260613.report.json",
+      "bytes": 8260
+    },
+    {
+      "path": "data/final/repaired_v1/valuegate_recovered_review_p0_qwenflash_20260613.jsonl",
+      "bytes": 73096
+    },
+    {
+      "path": "data/final/repaired_v1/valuegate_recovered_review_p0_qwenflash_20260613_report.json",
+      "bytes": 5903
+    },
+    {
+      "path": "data/final/repaired_v1/valuegate_recovered_review_p0_summary_20260613.json",
+      "bytes": 13993
+    },
+    {
+      "path": "data/final/repaired_v1/valuegate_recovered_review_queue_20260613.jsonl",
+      "bytes": 272173
+    },
+    {
+      "path": "data/final/repaired_v1/valuegate_recovered_review_queue_20260613_report.json",
+      "bytes": 1284
+    },
+    {
+      "path": "embeddings/fair_rerun/baseline_predictions/._bert_cls_s0.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/baseline_predictions/._bert_cls_s1.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/baseline_predictions/._bert_cls_s2.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/baseline_predictions/._bert_nli_s0.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/baseline_predictions/._roberta_cls_s0.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/baseline_predictions/._roberta_cls_s1.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/baseline_predictions/._roberta_cls_s2.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/emb_geom/._emb_geom_racl_s0.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/emb_geom/._emb_geom_racl_s1.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "embeddings/fair_rerun/emb_geom/._emb_geom_racl_s2.pt",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._bert_cls_s0.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._bert_cls_s1.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._bert_cls_s2.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._bert_nli_s0.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._claimarc_canonical_s0.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._claimarc_canonical_s1.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._claimarc_canonical_s2.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._dataset_audit.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._roberta_cls_s0.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._roberta_cls_s1.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/jobs/._roberta_cls_s2.jsonl",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._bert_cls_s0.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._bert_cls_s1.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._bert_cls_s2.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._bert_nli_s0.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._bert_nli_s1.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._claimarc_canonical_s0.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._claimarc_canonical_s1.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._claimarc_canonical_s2.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._dataset_audit.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._roberta_cls_s0.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._roberta_cls_s1.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/logs/._roberta_cls_s2.log",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._bert_cls_s0.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._bert_cls_s1.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._bert_cls_s2.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._bert_nli_s0.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._claimarc_canonical_s0.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._claimarc_canonical_s1.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._claimarc_canonical_s2.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._dataset_audit.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._roberta_cls_s0.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._roberta_cls_s1.json",
+      "bytes": 4096
+    },
+    {
+      "path": "results/fair_rerun/status/._roberta_cls_s2.json",
+      "bytes": 4096
+    }
+  ]
+}

@@ -43,14 +43,16 @@ DATASET_PATH = FINAL / "dataset.jsonl"  # join_split 流水线中间产物
 
 # 论文最终数据集（data/ 根目录，见 data/README.md）
 DATASET_SUPERVISED = DATA / "dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl"
-DATASET_ALL = DATA / "dataset_duallabel_FULLPOOL_PLUS_OBJNEG_all_20260615.jsonl"
 DEFAULT_TRAIN_DATASET = DATASET_SUPERVISED
 
-# 论文公平对比口径：证据流仅三源（params/OCR/VLM），不使用 LLM arguments
-EVIDENCE_POLICY_CANONICAL = os.environ.get("CLAIMARC_EVIDENCE_POLICY", "sources_only")
+def ensure_runtime_directories() -> None:
+    """Create writable pipeline directories only when a caller explicitly asks.
 
-for _p in (PROCESSED, FINAL, CACHE, STAGE_A, STAGE_B, STAGE_C):
-    _p.mkdir(parents=True, exist_ok=True)
+    Importing configuration must remain read-only so a compact reviewer checkout
+    can keep the archived ``raw`` and ``processed`` layers unexpanded.
+    """
+    for path in (PROCESSED, FINAL, CACHE, STAGE_A, STAGE_B, STAGE_C):
+        path.mkdir(parents=True, exist_ok=True)
 
 
 # --------------------------------------------------------------------------

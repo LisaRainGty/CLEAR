@@ -1,0 +1,33 @@
+{
+  "job": "frozen_probes_s0",
+  "stage": "table3",
+  "signature": "49ee120ef4f6d6aed0d4c2ec79242cd41129b084621e6329bcaabdf4b2a170be",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_frozen",
+    "--dataset",
+    "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "--seed",
+    "0",
+    "--evidence_policy",
+    "sources_only",
+    "--save_dir",
+    "/root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/frozen_s0",
+    "--paper_only"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_frozen --dataset /root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl --seed 0 --evidence_policy sources_only --save_dir /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/frozen_s0 --paper_only",
+  "started_utc": "2026-07-21T13:26:29.837906+00:00",
+  "finished_utc": "2026-07-21T13:27:27.478599+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/frozen_probes_s0.log",
+  "result_file": "results/fair_rerun/jobs/frozen_probes_s0.jsonl",
+  "outputs": [
+    "embeddings/fair_rerun/baseline_predictions/frozen_s0/BGEfz_LR_4tuple.pt",
+    "embeddings/fair_rerun/baseline_predictions/frozen_s0/BGEfz_SVM_4tuple.pt",
+    "embeddings/fair_rerun/baseline_predictions/frozen_s0/BGEfz_MLP_4tuple.pt",
+    "embeddings/fair_rerun/baseline_predictions/frozen_s0/BGEfz_kNN_attr_k15.pt"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

@@ -1,0 +1,33 @@
+{
+  "job": "roberta_cls_s0",
+  "stage": "table3",
+  "signature": "4c66fbc639dee38e0b414c26bcd46fce9b4f977af63aed3f1bf70309174dfef3",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_ft",
+    "--dataset",
+    "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "--kind",
+    "roberta_cls",
+    "--seed",
+    "0",
+    "--loss",
+    "bce",
+    "--evidence_policy",
+    "sources_only",
+    "--save_pred",
+    "/root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/roberta_cls_s0.pt"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_ft --dataset /root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl --kind roberta_cls --seed 0 --loss bce --evidence_policy sources_only --save_pred /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/roberta_cls_s0.pt",
+  "started_utc": "2026-07-21T12:51:08.459668+00:00",
+  "finished_utc": "2026-07-21T12:55:59.114678+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/roberta_cls_s0.log",
+  "result_file": "results/fair_rerun/jobs/roberta_cls_s0.jsonl",
+  "outputs": [
+    "embeddings/fair_rerun/baseline_predictions/roberta_cls_s0.pt"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

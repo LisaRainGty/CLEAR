@@ -1,0 +1,9 @@
+2026-07-21 20:47:32,361 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 20:47:32,363 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 20:47:32,405 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+[bert_cls ep0] loss=0.3757 val_mF1=0.7050
+[bert_cls ep1] loss=0.2681 val_mF1=0.7408
+[bert_cls ep2] loss=0.1663 val_mF1=0.7508
+[bert_cls ep3] loss=0.0845 val_mF1=0.7461
+RESULT {"tag": "bert_cls", "seed": 2, "thr": 0.08, "acc": 0.7942, "macro_f1": 0.7782, "pos_f1": 0.7188, "wF1": 0.7523, "auprc": 0.6733, "auroc": 0.8854, "ece": 0.1257, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/bert_cls_s2.pt

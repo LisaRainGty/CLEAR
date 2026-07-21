@@ -1,0 +1,56 @@
+2026-07-21 21:03:15,636 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 21:03:15,637 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 21:03:15,679 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+2026-07-21 21:03:16,953 - modelscope - WARNING - Model revision not specified, use revision: v1.0.0
+
+Downloading:   0%|          | 0.00/931 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 931/931 [00:00<00:00, 209kB/s]
+
+Downloading:   0%|          | 0.00/1.80k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 1.80k/1.80k [00:00<00:00, 466kB/s]
+
+Downloading:   0%|          | 0.00/53.0 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 53.0/53.0 [00:00<00:00, 21.1kB/s]
+
+Downloading:   0%|          | 0.00/390M [00:00<?, ?B/s]
+Downloading:   4%|▍         | 16.0M/390M [00:01<00:24, 15.9MB/s]
+Downloading:   8%|▊         | 32.0M/390M [00:02<00:23, 16.1MB/s]
+Downloading:  12%|█▏        | 48.0M/390M [00:03<00:22, 16.3MB/s]
+Downloading:  16%|█▋        | 64.0M/390M [00:04<00:22, 15.1MB/s]
+Downloading:  21%|██        | 80.0M/390M [00:05<00:22, 14.3MB/s]
+Downloading:  25%|██▍       | 96.0M/390M [00:06<00:19, 15.5MB/s]
+Downloading:  29%|██▊       | 112M/390M [00:07<00:18, 16.1MB/s] 
+Downloading:  33%|███▎      | 128M/390M [00:08<00:18, 14.6MB/s]
+Downloading:  37%|███▋      | 144M/390M [00:09<00:17, 15.0MB/s]
+Downloading:  41%|████      | 160M/390M [00:11<00:16, 14.4MB/s]
+Downloading:  45%|████▌     | 176M/390M [00:12<00:14, 15.2MB/s]
+Downloading:  49%|████▉     | 192M/390M [00:13<00:13, 15.7MB/s]
+Downloading:  53%|█████▎    | 208M/390M [00:14<00:12, 15.3MB/s]
+Downloading:  57%|█████▋    | 224M/390M [00:15<00:11, 15.7MB/s]
+Downloading:  62%|██████▏   | 240M/390M [00:16<00:09, 15.9MB/s]
+Downloading:  66%|██████▌   | 256M/390M [00:17<00:09, 15.5MB/s]
+Downloading:  70%|██████▉   | 272M/390M [00:18<00:07, 15.8MB/s]
+Downloading:  74%|███████▍  | 288M/390M [00:19<00:06, 15.7MB/s]
+Downloading:  78%|███████▊  | 304M/390M [00:20<00:05, 16.3MB/s]
+Downloading:  82%|████████▏ | 320M/390M [00:21<00:04, 16.7MB/s]
+Downloading:  86%|████████▌ | 336M/390M [00:22<00:03, 16.4MB/s]
+Downloading:  90%|█████████ | 352M/390M [00:23<00:02, 16.6MB/s]
+Downloading:  94%|█████████▍| 368M/390M [00:24<00:01, 16.9MB/s]
+Downloading:  98%|█████████▊| 384M/390M [00:25<00:00, 16.7MB/s]
+Downloading: 100%|██████████| 390M/390M [00:25<00:00, 16.5MB/s]
+Downloading: 100%|██████████| 390M/390M [00:25<00:00, 15.8MB/s]
+
+Downloading:   0%|          | 0.00/3.45k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 3.45k/3.45k [00:00<00:00, 813kB/s]
+
+Downloading:   0%|          | 0.00/107k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 107k/107k [00:00<00:00, 1.03MB/s]
+Downloading: 100%|██████████| 107k/107k [00:00<00:00, 1.02MB/s]
+/root/miniconda3/envs/myconda/lib/python3.9/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+[bert_nli ep0] loss=0.4077 val_mF1=0.6912
+[bert_nli ep1] loss=0.2591 val_mF1=0.6965
+[bert_nli ep2] loss=0.1788 val_mF1=0.7208
+[bert_nli ep3] loss=0.0886 val_mF1=0.7271
+RESULT {"tag": "bert_nli", "seed": 0, "thr": 0.1, "acc": 0.8, "macro_f1": 0.7744, "pos_f1": 0.6984, "wF1": 0.7526, "auprc": 0.6689, "auroc": 0.8786, "ece": 0.1503, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/Fengshenbang/Erlangshen-Roberta-110M-NLI", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/bert_nli_s0.pt

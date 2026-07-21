@@ -19,8 +19,8 @@ from common.io_utils import read_json
 def resolve(path_str: str) -> Path:
     """索引中的路径以 ROOT 为基准（形如 data/raw/...）；兼容绝对路径。
 
-    一些早期 Stage C 产物是在远端机器生成的，绝对路径前缀可能是
-    /root/claimarc。若该绝对路径在当前机器不存在，但能定位到其中的
+    一些早期 Stage C 产物是在其他机器生成的，绝对路径前缀可能已失效。
+    若该绝对路径在当前机器不存在，但能定位到其中的
     data/... 相对段，则重映射到当前 CLAIMARC_ROOT。
     """
     if not path_str:

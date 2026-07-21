@@ -8,6 +8,7 @@ xlrd>=2.0.1            # 读取飞瓜导出的 .xls（OLE2/BIFF）
 openpyxl>=3.1          # 读取 .xlsx（兜底）
 tqdm>=4.66
 orjson>=3.9           # 快速 jsonl 读写（可选，缺省回退到标准 json）
+zstandard>=0.23       # 校验并解包 raw/processed 审稿数据归档
 
 # --- LLM / VLM（Gemini）---
 google-genai>=0.3.0   # Gemini 2.5 Flash + Batch API

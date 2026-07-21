@@ -26,8 +26,9 @@ from sklearn.metrics import f1_score, roc_auc_score, average_precision_score
 import config
 from models.data import (ClaimDataset, make_collate, load_split, build_tokenizer,
                          resolve_bge_path, SPECIAL_TOKENS,
-                         evidence_combo, confidence_bin)
+                         evidence_combo, confidence_bin, apply_evidence_policy)
 from models.model import CLAIMARC
+from models.provenance import attach_run_provenance
 
 
 COMBO_LABELS = ("none", "P", "O", "V", "PO", "PV", "OV", "POV")
@@ -162,15 +163,6 @@ def recompute_c(splits: dict[str, list[dict]], spec: str):
         r["c"] = float(max(c, d["floor"]))
         n_changed += 1
     print(f"[c_recompute={spec}] recomputed train c on {n_changed} comment-driven pairs", flush=True)
-
-
-def apply_evidence_policy(splits: dict[str, list[dict]], policy: str | None):
-    """Force a tokenization-time evidence policy while preserving default record policy."""
-    if not policy or policy == "record":
-        return
-    for rows in splits.values():
-        for r in rows:
-            r["_evidence_policy"] = policy
 
 
 def parse_evidence_policy_mix(value) -> list[str]:
@@ -1241,6 +1233,9 @@ def train(args, splits=None, return_model=False):
         print(f"[save_ckpt] -> {args.save_ckpt}", flush=True)
     _, train_pack = build_bank()
     res = evaluate(model, loaders, device, train_pack, tag=args.tag, seed=args.seed)
+    attach_run_provenance(res, args, bge)
+    res["encoder_train_mode"] = getattr(args, "enc_train", "lora")
+    res["loss"] = getattr(args, "loss", "bce")
     print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
     if args.save_emb:
         # 完整导出三划分的 (g, p_cls, y, c, attr, pair_id)，供离线 ARF/集成/标定迭代（§3.4）。
@@ -1250,6 +1245,10 @@ def train(args, splits=None, return_model=False):
         pid = lambda s: [r.get("pair_id", "") for r in splits[s]]
         torch.save({
             "thr": res["thr"], "alpha_rkc": res.get("alpha_rkc", 1.0),
+            "provenance": {k: res.get(k) for k in (
+                "dataset", "dataset_sha256", "label_field", "split_field", "split_group",
+                "evidence_policy", "resolved_model", "encoder_train_mode", "loss", "seed", "tag"
+            )},
             "train": {"g": gtr_f, "p": ptr, "y": ytr, "c": ctr, "attr": attr_tr, "pair_id": pid("train")},
             "val": {"g": gva, "p": pva, "y": yva, "c": cva, "attr": attr_va, "pair_id": pid("val")},
             "test": {"g": gte, "p": pte, "y": yte, "c": cte, "attr": attr_te, "pair_id": pid("test")},
@@ -1294,7 +1293,7 @@ def main():
     ap.add_argument("--no_weight", action="store_true", help="退化为未加权 BCE")
     ap.add_argument("--lora_rank", type=int, default=16)
     ap.add_argument("--heads", type=int, default=8)
-    ap.add_argument("--tau", type=float, default=0.07)  # paper canonical
+    ap.add_argument("--tau", type=float, default=0.05)  # 调参后的最优 canonical
     ap.add_argument("--Kp", type=int, default=3)
     ap.add_argument("--Kn", type=int, default=5)
     ap.add_argument("--global_neg", action="store_true", help="全集合随机反标签（消融）")
@@ -1368,11 +1367,11 @@ def main():
     ap.add_argument("--xattn_dir", default="both", choices=["both", "c2e", "e2c"])
     ap.add_argument("--indep_proj", action="store_true")
     ap.add_argument("--ffn", default="swiglu", choices=["swiglu", "gelu"])
-    ap.add_argument("--evidence_policy", default=str(getattr(config, "EVIDENCE_POLICY_CANONICAL", "sources_only")),
+    ap.add_argument("--evidence_policy", default="",
                     choices=["", "record", "args_first", "source_first", "no_args",
                              "source_only", "sources_only", "args_only", "params_only",
                              "ocr_only", "vlm_only", "params_args", "ocr_args", "vlm_args"],
-                    help="证据视图；论文公平口径默认 sources_only（仅三源，不用 arguments）")
+                    help="覆盖记录内 _evidence_policy；用于训练分源 evidence experts")
     ap.add_argument("--evidence_policy_mix", default="",
                     help="逗号或空格分隔的 train-only evidence views；例如 source_first,no_args,ocr_only,params_only")
     ap.add_argument("--view_consistency_mix", default="",

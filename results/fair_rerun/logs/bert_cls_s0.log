@@ -1,0 +1,56 @@
+2026-07-21 20:39:55,162 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 20:39:55,163 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 20:39:55,205 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+
+Downloading:   0%|          | 0.00/624 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 624/624 [00:00<00:00, 138kB/s]
+
+Downloading:   0%|          | 0.00/42.0 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 42.0/42.0 [00:00<00:00, 10.8kB/s]
+
+Downloading:   0%|          | 0.00/392M [00:00<?, ?B/s]
+Downloading:   4%|▍         | 16.0M/392M [00:00<00:22, 17.3MB/s]
+Downloading:   8%|▊         | 32.0M/392M [00:02<00:23, 16.1MB/s]
+Downloading:  12%|█▏        | 48.0M/392M [00:03<00:21, 16.5MB/s]
+Downloading:  16%|█▋        | 64.0M/392M [00:03<00:19, 17.4MB/s]
+Downloading:  20%|██        | 80.0M/392M [00:04<00:19, 17.2MB/s]
+Downloading:  24%|██▍       | 96.0M/392M [00:05<00:17, 17.5MB/s]
+Downloading:  29%|██▊       | 112M/392M [00:06<00:16, 17.4MB/s] 
+Downloading:  33%|███▎      | 128M/392M [00:07<00:16, 17.3MB/s]
+Downloading:  37%|███▋      | 144M/392M [00:08<00:14, 17.6MB/s]
+Downloading:  41%|████      | 160M/392M [00:09<00:13, 17.7MB/s]
+Downloading:  45%|████▍     | 176M/392M [00:10<00:12, 17.8MB/s]
+Downloading:  49%|████▉     | 192M/392M [00:11<00:11, 17.7MB/s]
+Downloading:  53%|█████▎    | 208M/392M [00:12<00:10, 17.8MB/s]
+Downloading:  57%|█████▋    | 224M/392M [00:13<00:09, 17.7MB/s]
+Downloading:  61%|██████    | 240M/392M [00:14<00:08, 17.8MB/s]
+Downloading:  65%|██████▌   | 256M/392M [00:15<00:08, 17.8MB/s]
+Downloading:  69%|██████▉   | 272M/392M [00:16<00:07, 17.5MB/s]
+Downloading:  73%|███████▎  | 288M/392M [00:17<00:06, 17.6MB/s]
+Downloading:  77%|███████▋  | 304M/392M [00:18<00:05, 17.5MB/s]
+Downloading:  82%|████████▏ | 320M/392M [00:19<00:04, 17.6MB/s]
+Downloading:  86%|████████▌ | 336M/392M [00:20<00:03, 17.7MB/s]
+Downloading:  90%|████████▉ | 352M/392M [00:21<00:02, 17.6MB/s]
+Downloading:  94%|█████████▍| 368M/392M [00:22<00:01, 17.5MB/s]
+Downloading:  98%|█████████▊| 384M/392M [00:22<00:00, 17.7MB/s]
+Downloading: 100%|██████████| 392M/392M [00:23<00:00, 17.7MB/s]
+Downloading: 100%|██████████| 392M/392M [00:23<00:00, 17.5MB/s]
+
+Downloading:   0%|          | 0.00/2.12k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 2.12k/2.12k [00:00<00:00, 518kB/s]
+
+Downloading:   0%|          | 0.00/263k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 263k/263k [00:00<00:00, 2.26MB/s]
+Downloading: 100%|██████████| 263k/263k [00:00<00:00, 2.23MB/s]
+
+Downloading:   0%|          | 0.00/29.0 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 29.0/29.0 [00:00<00:00, 10.6kB/s]
+
+Downloading:   0%|          | 0.00/107k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 107k/107k [00:00<00:00, 1.12MB/s]
+[bert_cls ep0] loss=0.3808 val_mF1=0.7133
+[bert_cls ep1] loss=0.2555 val_mF1=0.7238
+[bert_cls ep2] loss=0.1523 val_mF1=0.7260
+[bert_cls ep3] loss=0.0737 val_mF1=0.7241
+RESULT {"tag": "bert_cls", "seed": 0, "thr": 0.2, "acc": 0.8035, "macro_f1": 0.7731, "pos_f1": 0.69, "wF1": 0.7468, "auprc": 0.6936, "auroc": 0.8816, "ece": 0.1656, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/bert_cls_s0.pt

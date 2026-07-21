@@ -5,11 +5,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-FIGS = os.path.join(_ROOT, "docs/paper/figs")
+FIGS = os.path.join(_ROOT, "paper/figs")
 
-_cands = [os.path.join(_ROOT, "data/final/selective_canon.json"),
-          os.path.join(_ROOT, "data/final/emb_c6/selective_canon.json")]
-SEL = next(p for p in _cands if os.path.exists(p))
+SEL = os.path.join(_ROOT, "results/fair_rerun/selective_canon.json")
+if not os.path.exists(SEL):
+    raise FileNotFoundError(f"fair selective-prediction artifact is missing: {SEL}")
 d = json.load(open(SEL))
 keys = sorted(d.keys(), key=lambda k: float(k), reverse=True)
 x = [float(k) * 100 for k in keys]

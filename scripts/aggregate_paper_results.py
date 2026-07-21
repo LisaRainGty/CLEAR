@@ -1,0 +1,274 @@
+#!/usr/bin/env python3
+"""Compile fair-rerun artifacts into one reviewer-readable file, table by table."""
+from __future__ import annotations
+
+import argparse
+import json
+from collections import defaultdict
+from pathlib import Path
+
+import numpy as np
+
+
+METRICS = ("acc", "pos_f1", "macro_f1", "auprc", "auroc", "wF1", "ece")
+
+
+def load_json(path: Path):
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+def load_rows(root: Path):
+    rows = []
+    for path in sorted((root / "results/fair_rerun/jobs").glob("*.jsonl")):
+        if path.name.startswith("._"):
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                row = json.loads(line)
+                row["_result_file"] = str(path.relative_to(root))
+                rows.append(row)
+    return rows
+
+
+def aggregate(rows):
+    grouped = defaultdict(list)
+    for row in rows:
+        if row.get("tag"):
+            grouped[row["tag"]].append(row)
+    out = {}
+    for tag, group in grouped.items():
+        item = {"n": len(group), "seeds": sorted({r.get("seed") for r in group
+                                                   if r.get("seed") is not None})}
+        for metric in METRICS:
+            values = [float(r[metric]) for r in group if r.get(metric) is not None]
+            if values:
+                item[metric] = {"mean": float(np.mean(values)), "std": float(np.std(values))}
+        item["dataset_sha256"] = sorted({r.get("dataset_sha256", "") for r in group})
+        item["evidence_policy"] = sorted({r.get("evidence_policy", "") for r in group})
+        out[tag] = item
+    return out
+
+
+def metric_cell(agg, tag, metric, percent=True):
+    value = agg.get(tag, {}).get(metric)
+    if not value:
+        return "PENDING"
+    scale = 100 if percent else 1
+    mean, std = scale * value["mean"], scale * value["std"]
+    n = agg[tag]["n"]
+    return f"{mean:.2f}±{std:.2f}" if n > 1 else f"{mean:.2f}"
+
+
+def metric_table(lines, title, entries, agg, metrics=("acc", "pos_f1", "auprc", "auroc")):
+    lines.extend([f"## {title}", "", "| 方法/设定 | " + " | ".join(metrics) + " | n |",
+                  "|---|" + "---:|" * (len(metrics) + 1)])
+    for label, tag in entries:
+        cells = [metric_cell(agg, tag, metric) for metric in metrics]
+        n = agg.get(tag, {}).get("n", 0)
+        lines.append(f"| {label} | " + " | ".join(cells) + f" | {n or 'PENDING'} |")
+    lines.append("")
+
+
+def xdom_table(lines, title, blob):
+    lines.extend([f"## {title}", "",
+                  "| System | Acc | F1pos | Macro-F1 | AUPRC | AUROC | folds |",
+                  "|---|---:|---:|---:|---:|---:|---:|"])
+    if not blob:
+        lines.extend(["| PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |", ""])
+        return
+    paper_order = (
+        "ESIM", "BERT-CLS", "RoBERTa-CLS", "LLM zero-shot (Qwen-Flash)",
+        "LLM few-shot (Qwen-Flash)", "CLAIMARC",
+    )
+    aggregate_rows = blob.get("aggregate", {})
+    for name in paper_order:
+        if name not in aggregate_rows:
+            continue
+        values = aggregate_rows[name]
+        def cell(key):
+            item = values.get(key, {})
+            if item.get("mean") is None:
+                return "--"
+            return f"{item['mean']:.1f}±{item['std']:.1f}"
+        lines.append(f"| {name} | {cell('acc')} | {cell('f1pos')} | {cell('macro_f1')} | "
+                     f"{cell('auprc')} | {cell('auroc')} | {values.get('n_folds', 0)} |")
+    lines.append("")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    root = args.root.resolve()
+    rows = load_rows(root)
+    agg = aggregate(rows)
+    agg_seed0 = aggregate([row for row in rows if row.get("seed") == 0])
+    audit = load_json(root / "results/audit/reproducibility_report.json") or {}
+    data = audit.get("dataset", {})
+    lines = [
+        "# 论文全部实验表：三源证据公平重跑", "",
+        "> 本文件只汇总 `sources_only` (PARAM + OCR + VLM) 公平重跑。"
+        "`PENDING` 表示对应 GPU/API 任务尚未成功完成，不会用历史异口径数字填补。", "",
+        f"- Dataset SHA-256: `{data.get('sha256', 'PENDING')}`",
+        f"- Rows: {data.get('rows', 'PENDING')}",
+        f"- Argument records: {data.get('argument_records', 'PENDING')}",
+        f"- Fresh RESULT rows: {len(rows)}", "",
+        "## Table 1. Dataset split and statistics", "",
+        "| Split | N | Positive | Positive rate | Rooms |", "|---|---:|---:|---:|---:|",
+    ]
+    for split in ("train", "val", "test"):
+        n = data.get("split_rows", {}).get(split, "PENDING")
+        p = data.get("split_positives", {}).get(split, "PENDING")
+        rate = data.get("split_positive_rates", {}).get(split)
+        rate = f"{100 * rate:.2f}%" if isinstance(rate, (float, int)) else "PENDING"
+        rooms = data.get("rooms_by_split", {}).get(split, "PENDING")
+        lines.append(f"| {split} | {n} | {p} | {rate} | {rooms} |")
+    all_n = sum(data.get("split_rows", {}).values()) if data.get("split_rows") else "PENDING"
+    all_p = sum(data.get("split_positives", {}).values()) if data.get("split_positives") else "PENDING"
+    all_rate = f"{100 * all_p / all_n:.2f}%" if isinstance(all_n, int) and all_n else "PENDING"
+    all_rooms = sum(data.get("rooms_by_split", {}).values()) if data.get("rooms_by_split") else "PENDING"
+    lines.append(f"| **All** | **{all_n}** | **{all_p}** | **{all_rate}** | **{all_rooms}** |")
+    coverage = data.get("source_coverage_0_1_2_3", {})
+    lines.extend([
+        "",
+        f"Evidence-source availability (0/1/2/3): "
+        f"{coverage.get('0', 'PENDING')}/{coverage.get('1', 'PENDING')}/"
+        f"{coverage.get('2', 'PENDING')}/{coverage.get('3', 'PENDING')}; "
+        f"reliability c mean/median/range: "
+        f"{data.get('c_mean', 'PENDING'):.3f}/{data.get('c_median', 'PENDING'):.3f}/"
+        f"[{data.get('c_min', 'PENDING'):.3f}, {data.get('c_max', 'PENDING'):.3f}]."
+        if isinstance(data.get("c_mean"), (int, float)) else "Dataset summary: PENDING.",
+        f"Construction sources: {data.get('construction_sources', {})}; "
+        f"aligned-comment pairs: {data.get('pairs_with_aligned_comments', 'PENDING')} "
+        f"({100 * data.get('pairs_with_aligned_comments_rate', 0):.2f}%).",
+    ])
+    lines.extend(["", "## Table 2. Category distribution", "", "| Category | N |", "|---|---:|"])
+    categories = data.get("categories", {})
+    if categories:
+        for name, count in sorted(categories.items()):
+            lines.append(f"| {name} | {count} |")
+    else:
+        lines.append("| PENDING | PENDING |")
+    lines.append("")
+
+    metric_table(lines, "Table 3. In-domain main comparison", (
+        ("ESIM", "esim"), ("Decomposable Attention", "dam"),
+        ("BERT-NLI", "bert_nli"), ("TextCNN", "textcnn"),
+        ("BiLSTM", "bilstm"), ("BERT-CLS", "bert_cls"),
+        ("RoBERTa-CLS", "roberta_cls"),
+        ("BGE frozen + LR", "BGEfz_LR_4tuple"),
+        ("BGE frozen + SVM", "BGEfz_SVM_4tuple"),
+        ("BGE frozen + MLP", "BGEfz_MLP_4tuple"),
+        ("BGE frozen + kNN", "BGEfz_kNN_attr_k15"),
+        ("Qwen-Flash zero-shot", "qwen_flash_zero"),
+        ("Qwen-Flash five-shot", "qwen_flash_fs5"),
+        ("GPT-5.4 zero-shot", "gpt54_zero"),
+        ("GPT-5.4 five-shot", "gpt54_fs5"),
+        ("Gemini-3.5-Flash zero-shot", "gemini35_zero"),
+        ("Gemini-3.5-Flash five-shot", "gemini35_fs5"),
+        ("Kimi-K2.6 zero-shot", "kimi_zero"),
+        ("Kimi-K2.6 five-shot", "kimi_fs5"),
+        ("Qwen2.5-7B QLoRA SFT", "qwen2p5_7b_qlora_sft"),
+        ("CLAIMARC", "claimarc_canonical"),
+    ), agg)
+
+    category_all = root / "results/fair_rerun/table4_xdom_category_all.json"
+    rooms_all = root / "results/fair_rerun/table4_xdom_rooms_all.json"
+    xdom_table(lines, "Table 4a. Leave-one-category transfer",
+               load_json(category_all if category_all.exists() else
+                         root / "results/fair_rerun/table4_xdom_category.json"))
+    xdom_table(lines, "Table 4b. Leave-20-streamer transfer",
+               load_json(rooms_all if rooms_all.exists() else
+                         root / "results/fair_rerun/table4_xdom_rooms.json"))
+
+    lines.extend(["## Table 5. Gradient-free target-library injection", "",
+                  "| Domain protocol | Condition | AP | AUC | F1 |", "|---|---|---:|---:|---:|"])
+    mode = "rooms"
+    blob = load_json(root / "results/fair_rerun/table5_injection_rooms.json")
+    if not blob:
+        lines.append(f"| {mode} | PENDING | PENDING | PENDING | PENDING |")
+    else:
+        for condition in ("forward", "f0.0", "f0.2", "f0.4", "f0.6", "f0.8", "f1.0"):
+            a = blob.get("agg", {}).get(f"{condition}_ap", [None, None])
+            u = blob.get("agg", {}).get(f"{condition}_auc", [None, None])
+            f = blob.get("agg", {}).get(f"{condition}_f1", [None, None])
+            cell = lambda x: "PENDING" if x[0] is None else f"{x[0]:.1f}±{x[1]:.1f}"
+            lines.append(f"| {mode} | {condition} | {cell(a)} | {cell(u)} | {cell(f)} |")
+    lines.append("")
+
+    geom = load_json(root / "results/fair_rerun/table6_geometry.json")
+    lines.extend(["## Table 6. Representation geometry", "",
+                  "| Variant | Silhouette | Hard purity@10 | Alignment | Uniformity |",
+                  "|---|---:|---:|---:|---:|"])
+    for key, label in (("none", "w/o contrast"), ("supcon", "SupCon"), ("racl", "RACL")):
+        row = (geom or {}).get(key, {})
+        def gc(name):
+            if name not in row:
+                return "PENDING"
+            std = row.get(name + "_std")
+            return f"{row[name]:.3f}±{std:.3f}" if std is not None else f"{row[name]:.3f}"
+        lines.append(f"| {label} | {gc('silhouette')} | {gc('hard_knn_purity@10')} | "
+                     f"{gc('alignment_pos')} | {gc('uniformity')} |")
+    lines.append("")
+
+    metric_table(lines, "Table 7. Core ablations", (
+        ("Canonical", "claimarc_canonical"), ("w/o RACL", "no_racl"),
+        ("w/o reliability", "no_reliability"),
+        ("w/o class balance", "no_class_balance"),
+        ("w/o four-tuple", "no_four_tuple"), ("BERT backbone", "bert_backbone"),
+    ), agg)
+    metric_table(lines, "Table 8. Dual-stream ablations", (
+        ("Canonical", "claimarc_canonical"), ("w/o fusion", "no_fusion"),
+        ("Claim only", "claim_only"), ("Evidence only", "evidence_only"),
+    ), agg)
+    metric_table(lines, "Table 9. RACL mining", (
+        ("Canonical", "claimarc_canonical"), ("Hard positive", "hard_positive"),
+        ("Same-attribute negative", "same_attribute_negative"),
+        ("Same-evidence-type negative", "same_evidence_type_negative"),
+        ("Kp=1", "kp1"), ("Kp=5", "kp5"), ("Kn=1", "kn1"), ("Kn=10", "kn10"),
+    ), agg)
+    metric_table(lines, "Table 10. Reliability counterfactuals", (
+        ("Canonical c", "claimarc_canonical"), ("Uniform", "no_reliability"),
+        ("Inverse", "weight_inverse"), ("Permuted", "weight_permute"),
+        ("Binary", "weight_binary"), ("Count only", "weight_count"),
+        ("sqrt(c)", "weight_sqrt"),
+    ), agg)
+    lines.extend(["## Table 11", "", "The current manuscript has no Table 11 (numbering gap).", ""])
+
+    hp_entries = (
+        ("Canonical LoRA (N2, h8, r16, lambda=.5, tau=.07, Kp3/Kn5, BCE)", "hp_lora_canonical"),
+        ("Fusion blocks N=1", "hp_fusion1"), ("Fusion blocks N=3", "hp_fusion3"),
+        ("Fusion blocks N=4", "hp_fusion4"), ("Attention heads=4", "hp_heads4"),
+        ("Attention heads=16", "hp_heads16"), ("LoRA rank=8", "hp_rank8"),
+        ("LoRA rank=32", "hp_rank32"), ("lambda_CL=0.1", "hp_lambda0p1"),
+        ("lambda_CL=0.3", "hp_lambda0p3"), ("lambda_CL=1.0", "hp_lambda1p0"),
+        ("tau=0.05", "hp_tau0p05"), ("tau=0.10", "hp_tau0p10"),
+        ("tau=0.20", "hp_tau0p20"), ("Kp/Kn=(1,1)", "hp_k1_1"),
+        ("Kp/Kn=(5,10)", "hp_k5_10"), ("ASL", "hp_loss_asl"),
+        ("Focal loss", "hp_loss_focal"), ("FFN GeLU", "hp_ffn_gelu"),
+        ("cross-attention claim to evidence", "hp_xattn_c2e"),
+        ("cross-attention evidence to claim", "hp_xattn_e2c"),
+        ("Independent projections", "hp_independent_projection"),
+    )
+    metric_table(lines, "Table 12. LoRA-efficient hyperparameter sensitivity (all three-source)",
+                 hp_entries, agg)
+    metric_table(lines, "Table 13. Reliability-formula sensitivity (matched seed 0)", (
+        ("Canonical", "claimarc_canonical"), ("k=1.5", "c_k1p5"),
+        ("k=6", "c_k6"), ("lambda=0.1", "c_lambda0p1"),
+        ("lambda=0.6", "c_lambda0p6"), ("rho=0.2", "c_rho0p2"),
+        ("rho=0.6", "c_rho0p6"), ("phi=1.0", "c_phi1p0"),
+        ("phi=1.5", "c_phi1p5"),
+    ), agg_seed0)
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    json_out = args.output.with_suffix(".json")
+    json_out.write_text(json.dumps({"aggregates": agg, "fresh_rows": len(rows)},
+                                   ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"[written] {args.output}")
+    print(f"[written] {json_out}")
+
+
+if __name__ == "__main__":
+    main()

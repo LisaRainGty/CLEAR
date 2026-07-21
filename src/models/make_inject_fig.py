@@ -1,5 +1,5 @@
 """Plot the gradient-free library-adaptation trajectory (fig_inject.pdf)."""
-import json, os
+import argparse, json, os
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -12,10 +12,15 @@ rcParams.update({"font.family": "serif", "font.serif": ["DejaVu Serif"],
                  "grid.linestyle": "--"})
 C_POS, C_NEG, C_G = "#d1495b", "#2e86ab", "#3a7d44"
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-D = os.path.join(_ROOT, "data/final")
-OUT = os.path.join(_ROOT, "docs/paper/figs"); os.makedirs(OUT, exist_ok=True)
+parser = argparse.ArgumentParser()
+parser.add_argument("--input", default=os.path.join(
+    _ROOT, "results/fair_rerun/table5_injection_rooms.json"))
+parser.add_argument("--outdir", default=os.path.join(_ROOT, "paper", "figs"))
+args = parser.parse_args()
+OUT = args.outdir
+os.makedirs(OUT, exist_ok=True)
 
-s = json.load(open(os.path.join(D, "inject_rooms.json")))
+s = json.load(open(args.input))
 agg = s["agg"]
 fracs = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
 x = [100 * f for f in fracs]
