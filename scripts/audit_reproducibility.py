@@ -135,6 +135,42 @@ def main() -> int:
         overlap[f"{a}_{b}"] = sorted(rooms[a] & rooms[b])
 
     digest = sha256_file(dataset)
+    fair = cfg.get("fair_comparison", {})
+    policy = fair.get("evidence_policy")
+    expected_arguments = int(spec.get("expected_argument_records", 0))
+    generation_spec = cfg.get("argument_generation", {})
+    generation_manifest = None
+    generation_manifest_path = None
+    if policy == "args_only" and generation_spec.get("manifest"):
+        generation_manifest_path = ROOT / generation_spec["manifest"]
+        if generation_manifest_path.is_file():
+            generation_manifest = json.loads(
+                generation_manifest_path.read_text(encoding="utf-8"))
+    generation_manifest_ok = policy != "args_only" or bool(
+        generation_manifest
+        and generation_manifest.get("status") == "complete"
+        and generation_manifest.get("selection", {}).get("mode") == "all"
+        and generation_manifest.get("rows") == len(rows)
+        and generation_manifest.get("output_sha256") == digest
+        and generation_manifest.get("input_contract", {}).get(
+            "historical_arguments_reused") is False
+    )
+    lineage_report_ok = policy != "args_only"
+    lineage_path = generation_spec.get("lineage_report")
+    if policy == "args_only" and lineage_path:
+        candidate = ROOT / lineage_path
+        if candidate.is_file():
+            lineage_report_ok = json.loads(
+                candidate.read_text(encoding="utf-8")).get("status") == "PASS"
+    argument_policy_consistent = (
+        policy == "sources_only"
+        and fair.get("arguments_allowed") is False
+        and argument_count == 0
+    ) or (
+        policy == "args_only"
+        and fair.get("arguments_allowed") is True
+        and argument_count == len(rows)
+    )
     checks = {
         "dataset_exists": dataset.is_file(),
         "dataset_sha256": digest == spec["sha256"],
@@ -143,20 +179,19 @@ def main() -> int:
         "split_positives": dict(split_pos) == spec["expected_split_positives"],
         "room_group_leakage_absent": all(not values for values in overlap.values()),
         "shared_sources_nonempty": sum(coverage[k] for k in (1, 2, 3)) > 0,
-        "input_policy_is_sources_only": (
-            cfg.get("fair_comparison", {}).get("evidence_policy") == "sources_only"
-        ),
-        "generated_arguments_excluded": argument_count == 0,
-        "argument_record_count": argument_count == spec.get("expected_argument_records", 0),
+        "input_policy_supported": policy in {"sources_only", "args_only"},
+        "argument_policy_consistent": argument_policy_consistent,
+        "argument_record_count": argument_count == expected_arguments,
+        "argument_generation_manifest": generation_manifest_ok,
+        "argument_lineage_audit": lineage_report_ok,
         "source_availability": (
             {str(k): coverage[k] for k in range(4)}
             == spec.get("expected_source_availability", {})
         ),
-        "arguments_forbidden_by_config": (
-            cfg.get("fair_comparison", {}).get("arguments_allowed") is False
-        ),
+        "arguments_flag_matches_policy": fair.get("arguments_allowed") == (
+            policy == "args_only"),
         "single_source_experiments_forbidden": (
-            cfg.get("fair_comparison", {}).get("single_source_experiments_allowed") is False
+            fair.get("single_source_experiments_allowed") is False
         ),
     }
 
@@ -199,14 +234,26 @@ def main() -> int:
         },
         "checks": checks,
         "historical_results": results,
+        "argument_generation": {
+            "manifest": str(generation_manifest_path.relative_to(ROOT))
+            if generation_manifest_path else None,
+            "manifest_status": generation_manifest.get("status")
+            if generation_manifest else None,
+            "prompt_sha256": generation_manifest.get("prompt_sha256")
+            if generation_manifest else None,
+            "model": generation_manifest.get("model", {}).get("id")
+            if generation_manifest else None,
+            "lineage_report": lineage_path,
+        },
         "interpretation": {
             "paper_headline_matches_c6_args": headline_matches_args,
             "c6_args_view_is_empty": argument_count == 0,
             "c6_canon_is_current_shared_source_view_reference": bool(c6_canon),
+            "active_evidence_policy": policy,
             "fair_rerun_required": True,
             "reason": (
-                "The paper headline was selected from args_only although the frozen dataset has "
-                "no generated arguments. Historical baselines and most ablations used source evidence."
+                "All systems must be freshly rerun under the single evidence policy recorded "
+                "in this config; results from another evidence view are not comparable."
             ),
         },
         "overall": "FAIL_NEEDS_FAIR_RERUN" if not all(checks.values()) else "PASS",

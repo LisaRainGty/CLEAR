@@ -102,17 +102,22 @@ def paired(canonical, baseline, repetitions, seed):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)
+    parser.add_argument("--namespace", default="fair_rerun")
     parser.add_argument("--repetitions", type=int, default=2000)
     parser.add_argument("--seed", type=int, default=20260721)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     root = args.root.resolve()
-    canonical_paths = [root / f"embeddings/fair_rerun/emb_geom/emb_geom_racl_s{s}.pt"
+    if not args.namespace or args.namespace in {".", ".."} \
+            or "/" in args.namespace or "\\" in args.namespace:
+        raise ValueError(f"invalid namespace: {args.namespace!r}")
+    canonical_paths = [root / f"embeddings/{args.namespace}/emb_geom/emb_geom_racl_s{s}.pt"
                        for s in range(3)]
     if not all(path.exists() for path in canonical_paths):
         raise FileNotFoundError("canonical three-seed bundles are incomplete")
     canonical = ensemble(canonical_paths)
-    base = root / "embeddings/fair_rerun/baseline_predictions"
+    base = root / "embeddings" / args.namespace / "baseline_predictions"
+    result_root = root / "results" / args.namespace
     patterns = {
         "BERT-CLS": [base / f"bert_cls_s{s}.pt" for s in range(3)],
         "RoBERTa-CLS": [base / f"roberta_cls_s{s}.pt" for s in range(3)],
@@ -127,14 +132,14 @@ def main():
         "BGE frozen + SVM": [base / "frozen_s0/BGEfz_SVM_4tuple.pt"],
         "BGE frozen + MLP": [base / "frozen_s0/BGEfz_MLP_4tuple.pt"],
         "BGE frozen + kNN": [base / "frozen_s0/BGEfz_kNN_attr_k15.pt"],
-        "Qwen-Flash zero-shot": [root / "results/fair_rerun/llm_qwen_flash_zero.json"],
-        "Qwen-Flash five-shot": [root / "results/fair_rerun/llm_qwen_flash_fs5.json"],
-        "GPT-5.4 zero-shot": [root / "results/fair_rerun/llm_gpt54_zero.json"],
-        "GPT-5.4 five-shot": [root / "results/fair_rerun/llm_gpt54_fs5.json"],
-        "Gemini-3.5-Flash zero-shot": [root / "results/fair_rerun/llm_gemini35_zero.json"],
-        "Gemini-3.5-Flash five-shot": [root / "results/fair_rerun/llm_gemini35_fs5.json"],
-        "Kimi-K2.6 zero-shot": [root / "results/fair_rerun/llm_kimi_zero.json"],
-        "Kimi-K2.6 five-shot": [root / "results/fair_rerun/llm_kimi_fs5.json"],
+        "Qwen-Flash zero-shot": [result_root / "llm_qwen_flash_zero.json"],
+        "Qwen-Flash five-shot": [result_root / "llm_qwen_flash_fs5.json"],
+        "GPT-5.4 zero-shot": [result_root / "llm_gpt54_zero.json"],
+        "GPT-5.4 five-shot": [result_root / "llm_gpt54_fs5.json"],
+        "Gemini-3.5-Flash zero-shot": [result_root / "llm_gemini35_zero.json"],
+        "Gemini-3.5-Flash five-shot": [result_root / "llm_gemini35_fs5.json"],
+        "Kimi-K2.6 zero-shot": [result_root / "llm_kimi_zero.json"],
+        "Kimi-K2.6 five-shot": [result_root / "llm_kimi_fs5.json"],
     }
     result = {"repetitions": args.repetitions, "seed": args.seed, "comparisons": {},
               "missing": {}}

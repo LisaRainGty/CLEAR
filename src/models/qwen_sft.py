@@ -1,9 +1,8 @@
 """Qwen2.5-7B QLoRA sequence-classification baseline for Table 3.
 
-The input is deliberately identical to every other fair-comparison model:
-claim text plus the concatenation of PARAM/OCR/VLM evidence.  Arguments are
-never read when ``--evidence_policy sources_only`` (the required setting).
-Threshold and checkpoint selection use validation data only.
+The explicit evidence policy must match the active paper protocol, so this
+baseline receives exactly the same sources-only or arguments-only view as all
+other systems. Threshold and checkpoint selection use validation data only.
 """
 from __future__ import annotations
 
@@ -104,8 +103,8 @@ def metrics(y, p, c, threshold):
 
 
 def run(args):
-    if args.evidence_policy != "sources_only":
-        raise ValueError("The paper fair rerun requires --evidence_policy sources_only")
+    if args.evidence_policy not in {"sources_only", "args_only"}:
+        raise ValueError("paper reruns support only sources_only or args_only")
     if not torch.cuda.is_available():
         raise RuntimeError("Qwen2.5-7B QLoRA requires a CUDA GPU")
     set_seed(args.seed)
@@ -244,7 +243,7 @@ def main():
     parser.add_argument("--model", default=os.environ.get(
         "CLAIMARC_QWEN_PATH", "Qwen/Qwen2.5-7B"))
     parser.add_argument("--evidence_policy", default="sources_only",
-                        choices=["sources_only"])
+                        choices=["sources_only", "args_only"])
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--epochs", type=int, default=3)
     parser.add_argument("--bs", type=int, default=2)

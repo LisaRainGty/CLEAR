@@ -27,10 +27,10 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
-def load_rows(root: Path):
+def load_rows(root: Path, result_root: Path, evidence_policy: str):
     rows = []
     rejected = []
-    for path in sorted((root / "results/fair_rerun/jobs").glob("*.jsonl")):
+    for path in sorted((result_root / "jobs").glob("*.jsonl")):
         if path.name.startswith("._"):
             continue
         for line in path.read_text(encoding="utf-8").splitlines():
@@ -38,8 +38,8 @@ def load_rows(root: Path):
                 row = json.loads(line)
                 row["_result_file"] = str(path.relative_to(root))
                 reasons = []
-                if row.get("evidence_policy") not in (None, "sources_only"):
-                    reasons.append("non_sources_only")
+                if row.get("evidence_policy") not in (None, evidence_policy):
+                    reasons.append(f"non_{evidence_policy}")
                 for field in ("n_err_val", "n_err_test", "n_err"):
                     if int(row.get(field) or 0) > 0:
                         reasons.append(f"{field}={int(row[field])}")
@@ -128,16 +128,32 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--config", type=Path,
+                        default=Path("configs/paper_fair.json"))
     args = parser.parse_args()
     root = args.root.resolve()
-    rows, rejected_rows = load_rows(root)
+    config_path = args.config if args.config.is_absolute() else root / args.config
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    policy = str(config["fair_comparison"]["evidence_policy"])
+    namespace = str(config.get("paper_suite", {}).get("artifact_namespace", "fair_rerun"))
+    result_root = root / "results" / namespace
+    rows, rejected_rows = load_rows(root, result_root, policy)
     agg = aggregate(rows)
     agg_seed0 = aggregate([row for row in rows if row.get("seed") == 0])
-    audit = load_json(root / "results/audit/reproducibility_report.json") or {}
+    audit = load_json(result_root / "reproducibility_report.json")
+    if audit is None and namespace == "fair_rerun":
+        audit = load_json(root / "results/audit/reproducibility_report.json")
+    audit = audit or {}
     data = audit.get("dataset", {})
+    if policy == "sources_only":
+        title = "# 论文全部实验表：三源证据公平重跑"
+        protocol_note = "`sources_only` (PARAM + OCR + VLM)"
+    else:
+        title = "# 论文全部实验表：Arguments-only 公平重跑"
+        protocol_note = "`args_only` (supporting + refuting + evidence-gap arguments)"
     lines = [
-        "# 论文全部实验表：三源证据公平重跑", "",
-        "> 本文件只汇总 `sources_only` (PARAM + OCR + VLM) 公平重跑。"
+        title, "",
+        f"> 本文件只汇总 {protocol_note} 公平重跑。"
         "`PENDING` 表示对应 GPU/API 任务尚未成功完成，不会用历史异口径数字填补。", "",
         f"- Dataset SHA-256: `{data.get('sha256', 'PENDING')}`",
         f"- Rows: {data.get('rows', 'PENDING')}",
@@ -203,19 +219,19 @@ def main():
         ("CLAIMARC", "claimarc_canonical"),
     ), agg)
 
-    category_all = root / "results/fair_rerun/table4_xdom_category_all.json"
-    rooms_all = root / "results/fair_rerun/table4_xdom_rooms_all.json"
+    category_all = result_root / "table4_xdom_category_all.json"
+    rooms_all = result_root / "table4_xdom_rooms_all.json"
     xdom_table(lines, "Table 4a. Leave-one-category transfer",
                load_json(category_all if category_all.exists() else
-                         root / "results/fair_rerun/table4_xdom_category.json"))
+                         result_root / "table4_xdom_category.json"))
     xdom_table(lines, "Table 4b. Leave-20-streamer transfer",
                load_json(rooms_all if rooms_all.exists() else
-                         root / "results/fair_rerun/table4_xdom_rooms.json"))
+                         result_root / "table4_xdom_rooms.json"))
 
     lines.extend(["## Table 5. Gradient-free target-library injection", "",
                   "| Domain protocol | Condition | AP | AUC | F1 |", "|---|---|---:|---:|---:|"])
     mode = "rooms"
-    blob = load_json(root / "results/fair_rerun/table5_injection_rooms.json")
+    blob = load_json(result_root / "table5_injection_rooms.json")
     if not blob:
         lines.append(f"| {mode} | PENDING | PENDING | PENDING | PENDING |")
     else:
@@ -227,7 +243,7 @@ def main():
             lines.append(f"| {mode} | {condition} | {cell(a)} | {cell(u)} | {cell(f)} |")
     lines.append("")
 
-    geom = load_json(root / "results/fair_rerun/table6_geometry.json")
+    geom = load_json(result_root / "table6_geometry.json")
     lines.extend(["## Table 6. Representation geometry", "",
                   "| Variant | Silhouette | Hard purity@10 | Alignment | Uniformity |",
                   "|---|---:|---:|---:|---:|"])
@@ -281,7 +297,7 @@ def main():
         ("cross-attention evidence to claim", "hp_xattn_e2c"),
         ("Independent projections", "hp_independent_projection"),
     )
-    metric_table(lines, "Table 12. LoRA-efficient hyperparameter sensitivity (all three-source)",
+    metric_table(lines, f"Table 12. LoRA-efficient hyperparameter sensitivity ({policy})",
                  hp_entries, agg)
     metric_table(lines, "Table 13. Reliability-formula sensitivity (matched seed 0)", (
         ("Canonical", "claimarc_canonical"), ("k=1.5", "c_k1p5"),

@@ -40,7 +40,9 @@ rcParams.update({
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 D = os.environ.get("CLAIMARC_EMBED_DIR", os.path.join(ROOT, "embeddings", "fair_rerun"))
-RESULTS = os.environ.get("CLAIMARC_RESULT_DIR", os.path.join(ROOT, "results", "fair_rerun", "jobs"))
+SUITE_RESULTS = os.environ.get(
+    "CLAIMARC_RESULT_DIR", os.path.join(ROOT, "results", "fair_rerun"))
+RESULTS = os.environ.get("CLAIMARC_JOB_RESULT_DIR", os.path.join(SUITE_RESULTS, "jobs"))
 OUT = os.environ.get("CLAIMARC_FIG_DIR", os.path.join(ROOT, "paper", "figs"))
 os.makedirs(OUT, exist_ok=True)
 
@@ -137,7 +139,7 @@ def fig_calibration():
     cal_result = {"temperature": T, "raw": calibration_stats(pt),
                   "temperature_scaled": calibration_stats(pt_cal),
                   "bundles": names, "aggregation": "three_seed_probability_mean"}
-    cal_path = os.path.join(ROOT, "results", "fair_rerun", "ece_calibrated.json")
+    cal_path = os.path.join(SUITE_RESULTS, "ece_calibrated.json")
     os.makedirs(os.path.dirname(cal_path), exist_ok=True)
     json.dump(cal_result, open(cal_path, "w"), ensure_ascii=False, indent=2)
 

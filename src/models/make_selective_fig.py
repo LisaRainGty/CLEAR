@@ -5,9 +5,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-FIGS = os.path.join(_ROOT, "paper/figs")
+FIGS = os.environ.get("CLAIMARC_FIG_DIR", os.path.join(_ROOT, "paper/figs"))
+os.makedirs(FIGS, exist_ok=True)
 
-SEL = os.path.join(_ROOT, "results/fair_rerun/selective_canon.json")
+RESULTS = os.environ.get(
+    "CLAIMARC_RESULT_DIR", os.path.join(_ROOT, "results/fair_rerun"))
+SEL = os.path.join(RESULTS, "selective_canon.json")
 if not os.path.exists(SEL):
     raise FileNotFoundError(f"fair selective-prediction artifact is missing: {SEL}")
 d = json.load(open(SEL))

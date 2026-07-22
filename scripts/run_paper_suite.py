@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Resumable, reviewer-facing runner for every experiment in the paper.
 
-Every train/evaluation command is frozen to the same ``sources_only`` view:
-PARAM + OCR + VLM, in that order.  Generated arguments and single-source views
-are intentionally absent from the matrix.  Each job has an independent log,
-result file and completion record, so an interrupted GPU rental can resume
-without repeating successful work.
+One protocol config freezes the dataset, evidence view and artifact namespace
+for every model.  Each job has an independent log, result file and completion
+record, so an interrupted GPU rental can resume without repeating successful
+work.  ``paper_fair.json`` remains the archived sources-only protocol; a new
+config can select a fully populated arguments-only dataset without mixing the
+two result trees.
 """
 from __future__ import annotations
 
@@ -26,8 +27,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
+DEFAULT_CONFIG = ROOT / "configs/paper_fair.json"
+CONFIG = DEFAULT_CONFIG
 DATASET = ROOT / "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl"
-CONFIG = ROOT / "configs/paper_fair.json"
 OUT = ROOT / "results/fair_rerun"
 LOGS = OUT / "logs"
 STATUS = OUT / "status"
@@ -38,6 +40,7 @@ ABL = ROOT / "embeddings/fair_rerun/ablations"
 HP = ROOT / "embeddings/fair_rerun/hparams_lora"
 XDOM = ROOT / "embeddings/fair_rerun/xdom"
 XDOM_LLM = ROOT / "embeddings/fair_rerun/xdom_llm"
+FIGS = ROOT / "paper/figs"
 POLICY = "sources_only"
 SEEDS = (0, 1, 2)
 CATEGORIES = (
@@ -45,6 +48,39 @@ CATEGORIES = (
     "food_and_beverages", "smart_home", "digital_and_electronics",
     "sports_and_outdoor", "beauty_and_personal_care", "jewelry_and_collectibles",
 )
+
+
+def configure(config_path: str | Path) -> dict:
+    """Load one protocol and redirect every artifact path to its namespace."""
+    global CONFIG, DATASET, OUT, LOGS, STATUS, JOB_RESULTS
+    global PRED, GEOM, ABL, HP, XDOM, XDOM_LLM, FIGS, POLICY
+    CONFIG = Path(config_path).resolve()
+    cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
+    DATASET = (ROOT / cfg["dataset"]["path"]).resolve()
+    POLICY = str(cfg["fair_comparison"]["evidence_policy"])
+    namespace = str(cfg.get("paper_suite", {}).get("artifact_namespace", "fair_rerun"))
+    if not namespace or namespace in {".", ".."} or "/" in namespace or "\\" in namespace:
+        raise ValueError(f"invalid artifact_namespace: {namespace!r}")
+    OUT = ROOT / "results" / namespace
+    LOGS = OUT / "logs"
+    STATUS = OUT / "status"
+    JOB_RESULTS = OUT / "jobs"
+    embed_root = ROOT / "embeddings" / namespace
+    PRED = embed_root / "baseline_predictions"
+    GEOM = embed_root / "emb_geom"
+    ABL = embed_root / "ablations"
+    HP = embed_root / "hparams_lora"
+    XDOM = embed_root / "xdom"
+    XDOM_LLM = embed_root / "xdom_llm"
+    figure_namespace = str(cfg.get("paper_suite", {}).get("figure_namespace", ""))
+    if figure_namespace and (figure_namespace in {".", ".."}
+                             or "/" in figure_namespace or "\\" in figure_namespace):
+        raise ValueError(f"invalid figure_namespace: {figure_namespace!r}")
+    FIGS = ROOT / "paper/figs" / figure_namespace if figure_namespace else ROOT / "paper/figs"
+    return cfg
+
+
+configure(os.environ.get("CLAIMARC_PAPER_CONFIG", DEFAULT_CONFIG))
 
 
 @dataclass(frozen=True)
@@ -126,9 +162,10 @@ def build_jobs(stages: set[str]) -> list[Job]:
     jobs: list[Job] = []
 
     if "audit" in stages:
-        audit_out = ROOT / "results/audit/reproducibility_report.json"
+        audit_out = OUT / "reproducibility_report.json"
         jobs.append(Job("dataset_audit", "audit", (
             py, str(ROOT / "scripts/audit_reproducibility.py"),
+            "--config", str(CONFIG), "--out", str(audit_out),
         ), (audit_out,)))
 
     if "table3" in stages:
@@ -274,10 +311,12 @@ def build_jobs(stages: set[str]) -> list[Job]:
         jobs.extend([
             Job("aggregate_xdom_category", "xdom", (
                 py, "-m", "models.xdom_agg", "--indir", str(XDOM),
-                "--mode", "category", "--out", str(cat_out)), (cat_out,)),
+                "--mode", "category", "--evidence_policy", POLICY,
+                "--out", str(cat_out)), (cat_out,)),
             Job("aggregate_xdom_rooms", "xdom", (
                 py, "-m", "models.xdom_agg", "--indir", str(XDOM),
-                "--mode", "rooms", "--out", str(room_out)), (room_out,)),
+                "--mode", "rooms", "--evidence_policy", POLICY,
+                "--out", str(room_out)), (room_out,)),
             Job("injection_rooms", "xdom", (
                 py, "-m", "models.xdom_inject", "--bundle_dir", str(XDOM),
                 "--mode", "rooms", "--out", str(inject_rooms)), (inject_rooms,)),
@@ -329,7 +368,8 @@ def build_jobs(stages: set[str]) -> list[Job]:
             output = OUT / f"table4_xdom_{mode}_all.json"
             jobs.append(Job(f"aggregate_xdom_{mode}_with_llm", "llm", (
                 py, "-m", "models.xdom_agg", "--indir", str(XDOM),
-                "--llm_indir", str(XDOM_LLM), "--mode", mode, "--out", str(output),
+                "--llm_indir", str(XDOM_LLM), "--mode", mode,
+                "--evidence_policy", POLICY, "--out", str(output),
             ), (output,)))
 
     if "analysis" in stages:
@@ -341,21 +381,21 @@ def build_jobs(stages: set[str]) -> list[Job]:
         ), (geom_out,)))
         jobs.append(Job("geometry_figures", "analysis", (
             py, "-m", "models.make_geom_figs", "--emb_dir", str(GEOM),
-            "--geom_json", str(geom_out), "--outdir", str(ROOT / "paper/figs"),
+            "--geom_json", str(geom_out), "--outdir", str(FIGS),
             "--seed", "0",
-        ), (ROOT / "paper/figs/fig_umap_label.png",)))
+        ), (FIGS / "fig_umap_label.png",)))
         bootstrap = OUT / "table3_paired_bootstrap.json"
         jobs.append(Job("paired_bootstrap", "analysis", (
             py, str(ROOT / "scripts/paired_bootstrap.py"), "--root", str(ROOT),
-            "--repetitions", "2000", "--output", str(bootstrap),
+            "--namespace", OUT.name, "--repetitions", "2000", "--output", str(bootstrap),
         ), (bootstrap,)))
         jobs.append(Job("metrics_and_pr_roc", "analysis", (
             py, "-m", "models.metrics_rich",
-        ), (OUT / "metrics_rich.json", ROOT / "paper/figs/fig_pr_roc.png")))
+        ), (OUT / "metrics_rich.json", FIGS / "fig_pr_roc.png")))
         jobs.append(Job("injection_figure", "analysis", (
             py, "-m", "models.make_inject_fig", "--input",
-            str(OUT / "table5_injection_rooms.json"), "--outdir", str(ROOT / "paper/figs"),
-        ), (ROOT / "paper/figs/fig_inject.png",)))
+            str(OUT / "table5_injection_rooms.json"), "--outdir", str(FIGS),
+        ), (FIGS / "fig_inject.png",)))
         selective = OUT / "selective_canon.json"
         jobs.append(Job("selective_prediction", "analysis", (
             py, str(ROOT / "scripts/selective_prediction.py"), "--emb-dir", str(GEOM),
@@ -363,10 +403,10 @@ def build_jobs(stages: set[str]) -> list[Job]:
         ), (selective,)))
         jobs.append(Job("selective_figure", "analysis", (
             py, "-m", "models.make_selective_fig",
-        ), (ROOT / "paper/figs/fig_selective.png",)))
+        ), (FIGS / "fig_selective.png",)))
         jobs.append(Job("calibration_and_hparam_figures", "analysis", (
             py, "-m", "models.make_figs",
-        ), (ROOT / "paper/figs/fig_calibration.png", ROOT / "paper/figs/fig_hparam.png")))
+        ), (FIGS / "fig_calibration.png", FIGS / "fig_hparam.png")))
         error_out = OUT / "error_analysis.json"
         jobs.append(Job("error_analysis", "analysis", (
             py, str(ROOT / "scripts/error_analysis.py"), "--dataset", str(DATASET),
@@ -375,7 +415,7 @@ def build_jobs(stages: set[str]) -> list[Job]:
         tables = OUT / "paper_tables.md"
         jobs.append(Job("aggregate_paper_tables", "analysis", (
             py, str(ROOT / "scripts/aggregate_paper_results.py"), "--root", str(ROOT),
-            "--output", str(tables),
+            "--config", str(CONFIG), "--output", str(tables),
         ), (tables,)))
     return jobs
 
@@ -386,6 +426,26 @@ def verify_frozen_contract(jobs: list[Job]) -> None:
     digest = hashlib.sha256(DATASET.read_bytes()).hexdigest()
     if digest != expected:
         raise RuntimeError(f"dataset SHA-256 mismatch: {digest} != {expected}")
+    if POLICY not in {"sources_only", "args_only"}:
+        raise RuntimeError(f"unsupported paper evidence policy: {POLICY}")
+    fair = cfg.get("fair_comparison", {})
+    if POLICY == "sources_only" and fair.get("arguments_allowed") is not False:
+        raise RuntimeError("sources_only protocol must explicitly forbid arguments")
+    if POLICY == "args_only":
+        if fair.get("arguments_allowed") is not True:
+            raise RuntimeError("args_only protocol must explicitly allow arguments")
+        missing = 0
+        with DATASET.open(encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                arguments = record.get("arguments", {}) or {}
+                if not any(str(arguments.get(key, "") or "").strip() for key in (
+                        "supporting_argument", "refuting_argument", "evidence_gap")):
+                    missing += 1
+        if missing:
+            raise RuntimeError(f"args_only dataset has {missing} rows without arguments")
     model_modules = {
         "models.train", "models.baselines_ft", "models.baselines_neural",
         "models.baselines_frozen", "models.qwen_sft", "models.xdom_fold",
@@ -401,9 +461,13 @@ def verify_frozen_contract(jobs: list[Job]) -> None:
         value = cmd[cmd.index("--evidence_policy") + 1]
         if value != POLICY:
             raise RuntimeError(f"{job.name}: forbidden evidence policy {value}")
-        forbidden = {"args_only", "args_first", "params_only", "ocr_only", "vlm_only"}
-        if forbidden.intersection(cmd):
-            raise RuntimeError(f"{job.name}: arguments/single-source view leaked into command")
+        other_policies = {
+            "sources_only", "args_only", "args_first", "source_first",
+            "params_only", "ocr_only", "vlm_only", "params_args", "ocr_args",
+            "vlm_args",
+        } - {POLICY}
+        if other_policies.intersection(cmd):
+            raise RuntimeError(f"{job.name}: another evidence view leaked into command")
 
 
 def successful(job: Job) -> bool:
@@ -486,6 +550,8 @@ def run_job(job: Job, env: dict[str, str], quiet: bool) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default=os.environ.get(
+        "CLAIMARC_PAPER_CONFIG", str(DEFAULT_CONFIG)))
     parser.add_argument("--stages", default="audit,table3,ablation,hparams,xdom,analysis",
                         help="audit,table3,ablation,hparams,xdom,analysis,llm or all")
     parser.add_argument("--execute", action="store_true")
@@ -494,6 +560,7 @@ def main() -> int:
     parser.add_argument("--continue-on-error", action="store_true")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
+    configure(args.config)
     stages = {part.strip() for part in args.stages.split(",") if part.strip()}
     if "all" in stages:
         stages = {"audit", "table3", "ablation", "hparams", "xdom", "analysis"}
@@ -503,7 +570,11 @@ def main() -> int:
         jobs = [job for job in jobs if pattern.search(job.name)]
     verify_frozen_contract(jobs)
     print(f"Frozen dataset: {DATASET}")
-    print(f"Evidence policy: {POLICY} (PARAM + OCR + VLM only; no arguments)")
+    policy_description = (
+        "PARAM + OCR + VLM only; no arguments" if POLICY == "sources_only"
+        else "generated supporting/refuting/gap arguments only; raw sources hidden"
+    )
+    print(f"Evidence policy: {POLICY} ({policy_description})")
     print(f"Jobs selected: {len(jobs)}")
     for job in jobs:
         marker = "SKIP" if (not args.rerun and successful(job)) else "RUN "
@@ -512,10 +583,16 @@ def main() -> int:
         print("\nDry run. Add --execute to run; completed jobs resume automatically.")
         return 0
 
-    for directory in (OUT, LOGS, STATUS, JOB_RESULTS, PRED, GEOM, ABL, HP, XDOM, XDOM_LLM):
+    for directory in (OUT, LOGS, STATUS, JOB_RESULTS, PRED, GEOM, ABL, HP, XDOM,
+                      XDOM_LLM, FIGS):
         directory.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ)
     env["PYTHONPATH"] = str(SRC)
+    env["CLAIMARC_PAPER_CONFIG"] = str(CONFIG)
+    env["CLAIMARC_RESULT_DIR"] = str(OUT)
+    env["CLAIMARC_JOB_RESULT_DIR"] = str(JOB_RESULTS)
+    env["CLAIMARC_EMBED_DIR"] = str(ROOT / "embeddings" / OUT.name)
+    env["CLAIMARC_FIG_DIR"] = str(FIGS)
     env["TOKENIZERS_PARALLELISM"] = "false"
     env.setdefault("PYTORCH_CUDA_ALLOC_CONF", "max_split_size_mb:128")
     py = os.environ.get("CLAIMARC_PYTHON", sys.executable)

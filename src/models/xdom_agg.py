@@ -22,11 +22,11 @@ from models.xdom_common import full_metrics
 METRIC_KEYS = ["acc", "prec", "rec", "f1pos", "macro_f1", "auprc", "auroc"]
 
 
-def validate_bundle(bundle, mode, path):
+def validate_bundle(bundle, mode, path, evidence_policy):
     meta = bundle.get("fold_provenance")
     if not meta:
         raise ValueError(f"{path}: missing fold_provenance")
-    if meta.get("mode") != mode or meta.get("evidence_policy") != "sources_only":
+    if meta.get("mode") != mode or meta.get("evidence_policy") != evidence_policy:
         raise ValueError(f"{path}: incompatible cross-domain protocol")
     if any(meta.get("pair_id_overlap", {}).values()):
         raise ValueError(f"{path}: pair_id leakage")
@@ -59,7 +59,7 @@ def clarc_combined(bundle):
     return (yv, best_a * pv + (1 - best_a) * rkv, yt, best_a * pt + (1 - best_a) * rkt), best_a
 
 
-def collect(indir, mode, llm_indir=""):
+def collect(indir, mode, llm_indir="", evidence_policy="sources_only"):
     """返回 {model_name: {holdout: metrics_dict}}。"""
     out = defaultdict(dict)
 
@@ -71,7 +71,7 @@ def collect(indir, mode, llm_indir=""):
     # CLAIMARC（含 forward 与 forward+RKC）
     for f in sorted(glob.glob(os.path.join(indir, f"clarc_{mode}_*.pt"))):
         b = torch.load(f, map_location="cpu", weights_only=False)
-        validate_bundle(b, mode, f)
+        validate_bundle(b, mode, f, evidence_policy)
         ho = _fold_key(f, f"clarc_{mode}_")
         yv, cv, yt, ct = clarc_combined(b)[0]
         out["CLAIMARC"][ho] = full_metrics(yv, cv, yt, ct)
@@ -83,7 +83,7 @@ def collect(indir, mode, llm_indir=""):
     for kind, disp in name.items():
         for f in sorted(glob.glob(os.path.join(indir, f"{kind}_{mode}_*.pt"))):
             b = torch.load(f, map_location="cpu", weights_only=False)
-            validate_bundle(b, mode, f)
+            validate_bundle(b, mode, f, evidence_policy)
             ho = _fold_key(f, f"{kind}_{mode}_")
             out[disp][ho] = full_metrics(b["val"]["y"], b["val"]["p"],
                                          b["test"]["y"], b["test"]["p"])
@@ -92,7 +92,7 @@ def collect(indir, mode, llm_indir=""):
     llm_root = llm_indir or indir
     for f in sorted(glob.glob(os.path.join(llm_root, f"llm_*_{mode}_*.pt"))):
         b = torch.load(f, map_location="cpu", weights_only=False)
-        validate_bundle(b, mode, f)
+        validate_bundle(b, mode, f, evidence_policy)
         model = b["model"]; ho = b["holdout"]
         for mk, lbl in (("zero", f"LLM zero-shot ({model})"),
                         ("fewshot", f"LLM few-shot ({model})")):
@@ -146,9 +146,12 @@ def main():
     ap.add_argument("--mode", default="category", choices=["category", "rooms", "time"])
     ap.add_argument("--llm_indir", default="",
                     help="optional directory containing xdom_llm bundles")
+    ap.add_argument("--evidence_policy", default="sources_only",
+                    choices=["sources_only", "args_only"])
     ap.add_argument("--out", default="")
     args = ap.parse_args()
-    per_model = collect(args.indir, args.mode, args.llm_indir)
+    per_model = collect(args.indir, args.mode, args.llm_indir,
+                        args.evidence_policy)
     rows = aggregate(per_model)
     print_table(rows, args.mode)
     blob = {"mode": args.mode, "aggregate": rows,
