@@ -3,7 +3,9 @@ set -euo pipefail
 
 ROOT="${CLAIMARC_REMOTE_ROOT:-/root/CLEAR_run}"
 PY="${CLAIMARC_PYTHON:-/root/claimarc_venv/bin/python}"
-STATUS="$ROOT/results/fair_rerun/status/claimarc_canonical_s0.json"
+CONFIG="${CLAIMARC_PAPER_CONFIG:-$ROOT/configs/paper_fair.json}"
+NAMESPACE="$($PY -c 'import json,sys; print(json.load(open(sys.argv[1]))["paper_suite"]["artifact_namespace"])' "$CONFIG")"
+STATUS="$ROOT/results/$NAMESPACE/status/claimarc_canonical_s0.json"
 
 export CLAIMARC_PYTHON="$PY"
 export CLAIMARC_BATCH_SIZE="${CLAIMARC_BATCH_SIZE:-12}"
@@ -24,4 +26,5 @@ done
 
 cd "$ROOT"
 exec "$PY" scripts/run_paper_suite.py \
+  --config "$CONFIG" \
   --stages all --execute --continue-on-error --quiet

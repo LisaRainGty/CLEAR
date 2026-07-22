@@ -4,9 +4,9 @@
 One protocol config freezes the dataset, evidence view and artifact namespace
 for every model.  Each job has an independent log, result file and completion
 record, so an interrupted GPU rental can resume without repeating successful
-work.  ``paper_fair.json`` remains the archived sources-only protocol; a new
-config can select a fully populated arguments-only dataset without mixing the
-two result trees.
+work. ``paper_fair.json`` freezes the audited arguments-only protocol.
+Historical sources-only artifacts remain in their original namespace and are
+never mixed with the active result tree.
 """
 from __future__ import annotations
 

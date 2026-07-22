@@ -10,7 +10,7 @@ import torch
 import torch.nn.functional as F
 
 from models.data import (SPECIAL_TOKENS, ClaimDataset, apply_evidence_policy,
-                         build_tokenizer, load_split, make_collate, source_len)
+                         arg_len, build_tokenizer, load_split, make_collate)
 from models.model import CLAIMARC
 
 
@@ -19,19 +19,20 @@ def main():
     parser.add_argument("--dataset", required=True)
     parser.add_argument("--encoder", required=True)
     parser.add_argument("--batch-size", type=int, default=2)
+    parser.add_argument("--evidence-policy", choices=("args_only",),
+                        default="args_only")
     args = parser.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is unavailable")
     splits = load_split(args.dataset)
-    apply_evidence_policy(splits, "sources_only")
-    rows = [r for r in splits["train"] if any(
-        r.get(key) for key in ("evidence_params", "evidence_ocr", "evidence_vlm"))]
-    rows.sort(key=source_len, reverse=True)
+    apply_evidence_policy(splits, args.evidence_policy)
+    rows = list(splits["train"])
+    rows.sort(key=arg_len, reverse=True)
     tokenizer = build_tokenizer(args.encoder)
     dataset = ClaimDataset(rows[:args.batch_size], tokenizer)
     batch = make_collate(tokenizer.pad_token_id)([dataset[i] for i in range(len(dataset))])
-    if max(batch.arg_len.tolist(), default=0) != 0:
-        raise RuntimeError("arguments unexpectedly entered the smoke-test batch")
+    if min(batch.arg_len.tolist(), default=0) <= 0:
+        raise RuntimeError("arguments are missing from the smoke-test batch")
     device = torch.device("cuda")
     model = CLAIMARC(
         args.encoder, len(tokenizer), len(SPECIAL_TOKENS), n_fusion=2,
@@ -52,7 +53,8 @@ def main():
         "claim_shape": list(batch.c_ids.shape), "evidence_shape": list(batch.e_ids.shape),
         "embedding_shape": list(embeddings.shape), "loss": float(loss.item()),
         "peak_cuda_mib": round(torch.cuda.max_memory_allocated() / 1024 ** 2, 1),
-        "evidence_policy": "sources_only", "argument_length_max": 0,
+        "evidence_policy": args.evidence_policy,
+        "argument_length_max": max(batch.arg_len.tolist(), default=0),
         "gradient_checkpointing": os.environ.get(
             "CLAIMARC_GRADIENT_CHECKPOINTING", "0") == "1",
     }

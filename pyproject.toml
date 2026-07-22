@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "claimarc"
 version = "1.0.0"
-description = "Reviewer reproduction package for three-source CLAIMARC experiments"
+description = "Reviewer reproduction package for arguments-only CLAIMARC experiments"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = ["zstandard>=0.23"]

@@ -1,14 +1,14 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "paper_source": "paper/draft/实验结果与分析_完整提取.md",
   "shared_config": "configs/paper_fair.json",
   "runner": "scripts/run_paper_suite.py",
   "aggregate": "scripts/aggregate_paper_results.py",
   "protocol": {
-    "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
-    "evidence_policy": "sources_only",
-    "evidence_order": ["PARAM", "OCR", "VLM"],
-    "arguments_allowed": false,
+    "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+    "evidence_policy": "args_only",
+    "evidence_order": ["ARG_SUP", "ARG_REF", "ARG_GAP"],
+    "arguments_allowed": true,
     "single_source_experiments_allowed": false,
     "selection": "validation_only"
   },
