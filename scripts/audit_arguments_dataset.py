@@ -97,11 +97,19 @@ def main() -> int:
         if canonical_hash(payload) != record.get("input_sha256"):
             errors.append(f"{record.get('pair_id')}: cache input hash mismatch")
         if record.get("status") == "ok":
-            try:
-                normalized = validate_grounding(record.get("arguments"), payload)
-            except Exception as exc:  # noqa: BLE001
-                errors.append(f"{record.get('pair_id')}: invalid successful cache row: {exc}")
-                continue
+            if record.get("mode") == "deterministic_no_source":
+                normalized = validate_arguments(record.get("arguments"))
+                if normalized != NO_SOURCE_ARGUMENTS or has_source(payload):
+                    errors.append(
+                        f"{record.get('pair_id')}: invalid deterministic no-source row")
+                    continue
+            else:
+                try:
+                    normalized = validate_grounding(record.get("arguments"), payload)
+                except Exception as exc:  # noqa: BLE001
+                    errors.append(
+                        f"{record.get('pair_id')}: invalid successful cache row: {exc}")
+                    continue
             item = dict(record)
             item["arguments"] = normalized
             key = (str(record.get("pair_id", "")), str(record.get("input_sha256", "")),
@@ -139,7 +147,11 @@ def main() -> int:
             errors.append(f"{pair_id}: no matching successful raw-cache row")
             continue
         try:
-            final_arguments = validate_grounding(after.get("arguments"), payload)
+            final_arguments = (
+                validate_grounding(after.get("arguments"), payload)
+                if has_source(payload)
+                else validate_arguments(after.get("arguments"))
+            )
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{pair_id}: invalid final arguments: {exc}")
             continue
