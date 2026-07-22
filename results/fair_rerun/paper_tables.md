@@ -5,7 +5,7 @@
 - Dataset SHA-256: `1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76`
 - Rows: 4883
 - Argument records: 0
-- Accepted fresh RESULT rows: 71
+- Accepted fresh RESULT rows: 74
 - Rejected incomplete/off-protocol RESULT rows: 0
 
 ## Table 1. Dataset split and statistics
@@ -118,7 +118,7 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | Kp=1 | 80.90±0.81 | 70.98±3.14 | 71.57±2.02 | 89.20±0.81 | 3 |
 | Kp=5 | 81.05±0.78 | 71.34±1.53 | 68.40±1.13 | 88.64±0.57 | 3 |
 | Kn=1 | 81.44±0.40 | 72.20±1.04 | 68.77±0.90 | 88.78±0.29 | 3 |
-| Kn=10 | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Kn=10 | 81.09±0.28 | 70.86±1.63 | 70.55±0.87 | 89.06±0.23 | 3 |
 
 ## Table 10. Reliability counterfactuals
 
