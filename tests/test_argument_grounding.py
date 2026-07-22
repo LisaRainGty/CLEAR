@@ -86,7 +86,7 @@ class ArgumentGroundingTest(unittest.TestCase):
         self.assertIn("第2次", prompt)
         self.assertIn("supporting_argument 必须置空", prompt)
 
-    def test_quoted_short_categorical_value_requires_attribute_context(self):
+    def test_quoted_short_categorical_value_requires_source_context(self):
         categorical = {
             "attribute_name": "是否开刃",
             "claim": "刀口已经开好刃",
@@ -100,9 +100,14 @@ class ArgumentGroundingTest(unittest.TestCase):
             "evidence_gap": "",
         }, categorical)
         self.assertIn("是否开刃", result["supporting_argument"])
+        validate_grounding({
+            "supporting_argument": "PARAM的值为“是”，支持该声称。",
+            "refuting_argument": "",
+            "evidence_gap": "",
+        }, categorical)
         with self.assertRaisesRegex(ValueError, "no direct"):
             validate_grounding({
-                "supporting_argument": "PARAM的值为“是”，支持该声称。",
+                "supporting_argument": "属性值为“是”，支持该声称。",
                 "refuting_argument": "",
                 "evidence_gap": "",
             }, categorical)

@@ -320,24 +320,17 @@ def short_quoted_anchor(text: str, payload: dict) -> bool:
     """Accept an auditable 1--3 character source anchor under strict context.
 
     The original four-character substring rule is impossible for categorical
-    PARAM values such as ``是``/“否”/“男”/“女”.  A one-character value is
-    therefore accepted only when it is quoted verbatim, the argument names the
-    source channel, and it also names the attribute (or its ``是否`` core).  A
-    quoted two- or three-character span from a longer source is accepted when
-    the same source channel is named.  This keeps short common words from
-    becoming accidental anchors while preserving exact source traceability.
+    PARAM values such as ``是``/“否”/“男”/“女”.  A complete one-to-three-
+    character source value is therefore accepted only when it is quoted
+    verbatim and the argument names the source channel.  A quoted two- or
+    three-character span from a longer source is accepted under the same
+    channel-name requirement.  This keeps short common words from becoming
+    accidental anchors while preserving exact source traceability.
     """
     spans = quoted_spans(text)
     if not spans:
         return False
     lowered = text.lower()
-    arg = normalized_text(text)
-    attribute = normalized_text(str(payload.get("attribute_name", "") or ""))
-    attribute_core = attribute[2:] if attribute.startswith("是否") else attribute
-    attribute_named = bool(
-        attribute and attribute in arg
-        or len(attribute_core) >= 2 and attribute_core in arg
-    )
     for label, _, _ in SOURCE_FIELDS:
         if label.lower() not in lowered:
             continue
@@ -345,7 +338,7 @@ def short_quoted_anchor(text: str, payload: dict) -> bool:
             source = normalized_text(str(value or ""))
             if not source:
                 continue
-            if len(source) <= 3 and source in spans and attribute_named:
+            if len(source) <= 3 and source in spans:
                 return True
             if any(2 <= len(span) <= 3 and span in source for span in spans):
                 return True
