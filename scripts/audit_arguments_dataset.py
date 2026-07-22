@@ -61,10 +61,29 @@ def main() -> int:
     if len(source) != len(dataset) or len(dataset) != manifest.get("rows"):
         errors.append("source/dataset/manifest row counts differ")
 
-    valid_cache: dict[tuple[str, str, str], dict] = {}
+    valid_cache: dict[tuple[str, str, str, str], dict] = {}
     cache_status = Counter()
     for record in cache:
         cache_status[str(record.get("status", "missing"))] += 1
+        request_prompt = record.get("request_prompt")
+        request_prompt_sha = str(record.get("request_prompt_sha256", ""))
+        if not isinstance(request_prompt, str):
+            errors.append(f"{record.get('pair_id')}: raw-cache request prompt missing")
+        elif hashlib.sha256(request_prompt.encode("utf-8")).hexdigest() != request_prompt_sha:
+            errors.append(f"{record.get('pair_id')}: raw-cache request prompt hash mismatch")
+        if record.get("mode") == "model" and not request_prompt:
+            errors.append(f"{record.get('pair_id')}: model request prompt is empty")
+        api_response = record.get("api_response")
+        if api_response is not None:
+            if canonical_hash(api_response) != record.get("api_response_sha256"):
+                errors.append(f"{record.get('pair_id')}: API response hash mismatch")
+            try:
+                response_text = api_response["choices"][0]["message"]["content"]
+            except (KeyError, IndexError, TypeError):
+                errors.append(f"{record.get('pair_id')}: malformed retained API response")
+            else:
+                if response_text != record.get("raw_text"):
+                    errors.append(f"{record.get('pair_id')}: API response/raw text mismatch")
         payload = record.get("payload")
         if not isinstance(payload, dict) or set(payload) != ALLOWED_PAYLOAD_KEYS:
             errors.append(f"{record.get('pair_id')}: cache payload key contract failed")
@@ -83,7 +102,8 @@ def main() -> int:
             item = dict(record)
             item["arguments"] = normalized
             key = (str(record.get("pair_id", "")), str(record.get("input_sha256", "")),
-                   str(record.get("prompt_sha256", "")))
+                   str(record.get("prompt_sha256", "")),
+                   str(record.get("generation_sha256", "")))
             valid_cache[key] = item
 
     modes = Counter()
@@ -100,13 +120,18 @@ def main() -> int:
         generation = after.get("_argument_generation", {}) or {}
         input_sha = canonical_hash(payload)
         prompt_sha = str(generation.get("prompt_sha256", ""))
+        generation_sha = str(generation.get("generation_sha256", ""))
+        if generation.get("backend") != manifest.get("model", {}).get("backend"):
+            errors.append(f"{pair_id}: final backend mismatch")
         if input_sha != generation.get("input_sha256"):
             errors.append(f"{pair_id}: final input hash mismatch")
         if prompt_sha != manifest.get("prompt_sha256"):
             errors.append(f"{pair_id}: final prompt hash mismatch")
+        if generation_sha != manifest.get("model", {}).get("generation_sha256"):
+            errors.append(f"{pair_id}: final generation hash mismatch")
         if generation.get("label_blind") is not True:
             errors.append(f"{pair_id}: label_blind flag is not true")
-        cache_row = valid_cache.get((pair_id, input_sha, prompt_sha))
+        cache_row = valid_cache.get((pair_id, input_sha, prompt_sha, generation_sha))
         if cache_row is None:
             errors.append(f"{pair_id}: no matching successful raw-cache row")
             continue
