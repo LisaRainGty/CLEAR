@@ -86,6 +86,47 @@ class ArgumentGroundingTest(unittest.TestCase):
         self.assertIn("第2次", prompt)
         self.assertIn("supporting_argument 必须置空", prompt)
 
+    def test_quoted_short_categorical_value_requires_attribute_context(self):
+        categorical = {
+            "attribute_name": "是否开刃",
+            "claim": "刀口已经开好刃",
+            "PARAM": ["是"],
+            "OCR": [],
+            "VLM": [],
+        }
+        result = validate_grounding({
+            "supporting_argument": "PARAM中“是否开刃”的值为“是”，支持已开刃。",
+            "refuting_argument": "",
+            "evidence_gap": "",
+        }, categorical)
+        self.assertIn("是否开刃", result["supporting_argument"])
+        with self.assertRaisesRegex(ValueError, "no direct"):
+            validate_grounding({
+                "supporting_argument": "PARAM的值为“是”，支持该声称。",
+                "refuting_argument": "",
+                "evidence_gap": "",
+            }, categorical)
+
+    def test_quoted_short_fragment_requires_named_source_channel(self):
+        short_fragment = {
+            "attribute_name": "内里材质",
+            "claim": "里面都是绒的",
+            "PARAM": [],
+            "OCR": ["EVA、绒布"],
+            "VLM": [],
+        }
+        validate_grounding({
+            "supporting_argument": "OCR提取到“绒布”，支持绒质材质。",
+            "refuting_argument": "",
+            "evidence_gap": "",
+        }, short_fragment)
+        with self.assertRaisesRegex(ValueError, "no direct"):
+            validate_grounding({
+                "supporting_argument": "提取到“绒布”，支持绒质材质。",
+                "refuting_argument": "",
+                "evidence_gap": "",
+            }, short_fragment)
+
 
 if __name__ == "__main__":
     unittest.main()

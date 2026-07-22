@@ -114,6 +114,7 @@ RETRY_GUIDANCE = {
     ),
 }
 VALIDATION_POLICY = "direct_source_anchor_numeric_faithfulness_no_dup_v2"
+VALIDATOR_REVISION = "validator_v2_short_quoted_anchor"
 MAX_ARGUMENT_CHARS = 160
 
 
@@ -308,11 +309,57 @@ def number_tokens(text: str) -> set[str]:
     return set(re.findall(r"\d+(?:\.\d+)?%?", text))
 
 
-def grounded_in_sources(text: str, source_values: list[str]) -> bool:
+def quoted_spans(text: str) -> list[str]:
+    """Return normalized text enclosed by Chinese or ASCII quotation marks."""
+    return [normalized_text(value) for value in re.findall(
+        r"[“\"']([^”\"']{1,32})[”\"']", text
+    ) if normalized_text(value)]
+
+
+def short_quoted_anchor(text: str, payload: dict) -> bool:
+    """Accept an auditable 1--3 character source anchor under strict context.
+
+    The original four-character substring rule is impossible for categorical
+    PARAM values such as ``是``/“否”/“男”/“女”.  A one-character value is
+    therefore accepted only when it is quoted verbatim, the argument names the
+    source channel, and it also names the attribute (or its ``是否`` core).  A
+    quoted two- or three-character span from a longer source is accepted when
+    the same source channel is named.  This keeps short common words from
+    becoming accidental anchors while preserving exact source traceability.
+    """
+    spans = quoted_spans(text)
+    if not spans:
+        return False
+    lowered = text.lower()
+    arg = normalized_text(text)
+    attribute = normalized_text(str(payload.get("attribute_name", "") or ""))
+    attribute_core = attribute[2:] if attribute.startswith("是否") else attribute
+    attribute_named = bool(
+        attribute and attribute in arg
+        or len(attribute_core) >= 2 and attribute_core in arg
+    )
+    for label, _, _ in SOURCE_FIELDS:
+        if label.lower() not in lowered:
+            continue
+        for value in payload.get(label, []) or []:
+            source = normalized_text(str(value or ""))
+            if not source:
+                continue
+            if len(source) <= 3 and source in spans and attribute_named:
+                return True
+            if any(2 <= len(span) <= 3 and span in source for span in spans):
+                return True
+    return False
+
+
+def grounded_in_sources(text: str, payload: dict) -> bool:
     """Require a direct source anchor; claim-only restatement is not evidence."""
     arg = normalized_text(text)
     if not arg:
         return True
+    source_values = [
+        value for label, _, _ in SOURCE_FIELDS for value in payload.get(label, [])
+    ]
     sources = [normalized_text(value) for value in source_values]
     sources = [value for value in sources if value]
     if not sources:
@@ -323,7 +370,7 @@ def grounded_in_sources(text: str, source_values: list[str]) -> bool:
         if len(source) >= 4 and any(source[index:index + 4] in arg
                                     for index in range(len(source) - 3)):
             return True
-    return False
+    return short_quoted_anchor(text, payload)
 
 
 def validate_grounding(arguments: dict, payload: dict) -> dict:
@@ -348,7 +395,7 @@ def validate_grounding(arguments: dict, payload: dict) -> dict:
         if unsupported_numbers:
             raise ValueError(
                 f"{key} contains numbers absent from sources: {sorted(unsupported_numbers)}")
-        if not grounded_in_sources(text, source_values):
+        if not grounded_in_sources(text, payload):
             raise ValueError(f"{key} has no direct PARAM/OCR/VLM text anchor")
     gap_numbers = number_tokens(normalized["evidence_gap"])
     available_numbers = number_tokens(payload.get("claim", "") + "\n" + source_blob)
@@ -796,6 +843,7 @@ def main() -> int:
         },
         "prompt_sha256": prompt_sha,
         "validation_policy": VALIDATION_POLICY,
+        "validator_revision": VALIDATOR_REVISION,
         "generator": {
             "script": str(Path(__file__).resolve().relative_to(ROOT)),
             "script_sha256": sha256_file(Path(__file__).resolve()),

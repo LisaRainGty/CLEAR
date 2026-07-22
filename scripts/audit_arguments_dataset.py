@@ -12,6 +12,7 @@ from generate_arguments_dataset import (
     ARGUMENT_FIELDS,
     FORBIDDEN_INPUT_FIELDS,
     NO_SOURCE_ARGUMENTS,
+    VALIDATOR_REVISION,
     allowed_payload,
     canonical_hash,
     has_source,
@@ -54,6 +55,8 @@ def main() -> int:
         errors.append("generator script SHA-256 does not match manifest")
     if manifest.get("selection", {}).get("mode") != "all":
         errors.append("final dataset was not generated from the full source")
+    if manifest.get("validator_revision") != VALIDATOR_REVISION:
+        errors.append("validator revision does not match the audited implementation")
     if sha256_file(args.source) != manifest.get("source_sha256"):
         errors.append("source SHA-256 does not match generation manifest")
     if sha256_file(args.dataset) != manifest.get("output_sha256"):
