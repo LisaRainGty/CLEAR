@@ -22,6 +22,11 @@ source use one fixed evidence-gap statement; all source-bearing rows use the
 same deterministic open-source instruction model. Historical partial arguments
 are not reused because doing so would mix generators and coverage regimes.
 
+Accepted supporting/refuting arguments must contain a direct text anchor from
+PARAM/OCR/VLM. Any number in those fields must also occur in the raw source,
+and speculative phrases are rejected. Failed generations stay in the raw cache
+for auditability and are retried; they never enter the final dataset.
+
 The final release consists of:
 
 - `dataset_arguments_only_20260722.jsonl`: exact training/evaluation dataset;

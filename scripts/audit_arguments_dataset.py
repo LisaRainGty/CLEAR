@@ -18,6 +18,7 @@ from generate_arguments_dataset import (
     read_jsonl,
     sha256_file,
     validate_arguments,
+    validate_grounding,
 )
 
 
@@ -48,6 +49,9 @@ def main() -> int:
 
     if manifest.get("status") != "complete":
         errors.append("generation manifest is not complete")
+    generator_path = Path(__file__).resolve().with_name("generate_arguments_dataset.py")
+    if manifest.get("generator", {}).get("script_sha256") != sha256_file(generator_path):
+        errors.append("generator script SHA-256 does not match manifest")
     if manifest.get("selection", {}).get("mode") != "all":
         errors.append("final dataset was not generated from the full source")
     if sha256_file(args.source) != manifest.get("source_sha256"):
@@ -72,7 +76,7 @@ def main() -> int:
             errors.append(f"{record.get('pair_id')}: cache input hash mismatch")
         if record.get("status") == "ok":
             try:
-                normalized = validate_arguments(record.get("arguments"))
+                normalized = validate_grounding(record.get("arguments"), payload)
             except Exception as exc:  # noqa: BLE001
                 errors.append(f"{record.get('pair_id')}: invalid successful cache row: {exc}")
                 continue
@@ -107,7 +111,7 @@ def main() -> int:
             errors.append(f"{pair_id}: no matching successful raw-cache row")
             continue
         try:
-            final_arguments = validate_arguments(after.get("arguments"))
+            final_arguments = validate_grounding(after.get("arguments"), payload)
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{pair_id}: invalid final arguments: {exc}")
             continue

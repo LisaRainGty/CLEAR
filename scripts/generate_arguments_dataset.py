@@ -13,8 +13,10 @@ import argparse
 import hashlib
 import json
 import os
+import platform
 import random
 import re
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -38,6 +40,8 @@ FORBIDDEN_OUTPUT_TERMS = (
     "消费者评论", "用户评价", "评论", "评价", "样本标签", "训练标签",
     "y=", "y =",
 )
+INFERENCE_TERMS = ("可能", "有助于", "推测", "猜测", "意味着")
+GAP_ASSERTION_TERMS = ("不符", "矛盾", "已证明", "证明了", "属实", "为假")
 NO_SOURCE_ARGUMENTS = {
     "supporting_argument": "",
     "refuting_argument": "",
@@ -70,6 +74,14 @@ PROMPT_TEMPLATE = """\
 {claim}
 {evidence}
 """
+RETRY_PROMPT = (
+    "\n上一次输出未通过结构检查。请严格输出三个完整闭合标签，"
+    "不要使用 Markdown、JSON 或附加解释。支持/反驳必须包含"
+    "PARAM/OCR/VLM 中可直接定位的原文，不得复制只出现在直播"
+    "声称中的内容。"
+)
+VALIDATION_POLICY = "direct_source_anchor_and_numeric_faithfulness_v1"
+MAX_ARGUMENT_CHARS = 320
 
 
 def utc_now() -> str:
@@ -99,6 +111,32 @@ def model_artifacts(path: Path, include_shard_hashes: bool) -> list[dict]:
             record["sha256"] = sha256_file(item)
         out.append(record)
     return out
+
+
+def runtime_manifest() -> dict:
+    from importlib import metadata
+
+    def version(package: str) -> str:
+        try:
+            return metadata.version(package)
+        except metadata.PackageNotFoundError:
+            return "unavailable"
+
+    block = {
+        "python": sys.version,
+        "platform": platform.platform(),
+        "torch": version("torch"),
+        "transformers": version("transformers"),
+        "modelscope": version("modelscope"),
+    }
+    try:
+        import torch
+        block["cuda_available"] = torch.cuda.is_available()
+        block["cuda_device"] = (
+            torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)
+    except Exception as exc:  # noqa: BLE001
+        block["torch_probe_error"] = repr(exc)
+    return block
 
 
 def canonical_hash(value: object) -> str:
@@ -148,7 +186,7 @@ def has_source(payload: dict) -> bool:
     return any(payload[label] for label, _, _ in SOURCE_FIELDS)
 
 
-def build_prompt(payload: dict, attempt: int = 1) -> str:
+def build_prompt(payload: dict, attempt: int = 1, failure_hint: str = "") -> str:
     blocks = []
     for label, _, _ in SOURCE_FIELDS:
         values = payload[label]
@@ -160,10 +198,9 @@ def build_prompt(payload: dict, attempt: int = 1) -> str:
         evidence="\n".join(blocks),
     )
     if attempt > 1:
-        prompt += (
-            "\n上一次输出未通过结构检查。请严格输出三个完整闭合标签，"
-            "不要使用 Markdown、JSON 或附加解释。"
-        )
+        prompt += RETRY_PROMPT
+        if failure_hint:
+            prompt += f"\n上一次校验失败原因：{failure_hint[:180]}"
     return prompt
 
 
@@ -179,6 +216,8 @@ def validate_arguments(parsed: dict) -> dict:
             raise ValueError(f"{key} is not a string")
         value = "" if value.strip() == "..." else value
         out[key] = " ".join(value.strip().split())
+        if len(out[key]) > MAX_ARGUMENT_CHARS:
+            raise ValueError(f"{key} exceeds {MAX_ARGUMENT_CHARS} characters")
     if not any(out.values()):
         raise ValueError("all argument fields are empty")
     joined = "\n".join(out.values()).lower()
@@ -219,13 +258,74 @@ def extract_response(text: str) -> dict:
     return validate_arguments(json.loads(cleaned))
 
 
-def load_cache(path: Path) -> dict[tuple[str, str], dict]:
+def normalized_text(text: str) -> str:
+    return re.sub(r"[^0-9a-zA-Z\u4e00-\u9fff%]+", "", text).lower()
+
+
+def number_tokens(text: str) -> set[str]:
+    return set(re.findall(r"\d+(?:\.\d+)?%?", text))
+
+
+def grounded_in_sources(text: str, source_values: list[str]) -> bool:
+    """Require a direct source anchor; claim-only restatement is not evidence."""
+    arg = normalized_text(text)
+    if not arg:
+        return True
+    sources = [normalized_text(value) for value in source_values]
+    sources = [value for value in sources if value]
+    if not sources:
+        return False
+    for source in sources:
+        if len(source) >= 2 and (source in arg or arg in source):
+            return True
+        if len(source) >= 4 and any(source[index:index + 4] in arg
+                                    for index in range(len(source) - 3)):
+            return True
+    return False
+
+
+def validate_grounding(arguments: dict, payload: dict) -> dict:
+    """Reject claim copying, unsupported numbers, and speculative arguments."""
+    normalized = validate_arguments(arguments)
+    source_values = [
+        value for label, _, _ in SOURCE_FIELDS for value in payload.get(label, [])
+    ]
+    source_blob = "\n".join(source_values)
+    for key in ("supporting_argument", "refuting_argument"):
+        text = normalized[key]
+        if not text:
+            continue
+        inferred = [term for term in INFERENCE_TERMS if term in text]
+        if inferred:
+            raise ValueError(f"{key} contains speculative terms: {inferred}")
+        unsupported_numbers = number_tokens(text) - number_tokens(source_blob)
+        if unsupported_numbers:
+            raise ValueError(
+                f"{key} contains numbers absent from sources: {sorted(unsupported_numbers)}")
+        if not grounded_in_sources(text, source_values):
+            raise ValueError(f"{key} has no direct PARAM/OCR/VLM text anchor")
+    gap_numbers = number_tokens(normalized["evidence_gap"])
+    available_numbers = number_tokens(payload.get("claim", "") + "\n" + source_blob)
+    if gap_numbers - available_numbers:
+        raise ValueError("evidence_gap introduces numbers absent from claim and sources")
+    asserted = [term for term in GAP_ASSERTION_TERMS
+                if term in normalized["evidence_gap"]]
+    if asserted:
+        raise ValueError(f"evidence_gap asserts a conclusion: {asserted}")
+    return normalized
+
+
+def load_cache(path: Path) -> dict[tuple[str, str, str, str, str], dict]:
     cached = {}
     if not path.exists():
         return cached
     for row in read_jsonl(path):
         if row.get("status") == "ok" and isinstance(row.get("arguments"), dict):
-            cached[(str(row.get("pair_id", "")), str(row.get("input_sha256", "")))] = row
+            cached[(
+                str(row.get("pair_id", "")), str(row.get("input_sha256", "")),
+                str(row.get("prompt_sha256", "")), str(row.get("model_id", "")),
+                str(row.get("model_revision", "")),
+            )] = row
     return cached
 
 
@@ -316,14 +416,29 @@ def main() -> int:
         raise RuntimeError("pair_id must be non-empty and unique")
 
     source_sha = sha256_file(source)
-    prompt_sha = canonical_hash({"system": SYSTEM_PROMPT, "template": PROMPT_TEMPLATE})
+    prompt_sha = canonical_hash({
+        "system": SYSTEM_PROMPT,
+        "template": PROMPT_TEMPLATE,
+        "retry": RETRY_PROMPT,
+        "validation_policy": VALIDATION_POLICY,
+        "generator": {
+            "script": str(Path(__file__).resolve().relative_to(ROOT)),
+            "script_sha256": sha256_file(Path(__file__).resolve()),
+            "argv": sys.argv,
+            "runtime": runtime_manifest(),
+        },
+        "inference_terms": INFERENCE_TERMS,
+        "gap_assertion_terms": GAP_ASSERTION_TERMS,
+        "max_argument_chars": MAX_ARGUMENT_CHARS,
+    })
     payloads = {pair_id: allowed_payload(row) for pair_id, row in zip(pair_ids, rows)}
     input_shas = {pair_id: canonical_hash(payloads[pair_id]) for pair_id in pair_ids}
     cached = load_cache(cache_path)
     resolved: dict[str, dict] = {}
     modes: dict[str, str] = {}
     for pair_id in pair_ids:
-        item = cached.get((pair_id, input_shas[pair_id]))
+        item = cached.get((pair_id, input_shas[pair_id], prompt_sha,
+                           args.model_id, args.revision))
         if item:
             resolved[pair_id] = {key: str(item["arguments"].get(key, "") or "")
                                  for key in ARGUMENT_FIELDS}
@@ -385,7 +500,9 @@ def main() -> int:
                     break
                 for start in range(0, len(current), args.batch_size):
                     batch_ids = current[start:start + args.batch_size]
-                    prompts = [build_prompt(payloads[pair_id], attempt) for pair_id in batch_ids]
+                    prompts = [build_prompt(
+                        payloads[pair_id], attempt, failures.get(pair_id, ""),
+                    ) for pair_id in batch_ids]
                     try:
                         raw_outputs = generate_batch(
                             model, tokenizer, prompts, args.max_input_tokens,
@@ -399,7 +516,8 @@ def main() -> int:
                     for pair_id, raw_text in zip(batch_ids, raw_outputs):
                         status, parsed, error = "ok", None, ""
                         try:
-                            parsed = extract_response(raw_text)
+                            parsed = validate_grounding(
+                                extract_response(raw_text), payloads[pair_id])
                         except Exception as exc:  # noqa: BLE001
                             status, error = "invalid", repr(exc)
                             failures[pair_id] = error
@@ -444,6 +562,7 @@ def main() -> int:
             "sample_seed": args.sample_seed if args.sample_size else None,
         },
         "prompt_sha256": prompt_sha,
+        "validation_policy": VALIDATION_POLICY,
         "model": {
             "id": args.model_id,
             "revision": args.revision,
