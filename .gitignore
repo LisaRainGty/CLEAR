@@ -5,6 +5,7 @@ env.sh
 !.env.example
 .venv/
 venv/
+.tools/
 
 # Python/editor/OS metadata
 __pycache__/

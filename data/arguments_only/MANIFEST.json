@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "created_utc": "2026-07-22T12:17:08.053904+00:00",
+  "source": "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+  "source_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "rows": 4883,
+  "source_rows": 4883,
+  "selection": {
+    "mode": "all",
+    "limit": 0,
+    "sample_size": 0,
+    "sample_seed": null
+  },
+  "prompt_sha256": "06f7f4490d27c1453d2c4c8b896cfe641a5a3cf064e02d65fc4fb29d10dd9826",
+  "validation_policy": "direct_source_anchor_numeric_faithfulness_no_dup_v2",
+  "validator_revision": "validator_v2_short_quoted_anchor",
+  "generator": {
+    "script": "scripts/generate_arguments_dataset.py",
+    "script_sha256": "7ad46cd6745c57640e436541773f982ec02c7abdb2477c7c8dd130bf8b916c12",
+    "argv": [
+      "scripts/generate_arguments_dataset.py",
+      "--backend",
+      "matpool",
+      "--source",
+      "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+      "--output",
+      "data/arguments_only/dataset_arguments_only_20260722.jsonl",
+      "--cache",
+      "data/arguments_only/raw_generations.jsonl",
+      "--manifest",
+      "data/arguments_only/MANIFEST.json",
+      "--model-id",
+      "Qwen3.7-Max",
+      "--revision",
+      "matpool_live_20260722",
+      "--batch-size",
+      "16",
+      "--api-concurrency",
+      "4",
+      "--api-timeout",
+      "180",
+      "--api-request-retries",
+      "5",
+      "--max-input-tokens",
+      "1536",
+      "--max-new-tokens",
+      "256",
+      "--max-retries",
+      "3",
+      "--input-price-per-million",
+      "9.6",
+      "--output-price-per-million",
+      "28.8"
+    ],
+    "runtime": {
+      "python": "3.9.16 (main, Mar  8 2023, 14:00:05) \n[GCC 11.2.0]",
+      "platform": "Linux-4.19.0-14-amd64-x86_64-with-glibc2.31",
+      "torch": "2.0.0",
+      "transformers": "4.40.2",
+      "modelscope": "1.14.0",
+      "cuda_available": true,
+      "cuda_device": "NVIDIA A30"
+    }
+  },
+  "model": {
+    "backend": "matpool",
+    "id": "Qwen3.7-Max",
+    "revision": "matpool_live_20260722",
+    "path_at_generation": null,
+    "base_url": "https://token.matpool.com/v1",
+    "api_key_present": true,
+    "deterministic_decode": false,
+    "provider_determinism_not_assumed": true,
+    "temperature": 0.0,
+    "generation_sha256": "50b62ccdf9aa7e19fcb7482ffda561f19cb10b934ebe7e092deda93cc4323d86",
+    "load_in_4bit": false,
+    "quantization": null,
+    "batch_size": 16,
+    "api_concurrency": 4,
+    "api_timeout_seconds": 180,
+    "api_request_retries": 5,
+    "max_input_tokens": 1536,
+    "max_new_tokens": 256,
+    "artifacts": [],
+    "provider_reported_models": [
+      "qwen3.7-max"
+    ],
+    "provider_response_ids_sha256": "87f8f4d8ee5bb878278187d8797d6c82b6513cbedc5ff630d35e23f6d2457b54",
+    "api_usage": {
+      "prompt_tokens": 2351543,
+      "completion_tokens": 3571927,
+      "total_tokens": 5923470
+    },
+    "api_calls": 4231,
+    "api_error_records": 0,
+    "pricing_yuan_per_million_tokens": {
+      "input": 9.6,
+      "output": 28.8,
+      "source": "https://www.matpool.com/models"
+    },
+    "estimated_cost_yuan_from_usage": 125.44631
+  },
+  "input_contract": {
+    "allowed": [
+      "attribute_name",
+      "claim",
+      "PARAM",
+      "OCR",
+      "VLM"
+    ],
+    "forbidden": [
+      "y",
+      "y_perception",
+      "split",
+      "sample_role",
+      "c",
+      "c_reliability",
+      "confidence",
+      "arguments",
+      "_aligned_consumer_mentions",
+      "_consumer_mentions_total",
+      "_consumer_mentions_neg",
+      "label_audit",
+      "proposal_label_audit",
+      "_llm_review"
+    ],
+    "historical_arguments_reused": false
+  },
+  "counts": {
+    "resolved": 4883,
+    "model_generated": 3400,
+    "deterministic_no_source": 1483,
+    "missing": 0
+  },
+  "missing_pair_ids": [],
+  "cache": "data/arguments_only/raw_generations.jsonl",
+  "output": "data/arguments_only/dataset_arguments_only_20260722.jsonl",
+  "output_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "argument_field_coverage": {
+    "supporting_argument": 1420,
+    "refuting_argument": 518,
+    "evidence_gap": 4477
+  }
+}
