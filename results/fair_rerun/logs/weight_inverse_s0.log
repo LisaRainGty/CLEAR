@@ -1,0 +1,15 @@
+[c_transform=inverse] train c: mean=0.530 std=0.183 (was mean=0.450)
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=0
+[ep0] warmup ce=0.2308 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7287 val_ap=0.6075
+[ep1] warmup ce=0.1654 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7103 val_ap=0.6316
+[ep2] warmup ce=0.1166 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7326 val_ap=0.6535
+[ep3] CL ce=0.0772 td=0.0000 cl=0.0900 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7054 val_ap=0.6173
+[ep4] CL ce=0.0359 td=0.0000 cl=0.0512 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7237 val_ap=0.5992
+[ep5] CL ce=0.0164 td=0.0000 cl=0.0309 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7303 val_ap=0.6306
+[ep6] CL ce=0.0090 td=0.0000 cl=0.0127 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7295 val_ap=0.6405
+[ep7] CL ce=0.0023 td=0.0000 cl=0.0102 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7209 val_ap=0.6110
+[ep8] CL ce=0.0004 td=0.0000 cl=0.0002 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7193 val_ap=0.6125
+[select] best single-val checkpoint score=1.0593
+RESULT {"tag": "weight_inverse", "seed": 0, "thr": 0.78, "acc": 0.8199, "macro_f1": 0.7928, "pos_f1": 0.7179, "wF1": 0.7695, "auprc": 0.7591, "auroc": 0.9052, "ece": 0.1359, "n_test": 855, "pos_test": 249, "alpha_rkc": 0.8, "auprc_rkc": 0.7583, "auroc_rkc": 0.9061, "acc_rkc": 0.8246, "pos_f1_rkc": 0.7312, "macro_f1_rkc": 0.8005, "wF1_rkc": 0.7768, "label_match@10": 0.7875, "attr_mAP@10": 0.3313, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
+[save_emb] -> /root/CLEAR_run/embeddings/fair_rerun/ablations/weight_inverse_s0.pt
