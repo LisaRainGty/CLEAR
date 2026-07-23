@@ -315,6 +315,59 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "--output", str(selection),
         ), (selection,)))
 
+    if "llm_sft_tune" in stages:
+        cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
+        config_sha256 = hashlib.sha256(CONFIG.read_bytes()).hexdigest()
+        protocol = cfg.get("llm_sft_v2", {})
+        candidates = protocol.get("candidates", [])
+        tune_seeds = tuple(int(seed) for seed in protocol.get("seeds", SEEDS))
+        if not candidates:
+            raise ValueError("llm_sft_tune requires llm_sft_v2.candidates in the config")
+        for candidate in candidates:
+            name = str(candidate["name"])
+            for seed in tune_seeds:
+                job_name = f"llm_sft_v2_{name}_s{seed}"
+                result_file = JOB_RESULTS / f"{job_name}.jsonl"
+                command = (
+                    py, "-m", "models.qwen_sft", "--dataset", str(DATASET),
+                    "--model", str(candidate["model"]), "--tag", f"llm_sft_v2_{name}",
+                    "--seed", str(seed), "--evidence_policy", POLICY,
+                    "--validation_only", "--prompt_revision", "perceived_risk_v2",
+                    "--epochs", str(int(candidate.get("epochs", 3))),
+                    "--lr", str(float(candidate["lr"])),
+                    "--rank", str(int(candidate["rank"])),
+                    "--dropout", str(float(candidate.get("dropout", 0.05))),
+                    "--target_scope", str(candidate.get("target_scope", "attention")),
+                    "--max_length", str(int(candidate.get("max_length", 512))),
+                )
+                jobs.append(Job(job_name, "llm_sft_tune", command, (result_file,)))
+        selection = OUT / "llm_sft_v2_selection.json"
+        jobs.append(Job("select_llm_sft_v2", "llm_sft_tune", (
+            py, str(ROOT / "scripts/select_llm_sft_v2.py"),
+            "--config", str(CONFIG), "--result-root", str(OUT),
+            "--output", str(selection),
+            "--expected_config_sha256", config_sha256,
+        ), (selection,)))
+        locked_predictions = []
+        for seed in tune_seeds:
+            pred = PRED / f"llm_sft_v2_locked_s{seed}.pt"
+            locked_predictions.append(pred)
+            jobs.append(Job(f"llm_sft_v2_locked_s{seed}", "llm_sft_tune", (
+                py, str(ROOT / "scripts/run_selected_llm_sft_v2.py"),
+                "--config", str(CONFIG), "--selection", str(selection),
+                "--expected_config_sha256", config_sha256,
+                "--seed", str(seed), "--save_pred", str(pred),
+            ), (pred,)))
+        summary_json = OUT / "llm_sft_v2_final_summary.json"
+        summary_md = OUT / "llm_sft_v2_final_table.md"
+        jobs.append(Job("aggregate_llm_sft_v2", "llm_sft_tune", (
+            py, str(ROOT / "scripts/aggregate_llm_sft_v2.py"),
+            "--config", str(CONFIG), "--selection", str(selection),
+            "--result-root", str(OUT),
+            "--expected_config_sha256", config_sha256,
+            "--output-json", str(summary_json), "--output-md", str(summary_md),
+        ), (summary_json, summary_md)))
+
     if "xdom" in stages:
         common = (
             "--dataset", str(DATASET), "--outdir", str(XDOM),
@@ -585,7 +638,7 @@ def main() -> int:
     parser.add_argument("--config", default=os.environ.get(
         "CLAIMARC_PAPER_CONFIG", str(DEFAULT_CONFIG)))
     parser.add_argument("--stages", default="audit,table3,ablation,hparams,xdom,analysis",
-                        help="audit,table3,ablation,hparams,xdom,analysis,llm,fusion_tune or all")
+                        help="audit,table3,ablation,hparams,xdom,analysis,llm,fusion_tune,llm_sft_tune or all")
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--rerun", action="store_true")
     parser.add_argument("--only", default="", help="regex selecting job names")

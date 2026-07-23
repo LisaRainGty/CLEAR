@@ -44,11 +44,22 @@ def set_seed(seed: int) -> None:
     torch.cuda.manual_seed_all(seed)
 
 
+TASK_PROMPTS = {
+    "contradiction_v1": "任务：判断直播商品声称是否与商品证据矛盾。",
+    "perceived_risk_v2": (
+        "任务：根据直播商品声称与证据论据，判断该声称是否存在消费者购后感知的误导风险。"
+        "标签1表示存在感知误导风险，标签0表示未见该风险。"
+        "不要把任务简化为字面矛盾；夸大程度、隐性承诺、选择性强调与证据缺口也可构成风险。"
+    ),
+}
+
+
 class PairDataset(Dataset):
-    def __init__(self, rows, tokenizer, max_length: int):
+    def __init__(self, rows, tokenizer, max_length: int, prompt_revision: str):
         self.rows = rows
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.task_prompt = TASK_PROMPTS[prompt_revision]
 
     def __len__(self):
         return len(self.rows)
@@ -56,7 +67,7 @@ class PairDataset(Dataset):
     def __getitem__(self, index):
         row = self.rows[index]
         text = (
-            "任务：判断直播商品声称是否与商品证据矛盾。\n"
+            f"{self.task_prompt}\n"
             f"[声称] {claim_text(row)}\n"
             f"[证据] {evidence_text(row)}"
         )
@@ -87,7 +98,7 @@ def infer(model, loader, device):
             torch.cat(weights).numpy())
 
 
-def metrics(y, p, c, threshold):
+def metrics(y, p, c, threshold, split_name="test"):
     pred = (p >= threshold).astype(int)
     return {
         "acc": round(float((pred == y).mean()), 4),
@@ -97,8 +108,8 @@ def metrics(y, p, c, threshold):
         "auprc": round(float(average_precision_score(y, p)), 4),
         "auroc": round(float(roc_auc_score(y, p)), 4),
         "ece": round(float(ece(y, p)), 4),
-        "n_test": int(len(y)),
-        "pos_test": int(y.sum()),
+        f"n_{split_name}": int(len(y)),
+        f"pos_{split_name}": int(y.sum()),
     }
 
 
@@ -133,10 +144,13 @@ def run(args):
     model.config.pad_token_id = tok.pad_token_id
     model.config.use_cache = False
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
+    target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"]
+    if args.target_scope == "attention_mlp":
+        target_modules += ["gate_proj", "up_proj", "down_proj"]
     lora = LoraConfig(
         task_type=TaskType.SEQ_CLS, r=args.rank, lora_alpha=2 * args.rank,
         lora_dropout=args.dropout, bias="none",
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+        target_modules=target_modules,
         modules_to_save=["score"],
     )
     model = get_peft_model(model, lora)
@@ -152,13 +166,14 @@ def run(args):
 
     def loader(split, shuffle):
         return DataLoader(
-            PairDataset(splits[split], tok, args.max_length), batch_size=args.bs,
+            PairDataset(splits[split], tok, args.max_length, args.prompt_revision),
+            batch_size=args.bs,
             shuffle=shuffle, num_workers=args.workers, pin_memory=True,
         )
 
     train_loader = loader("train", True)
     val_loader = loader("val", False)
-    test_loader = loader("test", False)
+    test_loader = None if args.validation_only else loader("test", False)
     n_pos = sum(int(r.get("y", 0)) for r in splits["train"])
     n_neg = len(splits["train"]) - n_pos
     class_weight = torch.tensor([1.0, min(n_neg / max(1, n_pos), 50.0)], device=device)
@@ -196,7 +211,7 @@ def run(args):
                 optimizer.zero_grad(set_to_none=True)
         pv, yv, cv = infer(model, val_loader, device)
         threshold = best_threshold_macroF1(yv, pv)
-        val_metrics = metrics(yv, pv, cv, threshold)
+        val_metrics = metrics(yv, pv, cv, threshold, "val")
         score = val_metrics["macro_f1"] + 0.5 * val_metrics["auprc"]
         print(f"[qwen ep{epoch}] loss={running/len(train_loader):.4f} "
               f"val_mF1={val_metrics['macro_f1']:.4f} val_ap={val_metrics['auprc']:.4f}",
@@ -212,11 +227,35 @@ def run(args):
 
     pv, yv, cv = infer(model, val_loader, device)
     threshold = best_threshold_macroF1(yv, pv)
+    if args.validation_only:
+        result = {
+            "tag": args.tag,
+            "seed": args.seed,
+            "model_requested": args.model,
+            "evaluation_split": "validation",
+            "validation_only": True,
+            "thr": round(float(threshold), 3),
+            **metrics(yv, pv, cv, threshold, "val"),
+            "lora_rank": args.rank,
+            "lora_dropout": args.dropout,
+            "target_scope": args.target_scope,
+            "prompt_revision": args.prompt_revision,
+            "max_length": args.max_length,
+            "learning_rate": args.lr,
+            "epochs": args.epochs,
+        }
+        attach_run_provenance(result, args, path)
+        print("RESULT", json.dumps(result, ensure_ascii=False), flush=True)
+        return result
+    assert test_loader is not None
     p, y, c = infer(model, test_loader, device)
     result = {
-        "tag": "qwen2p5_7b_qlora_sft", "seed": args.seed,
-        "thr": round(float(threshold), 3), **metrics(y, p, c, threshold),
-        "lora_rank": args.rank, "max_length": args.max_length,
+        "tag": args.tag, "seed": args.seed, "model_requested": args.model,
+        "evaluation_split": "test", "validation_only": False,
+        "thr": round(float(threshold), 3), **metrics(y, p, c, threshold, "test"),
+        "lora_rank": args.rank, "lora_dropout": args.dropout,
+        "target_scope": args.target_scope, "prompt_revision": args.prompt_revision,
+        "max_length": args.max_length, "learning_rate": args.lr, "epochs": args.epochs,
     }
     attach_run_provenance(result, args, path)
     print("RESULT", json.dumps(result, ensure_ascii=False), flush=True)
@@ -225,7 +264,9 @@ def run(args):
             "thr": result["thr"],
             "provenance": {k: result.get(k) for k in (
                 "dataset", "dataset_sha256", "evidence_policy", "resolved_model",
-                "label_field", "split_field", "split_group", "seed", "tag",
+                "model_requested", "label_field", "split_field", "split_group",
+                "seed", "tag", "prompt_revision", "lora_rank", "lora_dropout",
+                "target_scope", "max_length", "learning_rate", "epochs",
             )},
             "val": {"p": pv, "y": yv, "c": cv,
                     "pair_id": [r.get("pair_id", "") for r in splits["val"]]},
@@ -242,6 +283,7 @@ def main():
     parser.add_argument("--dataset", required=True)
     parser.add_argument("--model", default=os.environ.get(
         "CLAIMARC_QWEN_PATH", "Qwen/Qwen2.5-7B"))
+    parser.add_argument("--tag", default="qwen2p5_7b_qlora_sft")
     parser.add_argument("--evidence_policy", default="sources_only",
                         choices=["sources_only", "args_only"])
     parser.add_argument("--seed", type=int, default=0)
@@ -253,8 +295,13 @@ def main():
     parser.add_argument("--warmup_ratio", type=float, default=0.05)
     parser.add_argument("--rank", type=int, default=16)
     parser.add_argument("--dropout", type=float, default=0.05)
+    parser.add_argument("--target_scope", default="attention",
+                        choices=["attention", "attention_mlp"])
+    parser.add_argument("--prompt_revision", default="contradiction_v1",
+                        choices=sorted(TASK_PROMPTS))
     parser.add_argument("--max_length", type=int, default=512)
     parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--validation_only", action="store_true")
     parser.add_argument("--save_pred", default="")
     args = parser.parse_args()
     run(args)
