@@ -359,6 +359,8 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 extra.append("--no_cl")
             if bool(candidate.get("exclude_self", False)):
                 extra.append("--cl_exclude_self")
+            if bool(candidate.get("hard_positive", False)):
+                extra.append("--cl_hard_pos")
             if float(candidate.get("cl_c_min", 0.0)) > 0:
                 extra.extend(("--cl_c_min", str(float(candidate["cl_c_min"]))))
             if float(candidate.get("cl_neg_c_min", 0.0)) > 0:
@@ -372,6 +374,14 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 # Keep the recorded command unambiguous: replace the canonical
                 # RACL defaults instead of relying on argparse's last-value rule.
                 for flag, value in (
+                    ("--warmup", int(candidate.get(
+                        "warmup_epochs",
+                        cfg.get("claimarc", {}).get("warmup_epochs", 3),
+                    ))),
+                    ("--cl_epochs", int(candidate.get(
+                        "contrastive_epochs",
+                        cfg.get("claimarc", {}).get("contrastive_epochs", 6),
+                    ))),
                     ("--lambda_cl", float(candidate["lambda_cl"])),
                     ("--tau", float(candidate["tau"])),
                     ("--Kp", int(candidate["kp"])),

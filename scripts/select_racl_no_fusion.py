@@ -92,6 +92,34 @@ def main() -> None:
     expected_n_val = int(cfg["dataset"]["expected_split_rows"]["val"])
     expected_pos_val = int(cfg["dataset"]["expected_split_positives"]["val"])
     result_root = Path(args.result_root).resolve()
+    parent_phase = protocol.get("parent_phase")
+    parent_summary = None
+    if parent_phase:
+        parent_path = (config_path.parents[1] / str(
+            parent_phase["selection_manifest"]
+        )).resolve()
+        parent_hash = hashlib.sha256(parent_path.read_bytes()).hexdigest()
+        if parent_hash != parent_phase["selection_manifest_sha256"]:
+            raise RuntimeError("parent RACL selection manifest hash mismatch")
+        parent_manifest = json.loads(parent_path.read_text(encoding="utf-8"))
+        if parent_manifest.get("test_metrics_accessed") is not False:
+            raise RuntimeError("parent RACL phase did not prove test isolation")
+        if parent_manifest.get("dataset_sha256") != expected_hash:
+            raise RuntimeError("parent RACL dataset hash mismatch")
+        if parent_manifest.get("evidence_policy") != expected_policy:
+            raise RuntimeError("parent RACL evidence policy mismatch")
+        if parent_manifest.get("architecture") != "no_fusion":
+            raise RuntimeError("parent RACL architecture mismatch")
+        parent_name = str(parent_manifest["selected_candidate"])
+        if parent_name not in parent_manifest["aggregates"]:
+            raise RuntimeError("parent selected candidate has no aggregate")
+        parent_summary = {
+            "phase": str(parent_phase["phase"]),
+            "candidate": parent_name,
+            "selection_manifest": str(parent_path),
+            "selection_manifest_sha256": parent_hash,
+            "aggregate": parent_manifest["aggregates"][parent_name],
+        }
 
     aggregates: dict[str, dict] = {}
     candidate_specs = {
@@ -131,10 +159,23 @@ def main() -> None:
                 raise RuntimeError(f"Kp/Kn mismatch in {path}")
             if bool(row.get("cl_exclude_self")) != bool(candidate.get("exclude_self", False)):
                 raise RuntimeError(f"self-exclusion mismatch in {path}")
+            if bool(row.get("cl_hard_pos")) != bool(candidate.get("hard_positive", False)):
+                raise RuntimeError(f"hard-positive mismatch in {path}")
             if abs(float(row.get("cl_c_min")) - float(candidate.get("cl_c_min", 0.0))) > 1e-12:
                 raise RuntimeError(f"cl_c_min mismatch in {path}")
             if abs(float(row.get("cl_neg_c_min")) - float(candidate.get("cl_neg_c_min", 0.0))) > 1e-12:
                 raise RuntimeError(f"cl_neg_c_min mismatch in {path}")
+            expected_warmup = int(candidate.get(
+                "warmup_epochs", cfg.get("claimarc", {}).get("warmup_epochs", 3)
+            ))
+            expected_cl_epochs = int(candidate.get(
+                "contrastive_epochs",
+                cfg.get("claimarc", {}).get("contrastive_epochs", 6),
+            ))
+            if int(row.get("warmup_epochs")) != expected_warmup:
+                raise RuntimeError(f"warmup epoch mismatch in {path}")
+            if int(row.get("contrastive_epochs")) != expected_cl_epochs:
+                raise RuntimeError(f"contrastive epoch mismatch in {path}")
             rows.append(row)
 
         summary = {"spec": candidate, "seeds": seeds, "runs": rows}
@@ -149,9 +190,34 @@ def main() -> None:
 
     selection = protocol["selection"]
     primary = str(selection["primary_metric"])
-    selected, ranked_racl, diagnostics = select_candidate(
+    phase_selected, ranked_racl, diagnostics = select_candidate(
         aggregates, selection
     )
+    selected = phase_selected
+    selected_source = "current_phase"
+    cross_phase_ranked = [f"current_phase:{name}" for name in ranked_racl]
+    if parent_summary is not None:
+        primary = str(selection["primary_metric"])
+        tie_breaker = str(selection["tie_breaker"])
+        candidates = {
+            **{f"current_phase:{name}": summary
+               for name, summary in aggregates.items()
+               if diagnostics[name]["selectable"]},
+            f"{parent_summary['phase']}:{parent_summary['candidate']}":
+                parent_summary["aggregate"],
+        }
+        cross_phase_ranked = sorted(
+            candidates,
+            key=lambda name: (
+                -candidates[name][primary]["mean"],
+                -candidates[name][tie_breaker]["mean"],
+                name,
+            ),
+        )
+        winner_source, selected = cross_phase_ranked[0].split(":", 1)
+        selected_source = (
+            "current_phase" if winner_source == "current_phase" else winner_source
+        )
 
     output = {
         "schema_version": 1,
@@ -164,19 +230,29 @@ def main() -> None:
         "test_metrics_accessed": False,
         "selection": selection,
         "racl_mandatory": True,
+        "phase_selected_candidate": phase_selected,
         "selected_candidate": selected,
+        "selected_source": selected_source,
         "ranked_racl_candidates": ranked_racl,
+        "cross_phase_ranked_candidates": cross_phase_ranked,
+        "parent_phase_summary": parent_summary,
         "diagnostics_vs_no_racl": diagnostics,
         "aggregates": aggregates,
     }
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+    selected_aggregate = (
+        aggregates[selected]
+        if selected_source == "current_phase"
+        else parent_summary["aggregate"]
+    )
     print(json.dumps({
         "racl_mandatory": True,
         "selected_candidate": selected,
+        "selected_source": selected_source,
         "primary_metric": primary,
-        "validation_mean": aggregates[selected][primary]["mean"],
+        "validation_mean": selected_aggregate[primary]["mean"],
         "test_metrics_accessed": False,
     }, ensure_ascii=False))
 
