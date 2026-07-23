@@ -446,6 +446,7 @@ def view_consistency_loss(logit, g, logit_view, g_view, cw,
 class MemoryBank:
     def __init__(self, g: torch.Tensor, attrs: list[str], y: torch.Tensor,
                  c: torch.Tensor | np.ndarray | None = None,
+                 pair_ids: list[str] | np.ndarray | None = None,
                  teacher_p: torch.Tensor | np.ndarray | None = None,
                  evidence_combo: list[str] | np.ndarray | None = None,
                  confidence: list[str] | np.ndarray | None = None,
@@ -460,6 +461,10 @@ class MemoryBank:
             self.c = c.cpu().numpy()
         else:
             self.c = np.asarray(c, dtype=float)
+        if pair_ids is None:
+            self.pair_ids = np.asarray([""] * len(self.y), dtype=object)
+        else:
+            self.pair_ids = np.asarray(pair_ids, dtype=object)
         if teacher_p is None:
             self.teacher_p = np.full(len(self.y), -1.0, dtype=float)
         elif isinstance(teacher_p, torch.Tensor):
@@ -548,7 +553,8 @@ def contrastive_loss(g, batch, bank: MemoryBank, cw, Kp=3, Kn=5, tau=0.07, globa
                      cl_teacher_mode="off", cl_teacher_conf_min=0.0,
                      cl_neg_filter="none", cl_neg_bonus=0.0,
                      cl_neg_bonus_filter="none",
-                     cl_attr_block=True, cl_class_balanced=False, cl_hard_pos=False):
+                     cl_attr_block=True, cl_class_balanced=False, cl_hard_pos=False,
+                     cl_exclude_self=False):
     """检索增强监督对比（RACL）。
 
     B 优化旋钮（消融证实属性分块作用很小，默认仍保留以兼容 canonical）：
@@ -590,8 +596,17 @@ def contrastive_loss(g, batch, bank: MemoryBank, cw, Kp=3, Kn=5, tau=0.07, globa
         same = (bank.attrs == a) if cl_attr_block else np.ones(len(bank.y), dtype=bool)
         eligible = bank.contrastive_mask
         pos_mask = same & (bank.y == yi) & (bank.c >= cl_c_min) & bank_teacher_ok & eligible
+        if cl_exclude_self:
+            # The memory bank contains the same training record as the anchor.
+            # Without this exclusion, the anchor itself is usually the easiest
+            # positive and consumes one of the Kp slots, weakening RACL.
+            pair_id = str(batch.pair_id[i])
+            if pair_id:
+                pos_mask &= bank.pair_ids != pair_id
         if pos_mask.sum() == 0 and cl_attr_block:
             pos_mask = (bank.y == yi) & (bank.c >= cl_c_min) & bank_teacher_ok & eligible
+            if cl_exclude_self and pair_id:
+                pos_mask &= bank.pair_ids != pair_id
         if global_neg or not cl_attr_block:
             base_neg_mask = (bank.y != yi) & (bank.c >= cl_neg_c_min) & neg_teacher_ok & eligible  # 全集合反标签
         else:
@@ -1054,6 +1069,7 @@ def train(args, splits=None, return_model=False):
         cmask = [bool(r.get("contrastive_mask", True)) for r in splits["train"]]
         return (
             MemoryBank(g.to(device), attrs, torch.tensor(y), c,
+                       pair_ids=[r.get("pair_id", "") for r in splits["train"]],
                        teacher_p=teacher_p, evidence_combo=ev_combo,
                        confidence=conf, source_bin=src_bin,
                        contrastive_mask=cmask),
@@ -1175,7 +1191,8 @@ def train(args, splits=None, return_model=False):
                                           cl_neg_bonus_filter=getattr(args, "cl_neg_bonus_filter", "none"),
                                           cl_attr_block=not getattr(args, "cl_no_attr_block", False),
                                           cl_class_balanced=getattr(args, "cl_class_balanced", False),
-                                          cl_hard_pos=getattr(args, "cl_hard_pos", False))
+                                          cl_hard_pos=getattr(args, "cl_hard_pos", False),
+                                          cl_exclude_self=getattr(args, "cl_exclude_self", False))
             proto_loss = torch.tensor(0.0, device=device)
             proto_on = (
                 getattr(args, "proto_aux_weight", 0.0) > 0
@@ -1257,10 +1274,23 @@ def train(args, splits=None, return_model=False):
             "ece": round(ece(yv, pv), 4),
             "n_val": int(len(yv)),
             "pos_val": int(yv.sum()),
+            "no_fusion": bool(args.no_fusion),
             "n_fusion": int(args.n_fusion),
             "heads": int(args.heads),
             "fusion_dropout": float(args.fusion_dropout),
             "lr_fusion": float(args.lr_head if fusion_lr is None else fusion_lr),
+            "no_cl": bool(args.no_cl),
+            "cl_mode": str(args.cl_mode),
+            "lambda_cl": float(args.lambda_cl),
+            "tau": float(args.tau),
+            "Kp": int(args.Kp),
+            "Kn": int(args.Kn),
+            "warmup_epochs": int(args.warmup),
+            "contrastive_epochs": int(args.cl_epochs),
+            "cl_exclude_self": bool(args.cl_exclude_self),
+            "cl_c_min": float(args.cl_c_min),
+            "cl_neg_c_min": float(args.cl_neg_c_min),
+            "cl_hard_pos": bool(args.cl_hard_pos),
         }
         attach_run_provenance(res, args, bge)
         res["encoder_train_mode"] = getattr(args, "enc_train", "lora")
@@ -1347,6 +1377,8 @@ def main():
                     help="按 0.5/p_y 类频逆权重缩放每个 anchor 的对比损失，抵消正类被多数类淹没")
     ap.add_argument("--cl_hard_pos", action="store_true",
                     help="同标签正例取相似度最低的 Kp 个（hard positive，避免易正例梯度消失）")
+    ap.add_argument("--cl_exclude_self", action="store_true",
+                    help="从 RACL 正例检索中排除与 anchor 相同 pair_id 的内存库记录")
     # ---- C 优化：可靠性建模 ----
     ap.add_argument("--rel_soft", action="store_true",
                     help="noise-aware 软标签：低可靠性 c 的标签向数据集基率收缩（弱监督去噪）")

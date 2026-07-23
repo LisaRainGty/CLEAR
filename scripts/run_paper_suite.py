@@ -346,6 +346,52 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "--output", str(selection),
         ), (selection,)))
 
+    if "racl_tune" in stages:
+        protocol = cfg.get("racl_no_fusion", {})
+        candidates = protocol.get("candidates", [])
+        tune_seeds = tuple(int(seed) for seed in protocol.get("seeds", SEEDS))
+        if not candidates:
+            raise ValueError("racl_tune requires racl_no_fusion.candidates in the config")
+        for candidate in candidates:
+            name = str(candidate["name"])
+            extra = ["--validation_only", "--no_fusion"]
+            if not bool(candidate["racl_enabled"]):
+                extra.append("--no_cl")
+            if bool(candidate.get("exclude_self", False)):
+                extra.append("--cl_exclude_self")
+            if float(candidate.get("cl_c_min", 0.0)) > 0:
+                extra.extend(("--cl_c_min", str(float(candidate["cl_c_min"]))))
+            if float(candidate.get("cl_neg_c_min", 0.0)) > 0:
+                extra.extend(("--cl_neg_c_min", str(float(candidate["cl_neg_c_min"]))))
+            for seed in tune_seeds:
+                job_name = f"racl_nf_{name}_s{seed}"
+                result_file = JOB_RESULTS / f"{job_name}.jsonl"
+                command = list(claimarc_command(
+                    py, f"racl_nf_{name}", seed, tuple(extra)
+                ))
+                # Keep the recorded command unambiguous: replace the canonical
+                # RACL defaults instead of relying on argparse's last-value rule.
+                for flag, value in (
+                    ("--lambda_cl", float(candidate["lambda_cl"])),
+                    ("--tau", float(candidate["tau"])),
+                    ("--Kp", int(candidate["kp"])),
+                    ("--Kn", int(candidate["kn"])),
+                ):
+                    index = command.index(flag)
+                    command[index + 1] = str(value)
+                jobs.append(Job(
+                    job_name,
+                    "racl_tune",
+                    tuple(command),
+                    (result_file,),
+                ))
+        selection = OUT / "racl_no_fusion_selection.json"
+        jobs.append(Job("select_racl_no_fusion", "racl_tune", (
+            py, str(ROOT / "scripts/select_racl_no_fusion.py"),
+            "--config", str(CONFIG), "--result-root", str(OUT),
+            "--output", str(selection),
+        ), (selection,)))
+
     if "llm_sft_tune" in stages:
         config_sha256 = hashlib.sha256(CONFIG.read_bytes()).hexdigest()
         protocol = cfg.get("llm_sft_v2", {})
@@ -668,7 +714,8 @@ def main() -> int:
     parser.add_argument("--config", default=os.environ.get(
         "CLAIMARC_PAPER_CONFIG", str(DEFAULT_CONFIG)))
     parser.add_argument("--stages", default="audit,table3,ablation,hparams,xdom,analysis",
-                        help="audit,table3,ablation,hparams,xdom,analysis,llm,fusion_tune,llm_sft_tune or all")
+                        help="audit,table3,ablation,hparams,xdom,analysis,llm,fusion_tune,"
+                             "racl_tune,llm_sft_tune or all")
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--rerun", action="store_true")
     parser.add_argument("--only", default="", help="regex selecting job names")
