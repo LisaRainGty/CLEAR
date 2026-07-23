@@ -283,6 +283,38 @@ def build_jobs(stages: set[str]) -> list[Job]:
             add_claimarc(jobs, f"hp_{name}", "hparams", extra, lora=True,
                          bundle_dir=HP, seeds=(0,))
 
+    if "fusion_tune" in stages:
+        cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
+        protocol = cfg.get("fusion_v2", {})
+        candidates = protocol.get("candidates", [])
+        tune_seeds = tuple(int(seed) for seed in protocol.get("seeds", SEEDS))
+        if not candidates:
+            raise ValueError("fusion_tune requires fusion_v2.candidates in the config")
+        for candidate in candidates:
+            name = str(candidate["name"])
+            extra = (
+                "--validation_only",
+                "--n_fusion", str(int(candidate["n_fusion"])),
+                "--heads", str(int(candidate.get("heads", 8))),
+                "--fusion_dropout", str(float(candidate["fusion_dropout"])),
+                "--lr_fusion", str(float(candidate["lr_fusion"])),
+            )
+            for seed in tune_seeds:
+                job_name = f"fusion_v2_{name}_s{seed}"
+                result_file = JOB_RESULTS / f"{job_name}.jsonl"
+                jobs.append(Job(
+                    job_name,
+                    "fusion_tune",
+                    claimarc_command(py, f"fusion_v2_{name}", seed, extra),
+                    (result_file,),
+                ))
+        selection = OUT / "fusion_v2_selection.json"
+        jobs.append(Job("select_fusion_v2", "fusion_tune", (
+            py, str(ROOT / "scripts/select_fusion_v2.py"),
+            "--config", str(CONFIG), "--result-root", str(OUT),
+            "--output", str(selection),
+        ), (selection,)))
+
     if "xdom" in stages:
         common = (
             "--dataset", str(DATASET), "--outdir", str(XDOM),
@@ -553,7 +585,7 @@ def main() -> int:
     parser.add_argument("--config", default=os.environ.get(
         "CLAIMARC_PAPER_CONFIG", str(DEFAULT_CONFIG)))
     parser.add_argument("--stages", default="audit,table3,ablation,hparams,xdom,analysis",
-                        help="audit,table3,ablation,hparams,xdom,analysis,llm or all")
+                        help="audit,table3,ablation,hparams,xdom,analysis,llm,fusion_tune or all")
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--rerun", action="store_true")
     parser.add_argument("--only", default="", help="regex selecting job names")

@@ -1009,7 +1009,8 @@ def train(args, splits=None, return_model=False):
               f"c_min={getattr(args, 'proto_aux_c_min', 0.10)} "
               f"in_warmup={getattr(args, 'proto_aux_in_warmup', False)}",
               flush=True)
-    param_groups = model.param_groups(args.lr, args.lr_head)
+    fusion_lr = getattr(args, "lr_fusion", None)
+    param_groups = model.param_groups(args.lr, args.lr_head, fusion_lr)
     if source_aux_heads is not None:
         param_groups.append({"params": source_aux_heads.parameters(), "lr": args.lr_head})
     if rel_aux_head is not None:
@@ -1232,6 +1233,43 @@ def train(args, splits=None, return_model=False):
     if getattr(args, "save_ckpt", "") and not eval_only:
         torch.save(model.state_dict(), args.save_ckpt)
         print(f"[save_ckpt] -> {args.save_ckpt}", flush=True)
+    if getattr(args, "validation_only", False):
+        # Hyper-parameter selection must not touch the held-out test split.
+        # Return immediately after scoring the selected checkpoint on val,
+        # before test prediction, RKC tuning, or embedding export.
+        pv, _, yv, cv, _ = predict(model, loaders["val"], device)
+        vthr = best_threshold_macroF1(yv, pv)
+        vpred = (pv >= vthr).astype(int)
+        res = {
+            "tag": args.tag,
+            "seed": args.seed,
+            "evaluation_split": "validation",
+            "validation_only": True,
+            "thr": round(float(vthr), 3),
+            "acc": round(float((vpred == yv).mean()), 4),
+            "macro_f1": round(macro_f1(yv, vpred), 4),
+            "pos_f1": round(f1_score(yv, vpred, zero_division=0), 4),
+            "wF1": round(macro_f1(yv, vpred, w=np.clip(cv, 0.05, None)), 4),
+            "auprc": round(average_precision_score(yv, pv), 4)
+            if len(set(yv)) > 1 else None,
+            "auroc": round(roc_auc_score(yv, pv), 4)
+            if len(set(yv)) > 1 else None,
+            "ece": round(ece(yv, pv), 4),
+            "n_val": int(len(yv)),
+            "pos_val": int(yv.sum()),
+            "n_fusion": int(args.n_fusion),
+            "heads": int(args.heads),
+            "fusion_dropout": float(args.fusion_dropout),
+            "lr_fusion": float(args.lr_head if fusion_lr is None else fusion_lr),
+        }
+        attach_run_provenance(res, args, bge)
+        res["encoder_train_mode"] = getattr(args, "enc_train", "lora")
+        res["loss"] = getattr(args, "loss", "bce")
+        print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
+        if return_model:
+            return model, loaders, device, None, res
+        return res
+
     _, train_pack = build_bank()
     res = evaluate(model, loaders, device, train_pack, tag=args.tag, seed=args.seed)
     attach_run_provenance(res, args, bge)
@@ -1267,6 +1305,8 @@ def main():
     ap.add_argument("--accum", type=int, default=2)
     ap.add_argument("--lr", type=float, default=2e-5)
     ap.add_argument("--lr_head", type=float, default=1e-4)
+    ap.add_argument("--lr_fusion", type=float, default=None,
+                    help="optional fusion-only learning rate; default preserves lr_head")
     ap.add_argument("--warmup", type=int, default=3)
     ap.add_argument("--cl_epochs", type=int, default=6)
     ap.add_argument("--lambda_cl", type=float, default=0.5)  # 调参后的最优 canonical
@@ -1290,6 +1330,8 @@ def main():
                     help="编码顺序消融：先把 claim+evidence 拼为单序列统一编码再拆回两流，"
                          "对照默认的独立编码再融合（融合/头不变）")
     ap.add_argument("--fusion_dropout", type=float, default=0.2)
+    ap.add_argument("--validation_only", action="store_true",
+                    help="select/report on validation only; never evaluate or export test")
     ap.add_argument("--no_lora", action="store_true")
     ap.add_argument("--no_weight", action="store_true", help="退化为未加权 BCE")
     ap.add_argument("--lora_rank", type=int, default=16)

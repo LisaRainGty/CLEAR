@@ -214,11 +214,26 @@ class CLAIMARC(nn.Module):
         g = F.normalize(self.ret(ret_in), dim=-1)
         return logit, g
 
-    def param_groups(self, lr_encoder=2e-5, lr_head=1e-4):
-        """§3.2.8 差分学习率：编码器侧(LoRA/LayerNorm/特殊embedding)=2e-5；融合+头=1e-4。"""
-        enc, head = [], []
+    def param_groups(self, lr_encoder=2e-5, lr_head=1e-4, lr_fusion=None):
+        """Build explicit encoder, fusion, and task-head optimizer groups.
+
+        ``lr_fusion=None`` preserves the original behavior by assigning the
+        head learning rate to fusion parameters.  A separate fusion rate is
+        used only by the documented validation-only v2 tuning protocol.
+        """
+        fusion_lr = lr_head if lr_fusion is None else lr_fusion
+        enc, fusion, head = [], [], []
         for n, p in self.named_parameters():
             if not p.requires_grad:
                 continue
-            (enc if n.startswith("encoder.") else head).append(p)
-        return [{"params": enc, "lr": lr_encoder}, {"params": head, "lr": lr_head}]
+            if n.startswith("encoder."):
+                enc.append(p)
+            elif n.startswith("fusion."):
+                fusion.append(p)
+            else:
+                head.append(p)
+        groups = [{"params": enc, "lr": lr_encoder}]
+        if fusion:
+            groups.append({"params": fusion, "lr": fusion_lr})
+        groups.append({"params": head, "lr": lr_head})
+        return groups
