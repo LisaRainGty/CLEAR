@@ -1,0 +1,1391 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-07-23T14:34:43.426574+00:00",
+  "config": "/root/CLEAR_run/configs/racl_no_fusion_attr_refine_v3.json",
+  "config_sha256": "b9add81c84479062d0261eae12d9d988205781887dbebe8ea4c07a3ec389dd48",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only",
+  "architecture": "no_fusion",
+  "test_metrics_accessed": false,
+  "selection": {
+    "primary_metric": "auprc",
+    "tie_breaker": "pos_f1",
+    "aggregation": "mean over seeds 0,1,2",
+    "standard_deviation": "population ddof=0",
+    "diagnostic_control": "no_racl_w2c4",
+    "eligible_main_models": "RACL-enabled candidates only; no_racl is never selectable",
+    "selection_rule": "highest mean validation AP across current RACL candidates and the frozen refinement-v2 winner, then highest mean validation positive-F1, then lexical candidate name"
+  },
+  "racl_mandatory": true,
+  "phase_selected_candidate": "racl_attr_l010_t010_k3_5_w2c4",
+  "selected_candidate": "racl_attr_l010_t010_k3_5_w2c4",
+  "selected_source": "current_phase",
+  "ranked_racl_candidates": [
+    "racl_attr_l010_t010_k3_5_w2c4",
+    "racl_attr_l005_t015_k3_5_w2c4",
+    "racl_global_l010_t010_k3_5_w2c4",
+    "racl_attr_l010_t010_k1_5_w2c4"
+  ],
+  "cross_phase_ranked_candidates": [
+    "current_phase:racl_attr_l010_t010_k3_5_w2c4",
+    "current_phase:racl_attr_l005_t015_k3_5_w2c4",
+    "refine_v2:racl_selfx_l005_t010_k1_5_w2c4",
+    "current_phase:racl_global_l010_t010_k3_5_w2c4",
+    "current_phase:racl_attr_l010_t010_k1_5_w2c4"
+  ],
+  "parent_phase_summary": {
+    "phase": "refine_v2",
+    "candidate": "racl_selfx_l005_t010_k1_5_w2c4",
+    "selection_manifest": "/root/CLEAR_run/results/arguments_only_no_fusion_racl_refine_v2/racl_no_fusion_selection.json",
+    "selection_manifest_sha256": "68b2dd23a2b7432c336fea2ba0ccc33126291c095e597251c5bde004a91e0d0f",
+    "aggregate": {
+      "spec": {
+        "name": "racl_selfx_l005_t010_k1_5_w2c4",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.05,
+        "tau": 0.1,
+        "kp": 1,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_racl_selfx_l005_t010_k1_5_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.58,
+          "acc": 0.7551,
+          "macro_f1": 0.7298,
+          "pos_f1": 0.6471,
+          "wF1": 0.7178,
+          "auprc": 0.6596,
+          "auroc": 0.8395,
+          "ece": 0.1186,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_selfx_l005_t010_k1_5_w2c4_s0"
+        },
+        {
+          "tag": "racl_nf_racl_selfx_l005_t010_k1_5_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.02,
+          "acc": 0.7372,
+          "macro_f1": 0.7278,
+          "pos_f1": 0.6771,
+          "wF1": 0.7012,
+          "auprc": 0.6803,
+          "auroc": 0.8404,
+          "ece": 0.207,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_selfx_l005_t010_k1_5_w2c4_s1"
+        },
+        {
+          "tag": "racl_nf_racl_selfx_l005_t010_k1_5_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.18,
+          "acc": 0.7602,
+          "macro_f1": 0.7481,
+          "pos_f1": 0.6928,
+          "wF1": 0.7254,
+          "auprc": 0.6549,
+          "auroc": 0.846,
+          "ece": 0.1294,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_selfx_l005_t010_k1_5_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7508333333333334,
+        "std": 0.009862499119842248,
+        "values": [
+          0.7551,
+          0.7372,
+          0.7602
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6723333333333333,
+        "std": 0.01895896152805374,
+        "values": [
+          0.6471,
+          0.6771,
+          0.6928
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7352333333333334,
+        "std": 0.00913467143482578,
+        "values": [
+          0.7298,
+          0.7278,
+          0.7481
+        ]
+      },
+      "auprc": {
+        "mean": 0.6649333333333334,
+        "std": 0.01103398789599159,
+        "values": [
+          0.6596,
+          0.6803,
+          0.6549
+        ]
+      },
+      "auroc": {
+        "mean": 0.8419666666666666,
+        "std": 0.0028755675768252676,
+        "values": [
+          0.8395,
+          0.8404,
+          0.846
+        ]
+      },
+      "wF1": {
+        "mean": 0.7148,
+        "std": 0.010104784345381477,
+        "values": [
+          0.7178,
+          0.7012,
+          0.7254
+        ]
+      },
+      "ece": {
+        "mean": 0.15166666666666664,
+        "std": 0.03937421604157838,
+        "values": [
+          0.1186,
+          0.207,
+          0.1294
+        ]
+      }
+    }
+  },
+  "diagnostics_vs_no_racl": {
+    "no_racl_w2c4": {
+      "selectable": false,
+      "role": "diagnostic_control",
+      "matched_seed_ap_wins": 0,
+      "mean_ap_delta": 0.0,
+      "mean_pos_f1_delta": 0.0
+    },
+    "racl_global_l010_t010_k3_5_w2c4": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 2,
+      "mean_ap_delta": 0.0010000000000000009,
+      "mean_pos_f1_delta": 0.0002666666666666373
+    },
+    "racl_attr_l010_t010_k3_5_w2c4": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 2,
+      "mean_ap_delta": 0.004666666666666597,
+      "mean_pos_f1_delta": -0.00226666666666675
+    },
+    "racl_attr_l005_t015_k3_5_w2c4": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 2,
+      "mean_ap_delta": 0.003966666666666674,
+      "mean_pos_f1_delta": -0.0024333333333332874
+    },
+    "racl_attr_l010_t010_k1_5_w2c4": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 2,
+      "mean_ap_delta": 0.0006666666666668153,
+      "mean_pos_f1_delta": 0.007800000000000029
+    }
+  },
+  "aggregates": {
+    "no_racl_w2c4": {
+      "spec": {
+        "name": "no_racl_w2c4",
+        "racl_enabled": false,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.0,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": false,
+        "hard_positive": false,
+        "attribute_blocked": false,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_no_racl_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.58,
+          "acc": 0.7551,
+          "macro_f1": 0.7298,
+          "pos_f1": 0.6471,
+          "wF1": 0.7178,
+          "auprc": 0.6596,
+          "auroc": 0.8395,
+          "ece": 0.1186,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_no_racl_w2c4_s0"
+        },
+        {
+          "tag": "racl_nf_no_racl_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.06,
+          "acc": 0.75,
+          "macro_f1": 0.7397,
+          "pos_f1": 0.6879,
+          "wF1": 0.718,
+          "auprc": 0.6696,
+          "auroc": 0.8422,
+          "ece": 0.1652,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_no_racl_w2c4_s1"
+        },
+        {
+          "tag": "racl_nf_no_racl_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.1,
+          "acc": 0.7653,
+          "macro_f1": 0.751,
+          "pos_f1": 0.6913,
+          "wF1": 0.7317,
+          "auprc": 0.6582,
+          "auroc": 0.8456,
+          "ece": 0.1696,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_no_racl_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7568,
+        "std": 0.006360817557515692,
+        "values": [
+          0.7551,
+          0.75,
+          0.7653
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6754333333333333,
+        "std": 0.020082717832891925,
+        "values": [
+          0.6471,
+          0.6879,
+          0.6913
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7401666666666666,
+        "std": 0.008661152091699783,
+        "values": [
+          0.7298,
+          0.7397,
+          0.751
+        ]
+      },
+      "auprc": {
+        "mean": 0.6624666666666666,
+        "std": 0.005076306618880385,
+        "values": [
+          0.6596,
+          0.6696,
+          0.6582
+        ]
+      },
+      "auroc": {
+        "mean": 0.8424333333333333,
+        "std": 0.002495774206311318,
+        "values": [
+          0.8395,
+          0.8422,
+          0.8456
+        ]
+      },
+      "wF1": {
+        "mean": 0.7225,
+        "std": 0.006505894762956659,
+        "values": [
+          0.7178,
+          0.718,
+          0.7317
+        ]
+      },
+      "ece": {
+        "mean": 0.15113333333333334,
+        "std": 0.023074565121699604,
+        "values": [
+          0.1186,
+          0.1652,
+          0.1696
+        ]
+      }
+    },
+    "racl_global_l010_t010_k3_5_w2c4": {
+      "spec": {
+        "name": "racl_global_l010_t010_k3_5_w2c4",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.1,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "attribute_blocked": false,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_racl_global_l010_t010_k3_5_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.58,
+          "acc": 0.7551,
+          "macro_f1": 0.7298,
+          "pos_f1": 0.6471,
+          "wF1": 0.7178,
+          "auprc": 0.6596,
+          "auroc": 0.8395,
+          "ece": 0.1186,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_global_l010_t010_k3_5_w2c4_s0"
+        },
+        {
+          "tag": "racl_nf_racl_global_l010_t010_k3_5_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.2,
+          "acc": 0.7398,
+          "macro_f1": 0.7317,
+          "pos_f1": 0.6852,
+          "wF1": 0.7044,
+          "auprc": 0.6715,
+          "auroc": 0.8412,
+          "ece": 0.1407,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_global_l010_t010_k3_5_w2c4_s1"
+        },
+        {
+          "tag": "racl_nf_racl_global_l010_t010_k3_5_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.16,
+          "acc": 0.7602,
+          "macro_f1": 0.7487,
+          "pos_f1": 0.6948,
+          "wF1": 0.7257,
+          "auprc": 0.6593,
+          "auroc": 0.8469,
+          "ece": 0.1389,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_global_l010_t010_k3_5_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7516999999999999,
+        "std": 0.008668333173107723,
+        "values": [
+          0.7551,
+          0.7398,
+          0.7602
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6757,
+        "std": 0.02059951455738702,
+        "values": [
+          0.6471,
+          0.6852,
+          0.6948
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7367333333333334,
+        "std": 0.008497189077702248,
+        "values": [
+          0.7298,
+          0.7317,
+          0.7487
+        ]
+      },
+      "auprc": {
+        "mean": 0.6634666666666666,
+        "std": 0.005681744645988787,
+        "values": [
+          0.6596,
+          0.6715,
+          0.6593
+        ]
+      },
+      "auroc": {
+        "mean": 0.8425333333333332,
+        "std": 0.003164736253711439,
+        "values": [
+          0.8395,
+          0.8412,
+          0.8469
+        ]
+      },
+      "wF1": {
+        "mean": 0.7159666666666666,
+        "std": 0.008791789098673569,
+        "values": [
+          0.7178,
+          0.7044,
+          0.7257
+        ]
+      },
+      "ece": {
+        "mean": 0.13273333333333334,
+        "std": 0.01002075623670966,
+        "values": [
+          0.1186,
+          0.1407,
+          0.1389
+        ]
+      }
+    },
+    "racl_attr_l010_t010_k3_5_w2c4": {
+      "spec": {
+        "name": "racl_attr_l010_t010_k3_5_w2c4",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.1,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "attribute_blocked": true,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_racl_attr_l010_t010_k3_5_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.58,
+          "acc": 0.7551,
+          "macro_f1": 0.7298,
+          "pos_f1": 0.6471,
+          "wF1": 0.7178,
+          "auprc": 0.6596,
+          "auroc": 0.8395,
+          "ece": 0.1186,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l010_t010_k3_5_w2c4_s0"
+        },
+        {
+          "tag": "racl_nf_racl_attr_l010_t010_k3_5_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.02,
+          "acc": 0.7347,
+          "macro_f1": 0.726,
+          "pos_f1": 0.677,
+          "wF1": 0.6996,
+          "auprc": 0.6808,
+          "auroc": 0.8395,
+          "ece": 0.2009,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l010_t010_k3_5_w2c4_s1"
+        },
+        {
+          "tag": "racl_nf_racl_attr_l010_t010_k3_5_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.2,
+          "acc": 0.7653,
+          "macro_f1": 0.7522,
+          "pos_f1": 0.6954,
+          "wF1": 0.7324,
+          "auprc": 0.661,
+          "auroc": 0.8483,
+          "ece": 0.137,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l010_t010_k3_5_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7517,
+        "std": 0.012721635115031384,
+        "values": [
+          0.7551,
+          0.7347,
+          0.7653
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6731666666666666,
+        "std": 0.019903824311479,
+        "values": [
+          0.6471,
+          0.677,
+          0.6954
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7360000000000001,
+        "std": 0.011559700111450409,
+        "values": [
+          0.7298,
+          0.726,
+          0.7522
+        ]
+      },
+      "auprc": {
+        "mean": 0.6671333333333332,
+        "std": 0.009680679498648597,
+        "values": [
+          0.6596,
+          0.6808,
+          0.661
+        ]
+      },
+      "auroc": {
+        "mean": 0.8424333333333335,
+        "std": 0.004148359782961093,
+        "values": [
+          0.8395,
+          0.8395,
+          0.8483
+        ]
+      },
+      "wF1": {
+        "mean": 0.7166,
+        "std": 0.01341740163618378,
+        "values": [
+          0.7178,
+          0.6996,
+          0.7324
+        ]
+      },
+      "ece": {
+        "mean": 0.15216666666666667,
+        "std": 0.0352689035207441,
+        "values": [
+          0.1186,
+          0.2009,
+          0.137
+        ]
+      }
+    },
+    "racl_attr_l005_t015_k3_5_w2c4": {
+      "spec": {
+        "name": "racl_attr_l005_t015_k3_5_w2c4",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.05,
+        "tau": 0.15,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "attribute_blocked": true,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_racl_attr_l005_t015_k3_5_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.58,
+          "acc": 0.7551,
+          "macro_f1": 0.7298,
+          "pos_f1": 0.6471,
+          "wF1": 0.7178,
+          "auprc": 0.6596,
+          "auroc": 0.8395,
+          "ece": 0.1186,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.15,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l005_t015_k3_5_w2c4_s0"
+        },
+        {
+          "tag": "racl_nf_racl_attr_l005_t015_k3_5_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.02,
+          "acc": 0.7372,
+          "macro_f1": 0.7278,
+          "pos_f1": 0.6771,
+          "wF1": 0.7012,
+          "auprc": 0.6813,
+          "auroc": 0.8402,
+          "ece": 0.2044,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.15,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l005_t015_k3_5_w2c4_s1"
+        },
+        {
+          "tag": "racl_nf_racl_attr_l005_t015_k3_5_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.16,
+          "acc": 0.7602,
+          "macro_f1": 0.7487,
+          "pos_f1": 0.6948,
+          "wF1": 0.7257,
+          "auprc": 0.6584,
+          "auroc": 0.8465,
+          "ece": 0.1323,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.15,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l005_t015_k3_5_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7508333333333334,
+        "std": 0.009862499119842248,
+        "values": [
+          0.7551,
+          0.7372,
+          0.7602
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.673,
+        "std": 0.01968806745213962,
+        "values": [
+          0.6471,
+          0.6771,
+          0.6948
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7354333333333334,
+        "std": 0.009416415925865274,
+        "values": [
+          0.7298,
+          0.7278,
+          0.7487
+        ]
+      },
+      "auprc": {
+        "mean": 0.6664333333333333,
+        "std": 0.01052372979931019,
+        "values": [
+          0.6596,
+          0.6813,
+          0.6584
+        ]
+      },
+      "auroc": {
+        "mean": 0.8420666666666667,
+        "std": 0.003147838764754161,
+        "values": [
+          0.8395,
+          0.8402,
+          0.8465
+        ]
+      },
+      "wF1": {
+        "mean": 0.7149000000000001,
+        "std": 0.010210125692990577,
+        "values": [
+          0.7178,
+          0.7012,
+          0.7257
+        ]
+      },
+      "ece": {
+        "mean": 0.1517666666666667,
+        "std": 0.03763529667154964,
+        "values": [
+          0.1186,
+          0.2044,
+          0.1323
+        ]
+      }
+    },
+    "racl_attr_l010_t010_k1_5_w2c4": {
+      "spec": {
+        "name": "racl_attr_l010_t010_k1_5_w2c4",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.1,
+        "tau": 0.1,
+        "kp": 1,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "attribute_blocked": true,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_racl_attr_l010_t010_k1_5_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.52,
+          "acc": 0.7449,
+          "macro_f1": 0.7344,
+          "pos_f1": 0.6815,
+          "wF1": 0.7121,
+          "auprc": 0.6539,
+          "auroc": 0.8423,
+          "ece": 0.1933,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l010_t010_k1_5_w2c4_s0"
+        },
+        {
+          "tag": "racl_nf_racl_attr_l010_t010_k1_5_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.24,
+          "acc": 0.7372,
+          "macro_f1": 0.7273,
+          "pos_f1": 0.6751,
+          "wF1": 0.6989,
+          "auprc": 0.6734,
+          "auroc": 0.8345,
+          "ece": 0.1998,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l010_t010_k1_5_w2c4_s1"
+        },
+        {
+          "tag": "racl_nf_racl_attr_l010_t010_k1_5_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.18,
+          "acc": 0.7628,
+          "macro_f1": 0.7499,
+          "pos_f1": 0.6931,
+          "wF1": 0.7292,
+          "auprc": 0.6621,
+          "auroc": 0.8479,
+          "ece": 0.1392,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": true,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_attr_l010_t010_k1_5_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7483,
+        "std": 0.01072411612519499,
+        "values": [
+          0.7449,
+          0.7372,
+          0.7628
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6832333333333334,
+        "std": 0.007449981357172807,
+        "values": [
+          0.6815,
+          0.6751,
+          0.6931
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7372,
+        "std": 0.0094364541363092,
+        "values": [
+          0.7344,
+          0.7273,
+          0.7499
+        ]
+      },
+      "auprc": {
+        "mean": 0.6631333333333335,
+        "std": 0.007994303527443066,
+        "values": [
+          0.6539,
+          0.6734,
+          0.6621
+        ]
+      },
+      "auroc": {
+        "mean": 0.8415666666666667,
+        "std": 0.005495048275998622,
+        "values": [
+          0.8423,
+          0.8345,
+          0.8479
+        ]
+      },
+      "wF1": {
+        "mean": 0.7134,
+        "std": 0.012404031602668543,
+        "values": [
+          0.7121,
+          0.6989,
+          0.7292
+        ]
+      },
+      "ece": {
+        "mean": 0.17743333333333333,
+        "std": 0.027164969272126114,
+        "values": [
+          0.1933,
+          0.1998,
+          0.1392
+        ]
+      }
+    }
+  }
+}
