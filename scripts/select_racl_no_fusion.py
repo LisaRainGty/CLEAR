@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Select or reject RACL using validation-only, matched-seed no-fusion runs."""
+"""Select RACL using validation-only matched-seed runs on a frozen architecture."""
 from __future__ import annotations
 
 import argparse
@@ -83,7 +83,12 @@ def main() -> None:
 
     config_path = Path(args.config).resolve()
     cfg = json.loads(config_path.read_text(encoding="utf-8"))
-    protocol = cfg["racl_no_fusion"]
+    protocol = cfg.get("racl_tuning", cfg.get("racl_no_fusion"))
+    if not protocol:
+        raise RuntimeError("missing racl_tuning protocol")
+    architecture = str(protocol.get("architecture", "no_fusion"))
+    job_prefix = str(protocol.get("job_prefix", "racl_nf"))
+    fixed_fusion = protocol.get("fixed_fusion")
     seeds = [int(seed) for seed in protocol["seeds"]]
     if seeds != [0, 1, 2]:
         raise RuntimeError(f"frozen RACL seeds changed: {seeds}")
@@ -108,14 +113,30 @@ def main() -> None:
             raise RuntimeError("parent RACL dataset hash mismatch")
         if parent_manifest.get("evidence_policy") != expected_policy:
             raise RuntimeError("parent RACL evidence policy mismatch")
-        if parent_manifest.get("architecture") != "no_fusion":
+        expected_parent_architecture = parent_phase.get("architecture")
+        if (expected_parent_architecture is not None
+                and parent_manifest.get("architecture") not in (
+                    None, expected_parent_architecture)):
             raise RuntimeError("parent RACL architecture mismatch")
-        parent_name = str(parent_manifest["selected_candidate"])
+        source_config_path = parent_phase.get("source_config")
+        if source_config_path:
+            source_path = (config_path.parents[1] / str(source_config_path)).resolve()
+            source_hash = hashlib.sha256(source_path.read_bytes()).hexdigest()
+            if source_hash != parent_phase["source_config_sha256"]:
+                raise RuntimeError("parent source config hash mismatch")
+        parent_name = str(parent_phase.get(
+            "source_candidate", parent_manifest["selected_candidate"]
+        ))
+        if parent_manifest.get("selected_candidate") != parent_name:
+            raise RuntimeError("parent source candidate was not validation-selected")
         if parent_name not in parent_manifest["aggregates"]:
             raise RuntimeError("parent selected candidate has no aggregate")
+        parent_alias = str(parent_phase.get("candidate_alias", parent_name))
         parent_summary = {
             "phase": str(parent_phase["phase"]),
-            "candidate": parent_name,
+            "candidate": parent_alias,
+            "source_candidate": parent_name,
+            "spec": parent_phase.get("spec", {}),
             "selection_manifest": str(parent_path),
             "selection_manifest_sha256": parent_hash,
             "aggregate": parent_manifest["aggregates"][parent_name],
@@ -128,7 +149,7 @@ def main() -> None:
     for name, candidate in candidate_specs.items():
         rows = []
         for seed in seeds:
-            path = result_root / "jobs" / f"racl_nf_{name}_s{seed}.jsonl"
+            path = result_root / "jobs" / f"{job_prefix}_{name}_s{seed}.jsonl"
             if not path.exists():
                 raise RuntimeError(f"missing candidate result: {path}")
             row = load_one(path)
@@ -145,8 +166,24 @@ def main() -> None:
                 raise RuntimeError(f"seed mismatch in {path}")
             if int(row.get("n_val")) != expected_n_val or int(row.get("pos_val")) != expected_pos_val:
                 raise RuntimeError(f"validation split cardinality mismatch in {path}")
-            if row.get("no_fusion") is not True:
-                raise RuntimeError(f"fusion was not disabled in {path}")
+            if architecture == "no_fusion":
+                if row.get("no_fusion") is not True:
+                    raise RuntimeError(f"fusion was not disabled in {path}")
+            elif architecture == "locked_fusion_global":
+                if row.get("no_fusion") is not False:
+                    raise RuntimeError(f"fusion was not enabled in {path}")
+                if not fixed_fusion:
+                    raise RuntimeError("locked-fusion RACL tuning lacks fixed_fusion")
+                for key, row_key in (
+                    ("n_fusion", "n_fusion"),
+                    ("heads", "heads"),
+                    ("fusion_dropout", "fusion_dropout"),
+                    ("lr_fusion", "lr_fusion"),
+                ):
+                    if abs(float(row.get(row_key)) - float(fixed_fusion[key])) > 1e-12:
+                        raise RuntimeError(f"{row_key} mismatch in {path}")
+            else:
+                raise RuntimeError(f"unsupported RACL architecture: {architecture}")
             enabled = bool(candidate["racl_enabled"])
             if bool(row.get("no_cl")) == enabled:
                 raise RuntimeError(f"RACL enablement mismatch in {path}")
@@ -229,7 +266,7 @@ def main() -> None:
         "config_sha256": hashlib.sha256(config_path.read_bytes()).hexdigest(),
         "dataset_sha256": expected_hash,
         "evidence_policy": expected_policy,
-        "architecture": "no_fusion",
+        "architecture": architecture,
         "test_metrics_accessed": False,
         "selection": selection,
         "racl_mandatory": True,

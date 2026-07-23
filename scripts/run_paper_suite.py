@@ -452,14 +452,20 @@ def build_jobs(stages: set[str]) -> list[Job]:
         ), (selection,)))
 
     if "racl_tune" in stages:
-        protocol = cfg.get("racl_no_fusion", {})
+        protocol = cfg.get("racl_tuning", cfg.get("racl_no_fusion", {}))
         candidates = protocol.get("candidates", [])
         tune_seeds = tuple(int(seed) for seed in protocol.get("seeds", SEEDS))
+        architecture = str(protocol.get("architecture", "no_fusion"))
+        job_prefix = str(protocol.get("job_prefix", "racl_nf"))
         if not candidates:
-            raise ValueError("racl_tune requires racl_no_fusion.candidates in the config")
+            raise ValueError("racl_tune requires RACL candidates in the config")
+        if architecture not in {"no_fusion", "locked_fusion_global"}:
+            raise ValueError(f"unsupported RACL tuning architecture: {architecture}")
         for candidate in candidates:
             name = str(candidate["name"])
-            extra = ["--validation_only", "--no_fusion"]
+            extra = ["--validation_only"]
+            if architecture == "no_fusion":
+                extra.append("--no_fusion")
             if not bool(candidate["racl_enabled"]):
                 extra.append("--no_cl")
             if bool(candidate.get("exclude_self", False)):
@@ -471,10 +477,10 @@ def build_jobs(stages: set[str]) -> list[Job]:
             if float(candidate.get("cl_neg_c_min", 0.0)) > 0:
                 extra.extend(("--cl_neg_c_min", str(float(candidate["cl_neg_c_min"]))))
             for seed in tune_seeds:
-                job_name = f"racl_nf_{name}_s{seed}"
+                job_name = f"{job_prefix}_{name}_s{seed}"
                 result_file = JOB_RESULTS / f"{job_name}.jsonl"
                 command = list(claimarc_command(
-                    py, f"racl_nf_{name}", seed, tuple(extra)
+                    py, f"{job_prefix}_{name}", seed, tuple(extra)
                 ))
                 if bool(candidate.get("attribute_blocked", False)):
                     command.remove("--cl_no_attr_block")
@@ -502,8 +508,11 @@ def build_jobs(stages: set[str]) -> list[Job]:
                     tuple(command),
                     (result_file,),
                 ))
-        selection = OUT / "racl_no_fusion_selection.json"
-        jobs.append(Job("select_racl_no_fusion", "racl_tune", (
+        selection_name = str(
+            protocol.get("selection_output", "racl_no_fusion_selection.json")
+        )
+        selection = OUT / selection_name
+        jobs.append(Job("select_racl_tuning", "racl_tune", (
             py, str(ROOT / "scripts/select_racl_no_fusion.py"),
             "--config", str(CONFIG), "--result-root", str(OUT),
             "--output", str(selection),
