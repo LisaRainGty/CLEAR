@@ -371,6 +371,8 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 command = list(claimarc_command(
                     py, f"racl_nf_{name}", seed, tuple(extra)
                 ))
+                if bool(candidate.get("attribute_blocked", False)):
+                    command.remove("--cl_no_attr_block")
                 # Keep the recorded command unambiguous: replace the canonical
                 # RACL defaults instead of relying on argparse's last-value rule.
                 for flag, value in (

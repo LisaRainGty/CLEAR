@@ -1291,6 +1291,7 @@ def train(args, splits=None, return_model=False):
             "cl_c_min": float(args.cl_c_min),
             "cl_neg_c_min": float(args.cl_neg_c_min),
             "cl_hard_pos": bool(args.cl_hard_pos),
+            "cl_attribute_blocked": not bool(args.cl_no_attr_block),
         }
         attach_run_provenance(res, args, bge)
         res["encoder_train_mode"] = getattr(args, "enc_train", "lora")

@@ -161,6 +161,9 @@ def main() -> None:
                 raise RuntimeError(f"self-exclusion mismatch in {path}")
             if bool(row.get("cl_hard_pos")) != bool(candidate.get("hard_positive", False)):
                 raise RuntimeError(f"hard-positive mismatch in {path}")
+            if bool(row.get("cl_attribute_blocked")) != bool(
+                    candidate.get("attribute_blocked", False)):
+                raise RuntimeError(f"attribute-blocking mismatch in {path}")
             if abs(float(row.get("cl_c_min")) - float(candidate.get("cl_c_min", 0.0))) > 1e-12:
                 raise RuntimeError(f"cl_c_min mismatch in {path}")
             if abs(float(row.get("cl_neg_c_min")) - float(candidate.get("cl_neg_c_min", 0.0))) > 1e-12:
