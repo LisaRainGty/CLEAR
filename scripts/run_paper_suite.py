@@ -762,6 +762,9 @@ def main() -> int:
     if any(job.stage == "llm" for job in pending_jobs):
         hosted_api_preflight(py, env)
     invocation = invocation_label(stages, args.only)
+    code_commit = os.environ.get("CLAIMARC_CODE_COMMIT", "").strip()
+    if not code_commit:
+        code_commit = command_output(["git", "rev-parse", "HEAD"])
     environment = {
         "started_utc": now(), "python": sys.version, "platform": platform.platform(),
         "invocation": invocation,
@@ -770,7 +773,7 @@ def main() -> int:
         "evidence_policy": POLICY, "selected_stages": sorted(stages),
         "gradient_checkpointing": os.environ.get("CLAIMARC_GRADIENT_CHECKPOINTING", "0"),
         "selected_jobs": [job.name for job in jobs],
-        "git_commit": command_output(["git", "rev-parse", "HEAD"]),
+        "git_commit": code_commit,
         "gpu": command_output([
             "nvidia-smi", "--query-gpu=name,memory.total,driver_version",
             "--format=csv,noheader",
