@@ -1,5 +1,8 @@
 {
   "schema_version": 5,
+  "status": "archived_diagnostic_superseded_20260723",
+  "superseded_by": "configs/paper_fair.json",
+  "final_paper_use": false,
   "paper_snapshot": "paper/draft/实验结果与分析.docx",
   "dataset": {
     "path": "data/arguments_only/dataset_arguments_only_20260722.jsonl",

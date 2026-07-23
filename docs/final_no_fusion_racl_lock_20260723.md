@@ -1,6 +1,11 @@
-# Final no-fusion + RACL architecture lock
+# Archived no-fusion + RACL diagnostic lock
 
-The final main architecture is fixed before any new test-set evaluation:
+> Superseded on 2026-07-23. This protocol must not be used as the final paper
+> model. It compared validation-only tuning metrics with an earlier test-set
+> headline and therefore made the apparent performance drop look much larger
+> than it was. The restored final protocol is `configs/paper_fair.json`.
+
+The diagnostic architecture was fixed before its validation-only evaluation:
 
 - evidence policy: `args_only`;
 - architecture: `no_fusion`;
@@ -23,7 +28,6 @@ with SHA-256
 It records `test_metrics_accessed=false`. No further RACL tuning is allowed
 without a new preregistered validation-only protocol.
 
-All subsequent CLAIMARC-dependent experiments, including cross-domain folds,
-must use this lock. Table 8 retains one frozen with-fusion diagnostic, while
-the canonical model remains no-fusion. Table 9 uses global RACL retrieval as
-the mining ablation because attribute-conditioned retrieval is now canonical.
+These artifacts remain useful as validation-only diagnostic provenance. They
+must not replace the restored complete-model test results or drive subsequent
+CLAIMARC-dependent paper experiments.
