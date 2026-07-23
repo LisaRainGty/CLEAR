@@ -42,6 +42,7 @@ XDOM = ROOT / "embeddings/fair_rerun/xdom"
 XDOM_LLM = ROOT / "embeddings/fair_rerun/xdom_llm"
 FIGS = ROOT / "paper/figs"
 POLICY = "sources_only"
+LOCKED_FUSION: dict[str, object] = {}
 SEEDS = (0, 1, 2)
 CATEGORIES = (
     "apparel_and_underwear", "general", "baby_kids_and_pets", "shoes_and_bags",
@@ -53,11 +54,29 @@ CATEGORIES = (
 def configure(config_path: str | Path) -> dict:
     """Load one protocol and redirect every artifact path to its namespace."""
     global CONFIG, DATASET, OUT, LOGS, STATUS, JOB_RESULTS
-    global PRED, GEOM, ABL, HP, XDOM, XDOM_LLM, FIGS, POLICY
+    global PRED, GEOM, ABL, HP, XDOM, XDOM_LLM, FIGS, POLICY, LOCKED_FUSION
     CONFIG = Path(config_path).resolve()
     cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
     DATASET = (ROOT / cfg["dataset"]["path"]).resolve()
     POLICY = str(cfg["fair_comparison"]["evidence_policy"])
+    LOCKED_FUSION = dict(cfg.get("claimarc", {}).get("locked_fusion", {}) or {})
+    if LOCKED_FUSION:
+        required = {
+            "selection_manifest", "selection_manifest_sha256", "selected_candidate",
+            "n_fusion", "heads", "fusion_dropout", "lr_fusion",
+        }
+        missing = sorted(required - set(LOCKED_FUSION))
+        if missing:
+            raise ValueError(f"locked_fusion missing fields: {missing}")
+        selection_path = (ROOT / str(LOCKED_FUSION["selection_manifest"])).resolve()
+        selection_hash = hashlib.sha256(selection_path.read_bytes()).hexdigest()
+        if selection_hash != LOCKED_FUSION["selection_manifest_sha256"]:
+            raise ValueError("locked fusion selection manifest hash mismatch")
+        selection = json.loads(selection_path.read_text(encoding="utf-8"))
+        if selection.get("selected_candidate") != LOCKED_FUSION["selected_candidate"]:
+            raise ValueError("locked fusion candidate does not match selection manifest")
+        if selection.get("test_metrics_accessed") is not False:
+            raise ValueError("locked fusion selection did not prove test isolation")
     namespace = str(cfg.get("paper_suite", {}).get("artifact_namespace", "fair_rerun"))
     if not namespace or namespace in {".", ".."} or "/" in namespace or "\\" in namespace:
         raise ValueError(f"invalid artifact_namespace: {namespace!r}")
@@ -126,11 +145,22 @@ def hosted_api_preflight(py: str, env: dict[str, str]) -> None:
 
 def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
                      bundle: Path | None = None) -> tuple[str, ...]:
+    extra = tuple(extra)
     batch = int(os.environ.get("CLAIMARC_BATCH_SIZE", "12"))
     effective = int(os.environ.get("CLAIMARC_EFFECTIVE_BATCH", "36"))
     accum = max(1, math.ceil(effective / batch))
     train_mode = ("--enc_train", "lora", "--lr", "2e-5") if lora else (
         "--enc_train", "full", "--lr", "1e-5")
+    locked_args: list[str] = []
+    if LOCKED_FUSION and "--no_fusion" not in extra:
+        for flag, key in (
+            ("--n_fusion", "n_fusion"),
+            ("--heads", "heads"),
+            ("--fusion_dropout", "fusion_dropout"),
+            ("--lr_fusion", "lr_fusion"),
+        ):
+            if flag not in extra:
+                locked_args.extend((flag, str(LOCKED_FUSION[key])))
     command = (
         py, "-m", "models.train", "--dataset", str(DATASET), "--tag", tag,
         "--seed", str(seed), "--warmup", "3", "--cl_epochs", "6",
@@ -138,7 +168,7 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
         "--lambda_cl", "0.5", "--tau", "0.07", "--Kp", "3", "--Kn", "5",
         "--encoder_name", os.environ.get("CLAIMARC_BGE_PATH", "BAAI/bge-large-zh-v1.5"),
         *train_mode, "--cl_no_attr_block", "--cl_class_balanced",
-        "--evidence_policy", POLICY, *tuple(extra),
+        "--evidence_policy", POLICY, *locked_args, *extra,
     )
     if bundle is not None:
         command += ("--save_emb", str(bundle))
@@ -160,6 +190,7 @@ def add_claimarc(jobs: list[Job], name: str, stage: str, extra=(), *, lora=False
 def build_jobs(stages: set[str]) -> list[Job]:
     py = os.environ.get("CLAIMARC_PYTHON", sys.executable)
     jobs: list[Job] = []
+    cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
 
     if "audit" in stages:
         audit_out = OUT / "reproducibility_report.json"
@@ -197,13 +228,14 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 "--save_dir", str(frozen_dir), "--paper_only",
             ), (frozen_dir / "BGEfz_LR_4tuple.pt", frozen_dir / "BGEfz_SVM_4tuple.pt",
                 frozen_dir / "BGEfz_MLP_4tuple.pt", frozen_dir / "BGEfz_kNN_attr_k15.pt")))
-        for seed in SEEDS:
-            pred = PRED / f"qwen2p5_7b_qlora_s{seed}.pt"
-            jobs.append(Job(f"qwen2p5_7b_qlora_s{seed}", "table3", (
-                py, "-m", "models.qwen_sft", "--dataset", str(DATASET),
-                "--seed", str(seed), "--evidence_policy", POLICY,
-                "--save_pred", str(pred),
-            ), (pred,)))
+        if not cfg.get("paper_suite", {}).get("exclude_legacy_qwen", False):
+            for seed in SEEDS:
+                pred = PRED / f"qwen2p5_7b_qlora_s{seed}.pt"
+                jobs.append(Job(f"qwen2p5_7b_qlora_s{seed}", "table3", (
+                    py, "-m", "models.qwen_sft", "--dataset", str(DATASET),
+                    "--seed", str(seed), "--evidence_policy", POLICY,
+                    "--save_pred", str(pred),
+                ), (pred,)))
 
     if "ablation" in stages:
         # Table 6 and Table 7 share the exact same no-RACL run.
@@ -284,7 +316,6 @@ def build_jobs(stages: set[str]) -> list[Job]:
                          bundle_dir=HP, seeds=(0,))
 
     if "fusion_tune" in stages:
-        cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
         protocol = cfg.get("fusion_v2", {})
         candidates = protocol.get("candidates", [])
         tune_seeds = tuple(int(seed) for seed in protocol.get("seeds", SEEDS))
@@ -316,7 +347,6 @@ def build_jobs(stages: set[str]) -> list[Job]:
         ), (selection,)))
 
     if "llm_sft_tune" in stages:
-        cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
         config_sha256 = hashlib.sha256(CONFIG.read_bytes()).hexdigest()
         protocol = cfg.get("llm_sft_v2", {})
         candidates = protocol.get("candidates", [])

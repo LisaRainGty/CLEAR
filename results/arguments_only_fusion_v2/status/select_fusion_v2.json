@@ -1,0 +1,27 @@
+{
+  "job": "select_fusion_v2",
+  "stage": "fusion_tune",
+  "signature": "ee53df39f695745201c36caffe8176e6373c3f792b000a48b7a91d7aa6813d11",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "/root/CLEAR_run/scripts/select_fusion_v2.py",
+    "--config",
+    "/root/CLEAR_run/configs/fusion_v2_tuning.json",
+    "--result-root",
+    "/root/CLEAR_run/results/arguments_only_fusion_v2",
+    "--output",
+    "/root/CLEAR_run/results/arguments_only_fusion_v2/fusion_v2_selection.json"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python /root/CLEAR_run/scripts/select_fusion_v2.py --config /root/CLEAR_run/configs/fusion_v2_tuning.json --result-root /root/CLEAR_run/results/arguments_only_fusion_v2 --output /root/CLEAR_run/results/arguments_only_fusion_v2/fusion_v2_selection.json",
+  "started_utc": "2026-07-23T03:06:03.610346+00:00",
+  "finished_utc": "2026-07-23T03:06:03.741016+00:00",
+  "returncode": 0,
+  "log": "results/arguments_only_fusion_v2/logs/select_fusion_v2.log",
+  "result_file": "results/arguments_only_fusion_v2/jobs/select_fusion_v2.jsonl",
+  "outputs": [
+    "results/arguments_only_fusion_v2/fusion_v2_selection.json"
+  ],
+  "removed_failed_outputs": [],
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only"
+}

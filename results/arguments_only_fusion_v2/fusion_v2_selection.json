@@ -1,0 +1,532 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-07-23T03:06:03.728583+00:00",
+  "config": "/root/CLEAR_run/configs/fusion_v2_tuning.json",
+  "config_sha256": "041c19e3e46acbdc156af5463dc54e2565175b1a94d6a985169c511dcbdb1ad0",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only",
+  "test_metrics_accessed": false,
+  "selection": {
+    "primary_metric": "auprc",
+    "tie_breaker": "pos_f1",
+    "aggregation": "mean over seeds 0,1,2",
+    "standard_deviation": "population ddof=0"
+  },
+  "ranked_candidates": [
+    "n1_d020_lr5e5",
+    "n1_d030_lr5e5",
+    "n2_d030_lr5e5",
+    "control_n2_d020_lr1e4"
+  ],
+  "selected_candidate": "n1_d020_lr5e5",
+  "aggregates": {
+    "n1_d020_lr5e5": {
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "fusion_v2_n1_d020_lr5e5",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.22,
+          "acc": 0.7755,
+          "macro_f1": 0.7358,
+          "pos_f1": 0.6333,
+          "wF1": 0.732,
+          "auprc": 0.684,
+          "auroc": 0.8419,
+          "ece": 0.187,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d020_lr5e5_s0"
+        },
+        {
+          "tag": "fusion_v2_n1_d020_lr5e5",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.56,
+          "acc": 0.75,
+          "macro_f1": 0.7326,
+          "pos_f1": 0.6644,
+          "wF1": 0.7243,
+          "auprc": 0.6458,
+          "auroc": 0.8347,
+          "ece": 0.1848,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d020_lr5e5_s1"
+        },
+        {
+          "tag": "fusion_v2_n1_d020_lr5e5",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.44,
+          "acc": 0.7551,
+          "macro_f1": 0.7333,
+          "pos_f1": 0.6571,
+          "wF1": 0.7261,
+          "auprc": 0.6818,
+          "auroc": 0.8414,
+          "ece": 0.1783,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d020_lr5e5_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7602000000000001,
+        "std": 0.011017259187293349
+      },
+      "pos_f1": {
+        "mean": 0.6516,
+        "std": 0.013278805167132582
+      },
+      "macro_f1": {
+        "mean": 0.7338999999999999,
+        "std": 0.0013735598518691031
+      },
+      "auprc": {
+        "mean": 0.6705333333333333,
+        "std": 0.017512154509241717
+      },
+      "auroc": {
+        "mean": 0.8393333333333334,
+        "std": 0.0032826141344293853
+      },
+      "wF1": {
+        "mean": 0.7274666666666668,
+        "std": 0.0032887011958454694
+      },
+      "ece": {
+        "mean": 0.18336666666666668,
+        "std": 0.0036935379004718848
+      }
+    },
+    "n1_d030_lr5e5": {
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "fusion_v2_n1_d030_lr5e5",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.24,
+          "acc": 0.7577,
+          "macro_f1": 0.7411,
+          "pos_f1": 0.6758,
+          "wF1": 0.7248,
+          "auprc": 0.6608,
+          "auroc": 0.8431,
+          "ece": 0.1394,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.3,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d030_lr5e5_s0"
+        },
+        {
+          "tag": "fusion_v2_n1_d030_lr5e5",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.4,
+          "acc": 0.75,
+          "macro_f1": 0.738,
+          "pos_f1": 0.6818,
+          "wF1": 0.7201,
+          "auprc": 0.6539,
+          "auroc": 0.8416,
+          "ece": 0.1795,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.3,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d030_lr5e5_s1"
+        },
+        {
+          "tag": "fusion_v2_n1_d030_lr5e5",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.18,
+          "acc": 0.75,
+          "macro_f1": 0.7326,
+          "pos_f1": 0.6644,
+          "wF1": 0.7196,
+          "auprc": 0.6565,
+          "auroc": 0.835,
+          "ece": 0.1795,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.3,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d030_lr5e5_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7525666666666666,
+        "std": 0.003629814810090963
+      },
+      "pos_f1": {
+        "mean": 0.6739999999999999,
+        "std": 0.007216647421067473
+      },
+      "macro_f1": {
+        "mean": 0.7372333333333333,
+        "std": 0.0035122009560324724
+      },
+      "auprc": {
+        "mean": 0.6570666666666667,
+        "std": 0.0028452689777164514
+      },
+      "auroc": {
+        "mean": 0.8399,
+        "std": 0.003518522417151843
+      },
+      "wF1": {
+        "mean": 0.7215000000000001,
+        "std": 0.002342363478768118
+      },
+      "ece": {
+        "mean": 0.16613333333333333,
+        "std": 0.018903321283720367
+      }
+    },
+    "n2_d030_lr5e5": {
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "fusion_v2_n2_d030_lr5e5",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.62,
+          "acc": 0.7219,
+          "macro_f1": 0.7089,
+          "pos_f1": 0.6472,
+          "wF1": 0.6847,
+          "auprc": 0.654,
+          "auroc": 0.8272,
+          "ece": 0.1893,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.3,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n2_d030_lr5e5_s0"
+        },
+        {
+          "tag": "fusion_v2_n2_d030_lr5e5",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.4,
+          "acc": 0.7679,
+          "macro_f1": 0.7476,
+          "pos_f1": 0.6762,
+          "wF1": 0.734,
+          "auprc": 0.6476,
+          "auroc": 0.8362,
+          "ece": 0.1835,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.3,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n2_d030_lr5e5_s1"
+        },
+        {
+          "tag": "fusion_v2_n2_d030_lr5e5",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.02,
+          "acc": 0.7577,
+          "macro_f1": 0.7321,
+          "pos_f1": 0.6494,
+          "wF1": 0.723,
+          "auprc": 0.6598,
+          "auroc": 0.8308,
+          "ece": 0.2094,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.3,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n2_d030_lr5e5_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7491666666666666,
+        "std": 0.019724998239684495
+      },
+      "pos_f1": {
+        "mean": 0.6576,
+        "std": 0.013182817099037182
+      },
+      "macro_f1": {
+        "mean": 0.7295333333333334,
+        "std": 0.01590310940944851
+      },
+      "auprc": {
+        "mean": 0.6538,
+        "std": 0.004982636517614653
+      },
+      "auroc": {
+        "mean": 0.8314,
+        "std": 0.0036986484017813926
+      },
+      "wF1": {
+        "mean": 0.7138999999999999,
+        "std": 0.021130231107743872
+      },
+      "ece": {
+        "mean": 0.1940666666666667,
+        "std": 0.011097847639169602
+      }
+    },
+    "control_n2_d020_lr1e4": {
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "fusion_v2_control_n2_d020_lr1e4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.7,
+          "acc": 0.7474,
+          "macro_f1": 0.7295,
+          "pos_f1": 0.6598,
+          "wF1": 0.7114,
+          "auprc": 0.6483,
+          "auroc": 0.8289,
+          "ece": 0.2025,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_control_n2_d020_lr1e4_s0"
+        },
+        {
+          "tag": "fusion_v2_control_n2_d020_lr1e4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.42,
+          "acc": 0.7704,
+          "macro_f1": 0.744,
+          "pos_f1": 0.6617,
+          "wF1": 0.7311,
+          "auprc": 0.6518,
+          "auroc": 0.8398,
+          "ece": 0.1875,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_control_n2_d020_lr1e4_s1"
+        },
+        {
+          "tag": "fusion_v2_control_n2_d020_lr1e4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.1,
+          "acc": 0.7398,
+          "macro_f1": 0.7209,
+          "pos_f1": 0.6483,
+          "wF1": 0.7074,
+          "auprc": 0.6566,
+          "auroc": 0.8309,
+          "ece": 0.1802,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_control_n2_d020_lr1e4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7525333333333334,
+        "std": 0.013009056674315601
+      },
+      "pos_f1": {
+        "mean": 0.6566,
+        "std": 0.0059200225224796815
+      },
+      "macro_f1": {
+        "mean": 0.7314666666666666,
+        "std": 0.009532517447604746
+      },
+      "auprc": {
+        "mean": 0.6522333333333333,
+        "std": 0.0034022868126534337
+      },
+      "auroc": {
+        "mean": 0.8332,
+        "std": 0.0047377913278939116
+      },
+      "wF1": {
+        "mean": 0.7166333333333332,
+        "std": 0.010359000380774601
+      },
+      "ece": {
+        "mean": 0.1900666666666667,
+        "std": 0.00928307899112981
+      }
+    }
+  }
+}
