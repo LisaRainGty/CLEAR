@@ -1,0 +1,13 @@
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=1
+[ep0] warmup ce=0.3030 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7404 val_ap=0.5651
+[ep1] warmup ce=0.2307 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7314 val_ap=0.6295
+[ep2] warmup ce=0.1356 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7326 val_ap=0.6458
+[ep3] warmup ce=0.0658 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7109 val_ap=0.6435
+[ep4] warmup ce=0.0342 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7168 val_ap=0.6185
+[ep5] warmup ce=0.0175 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7193 val_ap=0.6390
+[ep6] warmup ce=0.0018 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7263 val_ap=0.6466
+[ep7] warmup ce=0.0012 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7274 val_ap=0.6355
+[ep8] warmup ce=0.0004 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7297 val_ap=0.6393
+[select] best single-val checkpoint score=1.0555
+RESULT {"tag": "racl_fg_no_racl_w3c6", "seed": 1, "evaluation_split": "validation", "validation_only": true, "thr": 0.56, "acc": 0.75, "macro_f1": 0.7326, "pos_f1": 0.6644, "wF1": 0.7243, "auprc": 0.6458, "auroc": 0.8347, "ece": 0.1848, "n_val": 392, "pos_val": 122, "no_fusion": false, "n_fusion": 1, "heads": 8, "fusion_dropout": 0.2, "lr_fusion": 5e-05, "no_cl": true, "cl_mode": "racl", "lambda_cl": 0.0, "tau": 0.1, "Kp": 3, "Kn": 5, "warmup_epochs": 3, "contrastive_epochs": 6, "cl_exclude_self": false, "cl_c_min": 0.0, "cl_neg_c_min": 0.0, "cl_hard_pos": false, "cl_attribute_blocked": false, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
