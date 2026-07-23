@@ -707,6 +707,104 @@
         "args_only"
       ]
     },
+    "no_class_balance": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8140000000000001,
+        "std": 0.010401442207694095,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7238333333333333,
+        "std": 0.010371274431492683,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.7918,
+        "std": 0.009188579868510677,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7474333333333334,
+        "std": 0.011150934191059204,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.9003666666666666,
+        "std": 0.004508140784551149,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7704333333333334,
+        "std": 0.00926138938460818,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.14353333333333332,
+        "std": 0.017084008116754486,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
+    "no_four_tuple": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8214666666666668,
+        "std": 0.010844968111217915,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7340666666666666,
+        "std": 0.01716517792897392,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.7997666666666667,
+        "std": 0.011562583333033049,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7500666666666667,
+        "std": 0.018628025481336827,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.9041666666666667,
+        "std": 0.005217598425840551,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7786333333333332,
+        "std": 0.0151216180792048,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.11696666666666666,
+        "std": 0.014839249756417379,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
     "no_racl": {
       "n": 3,
       "seeds": [
@@ -953,7 +1051,7 @@
       ]
     }
   },
-  "fresh_rows": 42,
+  "fresh_rows": 48,
   "rejected_rows": [
     {
       "result_file": "results/arguments_only_rerun/jobs/bert_backbone_s0.jsonl",
@@ -1039,54 +1137,6 @@
       "result_file": "results/arguments_only_rerun/jobs/hard_positive_s1.jsonl",
       "suite_job": "hard_positive_s1",
       "tag": "hard_positive",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_class_balance_s0.jsonl",
-      "suite_job": "no_class_balance_s0",
-      "tag": "no_class_balance",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_class_balance_s1.jsonl",
-      "suite_job": "no_class_balance_s1",
-      "tag": "no_class_balance",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_class_balance_s2.jsonl",
-      "suite_job": "no_class_balance_s2",
-      "tag": "no_class_balance",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_four_tuple_s0.jsonl",
-      "suite_job": "no_four_tuple_s0",
-      "tag": "no_four_tuple",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_four_tuple_s1.jsonl",
-      "suite_job": "no_four_tuple_s1",
-      "tag": "no_four_tuple",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_four_tuple_s2.jsonl",
-      "suite_job": "no_four_tuple_s2",
-      "tag": "no_four_tuple",
       "reasons": [
         "stale_job_command"
       ]
