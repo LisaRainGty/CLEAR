@@ -1,0 +1,13 @@
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=2
+[ep0] warmup ce=0.3191 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7367 val_ap=0.5412
+[ep1] warmup ce=0.2286 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7303 val_ap=0.6070
+[ep2] warmup ce=0.1336 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7296 val_ap=0.6524
+[ep3] CL ce=0.0751 td=0.0000 cl=0.0936 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7263 val_ap=0.6558
+[ep4] CL ce=0.0456 td=0.0000 cl=0.0560 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7193 val_ap=0.6586
+[ep5] CL ce=0.0232 td=0.0000 cl=0.0244 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7245 val_ap=0.6547
+[ep6] CL ce=0.0050 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7312 val_ap=0.6592
+[ep7] CL ce=0.0014 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7321 val_ap=0.6598
+[ep8] CL ce=0.0002 td=0.0000 cl=0.0004 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7307 val_ap=0.6524
+[select] best single-val checkpoint score=1.0620
+RESULT {"tag": "fusion_v2_n2_d030_lr5e5", "seed": 2, "evaluation_split": "validation", "validation_only": true, "thr": 0.02, "acc": 0.7577, "macro_f1": 0.7321, "pos_f1": 0.6494, "wF1": 0.723, "auprc": 0.6598, "auroc": 0.8308, "ece": 0.2094, "n_val": 392, "pos_val": 122, "n_fusion": 2, "heads": 8, "fusion_dropout": 0.3, "lr_fusion": 5e-05, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
