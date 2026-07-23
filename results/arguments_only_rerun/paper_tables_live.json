@@ -756,6 +756,55 @@
         "args_only"
       ]
     },
+    "no_reliability": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8105333333333334,
+        "std": 0.00511598801145323,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7306333333333334,
+        "std": 0.0032316146634976768,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.7922333333333333,
+        "std": 0.004164532786920226,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7519,
+        "std": 0.013788400922514543,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.9017666666666667,
+        "std": 0.0048583261863869905,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7680666666666666,
+        "std": 0.005159780357082381,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.11820000000000001,
+        "std": 0.018232114523554308,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
     "roberta_cls": {
       "n": 3,
       "seeds": [
@@ -796,6 +845,55 @@
       "ece": {
         "mean": 0.12523333333333334,
         "std": 0.006312949653952056,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
+    "supcon": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8198666666666666,
+        "std": 0.005081666393352993,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7331333333333333,
+        "std": 0.024106914637367718,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.7984666666666667,
+        "std": 0.011680039954269557,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7414333333333333,
+        "std": 0.027676945881605713,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.9018333333333333,
+        "std": 0.006672580710140089,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7779333333333334,
+        "std": 0.012661885062396301,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.133,
+        "std": 0.02847595476889229,
         "std_ddof": 1
       },
       "dataset_sha256": [
@@ -855,7 +953,7 @@
       ]
     }
   },
-  "fresh_rows": 36,
+  "fresh_rows": 42,
   "rejected_rows": [
     {
       "result_file": "results/arguments_only_rerun/jobs/bert_backbone_s0.jsonl",
@@ -1018,30 +1116,6 @@
       ]
     },
     {
-      "result_file": "results/arguments_only_rerun/jobs/no_reliability_s0.jsonl",
-      "suite_job": "no_reliability_s0",
-      "tag": "no_reliability",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_reliability_s1.jsonl",
-      "suite_job": "no_reliability_s1",
-      "tag": "no_reliability",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_reliability_s2.jsonl",
-      "suite_job": "no_reliability_s2",
-      "tag": "no_reliability",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
       "result_file": "results/arguments_only_rerun/jobs/qwen2p5_7b_qlora_s0.jsonl",
       "suite_job": "qwen2p5_7b_qlora_s0",
       "tag": "qwen2p5_7b_qlora_sft",
@@ -1063,30 +1137,6 @@
       "tag": "qwen2p5_7b_qlora_sft",
       "reasons": [
         "explicitly_excluded_legacy_result"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/supcon_s0.jsonl",
-      "suite_job": "supcon_s0",
-      "tag": "supcon",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/supcon_s1.jsonl",
-      "suite_job": "supcon_s1",
-      "tag": "supcon",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/supcon_s2.jsonl",
-      "suite_job": "supcon_s2",
-      "tag": "supcon",
-      "reasons": [
-        "stale_job_command"
       ]
     }
   ]

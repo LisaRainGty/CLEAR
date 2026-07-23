@@ -5,8 +5,8 @@
 - Dataset SHA-256: `b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618`
 - Rows: 4883
 - Argument records: 4883
-- Accepted fresh RESULT rows: 36
-- Rejected incomplete/off-protocol RESULT rows: 29
+- Accepted fresh RESULT rows: 42
+- Rejected incomplete/off-protocol RESULT rows: 23
 
 ## Table 1. Dataset split and statistics
 
@@ -91,7 +91,7 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Canonical | 81.40±0.42 | 71.76±1.78 | 78.93±0.76 | 75.16±1.68 | 90.17±0.47 | 76.85±0.81 | 13.02±0.29 | 3 |
 | w/o RACL | 82.11±0.36 | 72.98±1.04 | 79.79±0.28 | 74.62±1.23 | 90.32±0.22 | 77.70±0.39 | 13.91±1.21 | 3 |
-| w/o reliability | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o reliability | 81.05±0.51 | 73.06±0.32 | 79.22±0.42 | 75.19±1.38 | 90.18±0.49 | 76.81±0.52 | 11.82±1.82 | 3 |
 | w/o class balance | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | w/o four-tuple | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | BERT backbone | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
@@ -125,7 +125,7 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | 方法/设定 | acc | pos_f1 | macro_f1 | auprc | auroc | wF1 | ece | n |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Canonical c | 81.40±0.42 | 71.76±1.78 | 78.93±0.76 | 75.16±1.68 | 90.17±0.47 | 76.85±0.81 | 13.02±0.29 | 3 |
-| Uniform | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Uniform | 81.05±0.51 | 73.06±0.32 | 79.22±0.42 | 75.19±1.38 | 90.18±0.49 | 76.81±0.52 | 11.82±1.82 | 3 |
 | Inverse | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Permuted | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Binary | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
