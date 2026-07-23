@@ -67,7 +67,14 @@ def aggregate(rows):
         for metric in METRICS:
             values = [float(r[metric]) for r in group if r.get(metric) is not None]
             if values:
-                item[metric] = {"mean": float(np.mean(values)), "std": float(np.std(values))}
+                item[metric] = {
+                    "mean": float(np.mean(values)),
+                    # Paper tables report dispersion across independent seeds.
+                    # Use the sample SD so the canonical 0.8100/0.8072/0.8017
+                    # Macro-F1 runs reproduce the archived 80.63 ± 0.42 row.
+                    "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0,
+                    "std_ddof": 1,
+                }
         item["dataset_sha256"] = sorted({r.get("dataset_sha256", "") for r in group})
         item["evidence_policy"] = sorted({r.get("evidence_policy", "") for r in group})
         out[tag] = item

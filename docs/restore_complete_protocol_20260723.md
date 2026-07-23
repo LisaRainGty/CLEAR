@@ -51,5 +51,6 @@ are no longer the paper main model.
 
 Final tables must never mix validation and test metrics. Model selection and
 diagnosis use validation only; the locked final model is reported once on test.
-All three-seed paper metrics must be aggregated consistently, with the
-dispersion convention stated in the table caption.
+All three-seed paper metrics use mean ± sample standard deviation (`ddof=1`).
+Validation-only selector manifests retain their originally preregistered
+population-SD convention and are not paper result tables.

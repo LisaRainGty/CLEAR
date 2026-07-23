@@ -28,6 +28,7 @@
     "test_use": "one final evaluation after all choices are frozen",
     "primary_metric": "auprc",
     "reported_metrics": ["acc", "pos_f1", "macro_f1", "auprc", "auroc", "wF1", "ece"],
+    "standard_deviation": "sample ddof=1",
     "paired_bootstrap_repetitions": 2000
   },
   "argument_generation": {

@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts import run_paper_suite as suite  # noqa: E402
+from scripts.aggregate_paper_results import aggregate  # noqa: E402
 
 
 class RestoredCompleteProtocolTest(unittest.TestCase):
@@ -56,6 +57,17 @@ class RestoredCompleteProtocolTest(unittest.TestCase):
             ("--tau", "0.07"),
         ):
             self.assertEqual(command[command.index(flag) + 1], value)
+
+    def test_paper_aggregation_reproduces_archived_sample_sd(self):
+        rows = [
+            {"tag": "claimarc_canonical", "seed": 0, "macro_f1": 0.8100},
+            {"tag": "claimarc_canonical", "seed": 1, "macro_f1": 0.8072},
+            {"tag": "claimarc_canonical", "seed": 2, "macro_f1": 0.8017},
+        ]
+        metric = aggregate(rows)["claimarc_canonical"]["macro_f1"]
+        self.assertAlmostEqual(metric["mean"], 0.8063, places=7)
+        self.assertAlmostEqual(metric["std"], 0.0042225585, places=7)
+        self.assertEqual(metric["std_ddof"], 1)
 
 
 if __name__ == "__main__":
