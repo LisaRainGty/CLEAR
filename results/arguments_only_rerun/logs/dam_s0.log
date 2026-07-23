@@ -1,0 +1,10 @@
+[dam ep0] loss=0.3328 val_mF1=0.6767
+[dam ep1] loss=0.2742 val_mF1=0.6880
+[dam ep2] loss=0.2510 val_mF1=0.6860
+[dam ep3] loss=0.2271 val_mF1=0.6784
+[dam ep4] loss=0.1982 val_mF1=0.6856
+[dam ep5] loss=0.1906 val_mF1=0.6832
+[dam ep6] loss=0.1574 val_mF1=0.6931
+[dam ep7] loss=0.1325 val_mF1=0.7052
+RESULT {"tag": "dam", "seed": 0, "thr": 0.3, "acc": 0.7579, "macro_f1": 0.7341, "pos_f1": 0.6544, "wF1": 0.7043, "auprc": 0.6397, "auroc": 0.855, "ece": 0.1481, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese"}
+[save_pred] -> /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/dam_s0.pt

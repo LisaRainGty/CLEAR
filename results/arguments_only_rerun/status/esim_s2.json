@@ -1,0 +1,34 @@
+{
+  "job": "esim_s2",
+  "stage": "table3",
+  "signature": "602aa6925784f88ab0a1319cf01c204fa62401fc1c4c7ed74e006edda182b77e",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_ft",
+    "--dataset",
+    "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+    "--kind",
+    "esim",
+    "--seed",
+    "2",
+    "--loss",
+    "bce",
+    "--evidence_policy",
+    "args_only",
+    "--save_pred",
+    "/root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/esim_s2.pt"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_ft --dataset /root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl --kind esim --seed 2 --loss bce --evidence_policy args_only --save_pred /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/esim_s2.pt",
+  "started_utc": "2026-07-22T13:40:21.791707+00:00",
+  "finished_utc": "2026-07-22T13:42:22.825068+00:00",
+  "returncode": 0,
+  "log": "results/arguments_only_rerun/logs/esim_s2.log",
+  "result_file": "results/arguments_only_rerun/jobs/esim_s2.jsonl",
+  "outputs": [
+    "embeddings/arguments_only_rerun/baseline_predictions/esim_s2.pt"
+  ],
+  "removed_failed_outputs": [],
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only"
+}

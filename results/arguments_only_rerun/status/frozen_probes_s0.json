@@ -1,0 +1,34 @@
+{
+  "job": "frozen_probes_s0",
+  "stage": "table3",
+  "signature": "b0bcedd6b0768df7b9135b2bc4af19a93fa6ea887f0c4b92635b4a4d50773239",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_frozen",
+    "--dataset",
+    "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+    "--seed",
+    "0",
+    "--evidence_policy",
+    "args_only",
+    "--save_dir",
+    "/root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/frozen_s0",
+    "--paper_only"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_frozen --dataset /root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl --seed 0 --evidence_policy args_only --save_dir /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/frozen_s0 --paper_only",
+  "started_utc": "2026-07-22T13:47:41.224781+00:00",
+  "finished_utc": "2026-07-22T13:48:39.237939+00:00",
+  "returncode": 0,
+  "log": "results/arguments_only_rerun/logs/frozen_probes_s0.log",
+  "result_file": "results/arguments_only_rerun/jobs/frozen_probes_s0.jsonl",
+  "outputs": [
+    "embeddings/arguments_only_rerun/baseline_predictions/frozen_s0/BGEfz_LR_4tuple.pt",
+    "embeddings/arguments_only_rerun/baseline_predictions/frozen_s0/BGEfz_SVM_4tuple.pt",
+    "embeddings/arguments_only_rerun/baseline_predictions/frozen_s0/BGEfz_MLP_4tuple.pt",
+    "embeddings/arguments_only_rerun/baseline_predictions/frozen_s0/BGEfz_kNN_attr_k15.pt"
+  ],
+  "removed_failed_outputs": [],
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only"
+}

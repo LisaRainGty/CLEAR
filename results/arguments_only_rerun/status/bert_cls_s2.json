@@ -1,0 +1,34 @@
+{
+  "job": "bert_cls_s2",
+  "stage": "table3",
+  "signature": "911cc7d5aec1b0216125b4b90d738b87a935bf2254870d50d3432586015bb828",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_ft",
+    "--dataset",
+    "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+    "--kind",
+    "bert_cls",
+    "--seed",
+    "2",
+    "--loss",
+    "bce",
+    "--evidence_policy",
+    "args_only",
+    "--save_pred",
+    "/root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/bert_cls_s2.pt"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_ft --dataset /root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl --kind bert_cls --seed 2 --loss bce --evidence_policy args_only --save_pred /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/bert_cls_s2.pt",
+  "started_utc": "2026-07-22T13:11:06.067904+00:00",
+  "finished_utc": "2026-07-22T13:14:40.832366+00:00",
+  "returncode": 0,
+  "log": "results/arguments_only_rerun/logs/bert_cls_s2.log",
+  "result_file": "results/arguments_only_rerun/jobs/bert_cls_s2.jsonl",
+  "outputs": [
+    "embeddings/arguments_only_rerun/baseline_predictions/bert_cls_s2.pt"
+  ],
+  "removed_failed_outputs": [],
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only"
+}

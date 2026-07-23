@@ -1,0 +1,25 @@
+{
+  "job": "dataset_audit",
+  "stage": "audit",
+  "signature": "62b321e916722d850f3c106f0eb8e809297b8b4f4b3c28d45fb7cb6311ddbf18",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "/root/CLEAR_run/scripts/audit_reproducibility.py",
+    "--config",
+    "/root/CLEAR_run/configs/paper_fair.json",
+    "--out",
+    "/root/CLEAR_run/results/arguments_only_rerun/reproducibility_report.json"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python /root/CLEAR_run/scripts/audit_reproducibility.py --config /root/CLEAR_run/configs/paper_fair.json --out /root/CLEAR_run/results/arguments_only_rerun/reproducibility_report.json",
+  "started_utc": "2026-07-22T12:31:44.505443+00:00",
+  "finished_utc": "2026-07-22T12:31:44.971072+00:00",
+  "returncode": 0,
+  "log": "results/arguments_only_rerun/logs/dataset_audit.log",
+  "result_file": "results/arguments_only_rerun/jobs/dataset_audit.jsonl",
+  "outputs": [
+    "results/arguments_only_rerun/reproducibility_report.json"
+  ],
+  "removed_failed_outputs": [],
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only"
+}

@@ -1,0 +1,8 @@
+/root/miniconda3/envs/myconda/lib/python3.9/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+[roberta_cls ep0] loss=0.3904 val_mF1=0.7101
+[roberta_cls ep1] loss=0.2666 val_mF1=0.7397
+[roberta_cls ep2] loss=0.1696 val_mF1=0.7602
+[roberta_cls ep3] loss=0.0961 val_mF1=0.7592
+RESULT {"tag": "roberta_cls", "seed": 2, "thr": 0.38, "acc": 0.8105, "macro_f1": 0.7883, "pos_f1": 0.7197, "wF1": 0.7637, "auprc": 0.7265, "auroc": 0.8931, "ece": 0.1211, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/dienstag/chinese-roberta-wwm-ext", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/roberta_cls_s2.pt

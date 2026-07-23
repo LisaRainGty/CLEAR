@@ -67,6 +67,13 @@ class FinalLockedFusionGlobalRaclSuiteTests(unittest.TestCase):
             self.assertEqual(clarc[clarc.index(flag) + 1], value)
             self.assertNotIn(flag, bert)
 
+    def test_hparam_grid_does_not_repeat_locked_fusion(self):
+        jobs = {job.name: job for job in suite.build_jobs({"hparams"})}
+        self.assertNotIn("hp_fusion1_s0", jobs)
+        self.assertIn("hp_fusion2_s0", jobs)
+        command = jobs["hp_fusion2_s0"].command
+        self.assertEqual(command[command.index("--n_fusion") + 1], "2")
+
 
 if __name__ == "__main__":
     unittest.main()

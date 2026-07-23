@@ -1,0 +1,10 @@
+[bilstm ep0] loss=0.4293 val_mF1=0.6780
+[bilstm ep1] loss=0.2817 val_mF1=0.6849
+[bilstm ep2] loss=0.2295 val_mF1=0.7184
+[bilstm ep3] loss=0.1736 val_mF1=0.7357
+[bilstm ep4] loss=0.1291 val_mF1=0.7310
+[bilstm ep5] loss=0.1039 val_mF1=0.7350
+[bilstm ep6] loss=0.0741 val_mF1=0.7190
+[bilstm ep7] loss=0.0604 val_mF1=0.7239
+RESULT {"tag": "bilstm", "seed": 1, "thr": 0.68, "acc": 0.7836, "macro_f1": 0.7537, "pos_f1": 0.6679, "wF1": 0.7302, "auprc": 0.6738, "auroc": 0.8624, "ece": 0.1674, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese"}
+[save_pred] -> /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/bilstm_s1.pt

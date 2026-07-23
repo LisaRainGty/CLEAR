@@ -419,10 +419,9 @@ def build_jobs(stages: set[str]) -> list[Job]:
             add_claimarc(jobs, name, "ablation", ("--c_recompute", spec), seeds=(0,))
 
     if "hparams" in stages:
+        canonical_fusion_blocks = int(LOCKED_FUSION.get("n_fusion", 2))
         variants = {
             "lora_canonical": (),
-            "fusion1": ("--n_fusion", "1"), "fusion3": ("--n_fusion", "3"),
-            "fusion4": ("--n_fusion", "4"),
             "heads4": ("--heads", "4"), "heads16": ("--heads", "16"),
             "rank8": ("--lora_rank", "8"), "rank32": ("--lora_rank", "32"),
             "lambda0p05": ("--lambda_cl", "0.05"),
@@ -438,6 +437,9 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "xattn_e2c": ("--xattn_dir", "e2c"),
             "independent_projection": ("--indep_proj",),
         }
+        for blocks in (1, 2, 3, 4):
+            if blocks != canonical_fusion_blocks:
+                variants[f"fusion{blocks}"] = ("--n_fusion", str(blocks))
         for name, extra in variants.items():
             # Table 12 is explicitly the paper's single-seed LoRA sensitivity
             # analysis; the LoRA canonical in this same block is its comparator.

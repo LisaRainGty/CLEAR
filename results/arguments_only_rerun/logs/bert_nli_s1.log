@@ -1,0 +1,8 @@
+/root/miniconda3/envs/myconda/lib/python3.9/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+[bert_nli ep0] loss=0.3902 val_mF1=0.6665
+[bert_nli ep1] loss=0.2979 val_mF1=0.7248
+[bert_nli ep2] loss=0.2151 val_mF1=0.7403
+[bert_nli ep3] loss=0.1322 val_mF1=0.7387
+RESULT {"tag": "bert_nli", "seed": 1, "thr": 0.32, "acc": 0.8047, "macro_f1": 0.7797, "pos_f1": 0.7055, "wF1": 0.7539, "auprc": 0.6913, "auroc": 0.8842, "ece": 0.1657, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/Fengshenbang/Erlangshen-Roberta-110M-NLI", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/bert_nli_s1.pt

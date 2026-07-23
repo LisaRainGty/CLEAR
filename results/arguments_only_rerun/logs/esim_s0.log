@@ -1,0 +1,6 @@
+[esim ep0] loss=0.5175 val_mF1=0.6620
+[esim ep1] loss=0.3413 val_mF1=0.6677
+[esim ep2] loss=0.2939 val_mF1=0.6696
+[esim ep3] loss=0.2862 val_mF1=0.6671
+RESULT {"tag": "esim", "seed": 0, "thr": 0.48, "acc": 0.745, "macro_f1": 0.7344, "pos_f1": 0.6813, "wF1": 0.6991, "auprc": 0.5162, "auroc": 0.8141, "ece": 0.1354, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/esim_s0.pt
