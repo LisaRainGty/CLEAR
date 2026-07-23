@@ -43,6 +43,10 @@ XDOM_LLM = ROOT / "embeddings/fair_rerun/xdom_llm"
 FIGS = ROOT / "paper/figs"
 POLICY = "sources_only"
 LOCKED_FUSION: dict[str, object] = {}
+LOCKED_RACL: dict[str, object] = {}
+MAIN_NO_FUSION = False
+MAIN_ATTRIBUTE_BLOCKED = False
+FUSION_REFERENCE: dict[str, object] = {}
 SEEDS = (0, 1, 2)
 CATEGORIES = (
     "apparel_and_underwear", "general", "baby_kids_and_pets", "shoes_and_bags",
@@ -55,11 +59,18 @@ def configure(config_path: str | Path) -> dict:
     """Load one protocol and redirect every artifact path to its namespace."""
     global CONFIG, DATASET, OUT, LOGS, STATUS, JOB_RESULTS
     global PRED, GEOM, ABL, HP, XDOM, XDOM_LLM, FIGS, POLICY, LOCKED_FUSION
+    global LOCKED_RACL, MAIN_NO_FUSION, MAIN_ATTRIBUTE_BLOCKED, FUSION_REFERENCE
     CONFIG = Path(config_path).resolve()
     cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
     DATASET = (ROOT / cfg["dataset"]["path"]).resolve()
     POLICY = str(cfg["fair_comparison"]["evidence_policy"])
-    LOCKED_FUSION = dict(cfg.get("claimarc", {}).get("locked_fusion", {}) or {})
+    claimarc_cfg = cfg.get("claimarc", {})
+    LOCKED_FUSION = dict(claimarc_cfg.get("locked_fusion", {}) or {})
+    LOCKED_RACL = dict(claimarc_cfg.get("locked_racl", {}) or {})
+    MAIN_NO_FUSION = bool(claimarc_cfg.get("no_fusion_main", False))
+    MAIN_ATTRIBUTE_BLOCKED = bool(
+        claimarc_cfg.get("attribute_blocked_contrast", False))
+    FUSION_REFERENCE = dict(claimarc_cfg.get("with_fusion_reference", {}) or {})
     if LOCKED_FUSION:
         required = {
             "selection_manifest", "selection_manifest_sha256", "selected_candidate",
@@ -77,6 +88,37 @@ def configure(config_path: str | Path) -> dict:
             raise ValueError("locked fusion candidate does not match selection manifest")
         if selection.get("test_metrics_accessed") is not False:
             raise ValueError("locked fusion selection did not prove test isolation")
+    if LOCKED_RACL:
+        required = {
+            "selection_manifest", "selection_manifest_sha256", "selected_candidate",
+            "warmup_epochs", "contrastive_epochs", "lambda_cl", "tau", "kp", "kn",
+            "exclude_self", "attribute_blocked",
+        }
+        missing = sorted(required - set(LOCKED_RACL))
+        if missing:
+            raise ValueError(f"locked_racl missing fields: {missing}")
+        selection_path = (ROOT / str(LOCKED_RACL["selection_manifest"])).resolve()
+        selection_hash = hashlib.sha256(selection_path.read_bytes()).hexdigest()
+        if selection_hash != LOCKED_RACL["selection_manifest_sha256"]:
+            raise ValueError("locked RACL selection manifest hash mismatch")
+        selection = json.loads(selection_path.read_text(encoding="utf-8"))
+        if selection.get("selected_candidate") != LOCKED_RACL["selected_candidate"]:
+            raise ValueError("locked RACL candidate does not match selection manifest")
+        if selection.get("test_metrics_accessed") is not False:
+            raise ValueError("locked RACL selection did not prove test isolation")
+        if selection.get("racl_mandatory") is not True:
+            raise ValueError("locked RACL selection did not keep RACL mandatory")
+        if selection.get("architecture") != "no_fusion" or not MAIN_NO_FUSION:
+            raise ValueError("locked RACL final architecture must be no_fusion")
+        if bool(LOCKED_RACL["attribute_blocked"]) != MAIN_ATTRIBUTE_BLOCKED:
+            raise ValueError("locked RACL attribute policy disagrees with final config")
+    if MAIN_NO_FUSION and not LOCKED_RACL:
+        raise ValueError("no_fusion_main requires a validation-locked RACL config")
+    if FUSION_REFERENCE:
+        required = {"n_fusion", "heads", "fusion_dropout", "lr_fusion"}
+        missing = sorted(required - set(FUSION_REFERENCE))
+        if missing:
+            raise ValueError(f"with_fusion_reference missing fields: {missing}")
     namespace = str(cfg.get("paper_suite", {}).get("artifact_namespace", "fair_rerun"))
     if not namespace or namespace in {".", ".."} or "/" in namespace or "\\" in namespace:
         raise ValueError(f"invalid artifact_namespace: {namespace!r}")
@@ -144,7 +186,7 @@ def hosted_api_preflight(py: str, env: dict[str, str]) -> None:
 
 
 def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
-                     bundle: Path | None = None) -> tuple[str, ...]:
+                     bundle: Path | None = None, with_fusion=False) -> tuple[str, ...]:
     extra = tuple(extra)
     batch = int(os.environ.get("CLAIMARC_BATCH_SIZE", "12"))
     effective = int(os.environ.get("CLAIMARC_EFFECTIVE_BATCH", "36"))
@@ -161,28 +203,81 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
         ):
             if flag not in extra:
                 locked_args.extend((flag, str(LOCKED_FUSION[key])))
-    command = (
+    if LOCKED_RACL:
+        if MAIN_NO_FUSION and not with_fusion and "--no_fusion" not in extra:
+            locked_args.append("--no_fusion")
+        if bool(LOCKED_RACL["exclude_self"]) and "--cl_exclude_self" not in extra:
+            locked_args.append("--cl_exclude_self")
+        if MAIN_ATTRIBUTE_BLOCKED:
+            if "--cl_no_attr_block" in extra:
+                raise ValueError(
+                    f"{tag}: global RACL retrieval requires an explicit ablation path")
+        elif "--cl_no_attr_block" not in extra:
+            locked_args.append("--cl_no_attr_block")
+        if bool(LOCKED_RACL.get("class_balanced", True)) \
+                and "--cl_class_balanced" not in extra:
+            locked_args.append("--cl_class_balanced")
+        if with_fusion:
+            if not FUSION_REFERENCE:
+                raise ValueError("with_fusion requested without a frozen reference")
+            for flag, key in (
+                ("--n_fusion", "n_fusion"),
+                ("--heads", "heads"),
+                ("--fusion_dropout", "fusion_dropout"),
+                ("--lr_fusion", "lr_fusion"),
+            ):
+                if flag not in extra:
+                    locked_args.extend((flag, str(FUSION_REFERENCE[key])))
+    warmup = int(LOCKED_RACL.get("warmup_epochs", 3))
+    cl_epochs = int(LOCKED_RACL.get("contrastive_epochs", 6))
+    lambda_cl = float(LOCKED_RACL.get("lambda_cl", 0.5))
+    tau = float(LOCKED_RACL.get("tau", 0.07))
+    kp = int(LOCKED_RACL.get("kp", 3))
+    kn = int(LOCKED_RACL.get("kn", 5))
+    legacy_contrast_flags = () if LOCKED_RACL else (
+        "--cl_no_attr_block", "--cl_class_balanced")
+    command = list((
         py, "-m", "models.train", "--dataset", str(DATASET), "--tag", tag,
-        "--seed", str(seed), "--warmup", "3", "--cl_epochs", "6",
+        "--seed", str(seed), "--warmup", str(warmup), "--cl_epochs", str(cl_epochs),
         "--bs", str(batch), "--accum", str(accum), "--loss", "bce",
-        "--lambda_cl", "0.5", "--tau", "0.07", "--Kp", "3", "--Kn", "5",
+        "--lambda_cl", str(lambda_cl), "--tau", str(tau),
+        "--Kp", str(kp), "--Kn", str(kn),
         "--encoder_name", os.environ.get("CLAIMARC_BGE_PATH", "BAAI/bge-large-zh-v1.5"),
-        *train_mode, "--cl_no_attr_block", "--cl_class_balanced",
+        *train_mode, *legacy_contrast_flags,
         "--evidence_policy", POLICY, *locked_args, *extra,
-    )
+    ))
+    # Keep every recorded command canonical: sensitivity variants replace the
+    # locked scalar rather than relying on argparse's last-value behaviour.
+    for flag in (
+        "--warmup", "--cl_epochs", "--loss", "--lambda_cl", "--tau", "--Kp", "--Kn",
+        "--n_fusion", "--heads", "--fusion_dropout", "--lr_fusion", "--lora_rank",
+    ):
+        while command.count(flag) > 1:
+            index = command.index(flag)
+            del command[index:index + 2]
+    for flag in (
+        "--no_fusion", "--cl_exclude_self", "--cl_class_balanced",
+        "--cl_no_attr_block", "--cl_hard_pos",
+    ):
+        while command.count(flag) > 1:
+            command.remove(flag)
     if bundle is not None:
-        command += ("--save_emb", str(bundle))
-    return command
+        command.extend(("--save_emb", str(bundle)))
+    return tuple(command)
 
 
 def add_claimarc(jobs: list[Job], name: str, stage: str, extra=(), *, lora=False,
-                 seeds=SEEDS, bundle_dir: Path = ABL, bundle_prefix: str | None = None):
+                 seeds=SEEDS, bundle_dir: Path = ABL, bundle_prefix: str | None = None,
+                 with_fusion=False):
     for seed in seeds:
         stem = bundle_prefix or name
         bundle = bundle_dir / f"{stem}_s{seed}.pt"
         jobs.append(Job(
             f"{name}_s{seed}", stage,
-            claimarc_command(sys.executable, name, seed, extra, lora=lora, bundle=bundle),
+            claimarc_command(
+                sys.executable, name, seed, extra, lora=lora, bundle=bundle,
+                with_fusion=with_fusion,
+            ),
             (bundle,),
         ))
 
@@ -250,12 +345,14 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "no_four_tuple": ("--head_concat_only",),
             "bert_backbone": ("--backbone", "bert"),
             # Table 8
-            "no_fusion": ("--no_fusion",),
+            ("with_fusion" if MAIN_NO_FUSION else "no_fusion"):
+                (() if MAIN_NO_FUSION else ("--no_fusion",)),
             "claim_only": ("--no_fusion", "--stream_mode", "claim"),
             "evidence_only": ("--no_fusion", "--stream_mode", "evidence"),
             # Table 9
             "hard_positive": ("--cl_hard_pos",),
-            "same_attribute_negative": (),  # canonical no-attr flag sanitized below
+            ("global_racl_retrieval" if MAIN_ATTRIBUTE_BLOCKED
+             else "same_attribute_negative"): (),
             "same_evidence_type_negative": ("--cl_neg_filter", "same_evtype"),
             "kp1": ("--Kp", "1"), "kp5": ("--Kp", "5"),
             "kn1": ("--Kn", "1"), "kn10": ("--Kn", "10"),
@@ -263,11 +360,16 @@ def build_jobs(stages: set[str]) -> list[Job]:
         for name, extra in variants.items():
             for seed in SEEDS:
                 bundle = ABL / f"{name}_s{seed}.pt"
-                command = list(claimarc_command(py, name, seed, extra, bundle=bundle))
+                command = list(claimarc_command(
+                    py, name, seed, extra, bundle=bundle,
+                    with_fusion=(name == "with_fusion"),
+                ))
                 if name == "no_class_balance":
                     command.remove("--cl_class_balanced")
                 if name == "same_attribute_negative":
                     command.remove("--cl_no_attr_block")
+                if name == "global_racl_retrieval":
+                    command.append("--cl_no_attr_block")
                 jobs.append(Job(f"{name}_s{seed}", "ablation", tuple(command), (bundle,)))
         # Uniform weighting is exactly the Table 7 no-reliability ablation;
         # reuse that three-seed run in Table 10 instead of training it twice.
@@ -296,10 +398,10 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "fusion4": ("--n_fusion", "4"),
             "heads4": ("--heads", "4"), "heads16": ("--heads", "16"),
             "rank8": ("--lora_rank", "8"), "rank32": ("--lora_rank", "32"),
-            "lambda0p1": ("--lambda_cl", "0.1"),
-            "lambda0p3": ("--lambda_cl", "0.3"),
-            "lambda1p0": ("--lambda_cl", "1.0"),
-            "tau0p05": ("--tau", "0.05"), "tau0p10": ("--tau", "0.10"),
+            "lambda0p05": ("--lambda_cl", "0.05"),
+            "lambda0p2": ("--lambda_cl", "0.2"),
+            "lambda0p5": ("--lambda_cl", "0.5"),
+            "tau0p05": ("--tau", "0.05"), "tau0p15": ("--tau", "0.15"),
             "tau0p20": ("--tau", "0.20"),
             "k1_1": ("--Kp", "1", "--Kn", "1"),
             "k5_10": ("--Kp", "5", "--Kn", "10"),
@@ -312,8 +414,11 @@ def build_jobs(stages: set[str]) -> list[Job]:
         for name, extra in variants.items():
             # Table 12 is explicitly the paper's single-seed LoRA sensitivity
             # analysis; the LoRA canonical in this same block is its comparator.
-            add_claimarc(jobs, f"hp_{name}", "hparams", extra, lora=True,
-                         bundle_dir=HP, seeds=(0,))
+            add_claimarc(
+                jobs, f"hp_{name}", "hparams", extra, lora=True,
+                bundle_dir=HP, seeds=(0,),
+                with_fusion=name.startswith(("fusion", "heads")),
+            )
 
     if "fusion_tune" in stages:
         protocol = cfg.get("fusion_v2", {})
@@ -459,8 +564,18 @@ def build_jobs(stages: set[str]) -> list[Job]:
     if "xdom" in stages:
         common = (
             "--dataset", str(DATASET), "--outdir", str(XDOM),
-            "--warmup", "3", "--cl_epochs", "6", "--enc_train", "full",
-            "--lr", "1e-5", "--cl_no_attr_block", "--cl_class_balanced",
+            "--warmup", str(int(LOCKED_RACL.get("warmup_epochs", 3))),
+            "--cl_epochs", str(int(LOCKED_RACL.get("contrastive_epochs", 6))),
+            "--enc_train", "full", "--lr", "1e-5",
+            "--lambda_cl", str(float(LOCKED_RACL.get("lambda_cl", 0.5))),
+            "--tau", str(float(LOCKED_RACL.get("tau", 0.07))),
+            "--Kp", str(int(LOCKED_RACL.get("kp", 3))),
+            "--Kn", str(int(LOCKED_RACL.get("kn", 5))),
+            *(("--no_fusion",) if MAIN_NO_FUSION else ()),
+            *(("--cl_exclude_self",)
+              if bool(LOCKED_RACL.get("exclude_self", False)) else ()),
+            *(("--cl_no_attr_block",) if not MAIN_ATTRIBUTE_BLOCKED else ()),
+            "--cl_class_balanced",
             "--evidence_policy", POLICY,
         )
         for category in CATEGORIES:

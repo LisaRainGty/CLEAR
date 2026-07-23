@@ -85,7 +85,7 @@ def metric_cell(agg, tag, metric, percent=True, expected_n=None):
     return f"{mean:.2f}±{std:.2f}" if n > 1 else f"{mean:.2f}"
 
 
-def metric_table(lines, title, entries, agg, metrics=("acc", "pos_f1", "auprc", "auroc"),
+def metric_table(lines, title, entries, agg, metrics=METRICS,
                  expected_n=None):
     lines.extend([f"## {title}", "", "| 方法/设定 | " + " | ".join(metrics) + " | n |",
                   "|---|" + "---:|" * (len(metrics) + 1)])
@@ -135,6 +135,9 @@ def main():
     config_path = args.config if args.config.is_absolute() else root / args.config
     config = json.loads(config_path.read_text(encoding="utf-8"))
     policy = str(config["fair_comparison"]["evidence_policy"])
+    no_fusion_main = bool(config.get("claimarc", {}).get("no_fusion_main", False))
+    attribute_blocked_main = bool(
+        config.get("claimarc", {}).get("attribute_blocked_contrast", False))
     namespace = str(config.get("paper_suite", {}).get("artifact_namespace", "fair_rerun"))
     result_root = root / "results" / namespace
     rows, rejected_rows = load_rows(root, result_root, policy)
@@ -264,13 +267,22 @@ def main():
         ("w/o class balance", "no_class_balance"),
         ("w/o four-tuple", "no_four_tuple"), ("BERT backbone", "bert_backbone"),
     ), agg)
-    metric_table(lines, "Table 8. Dual-stream ablations", (
-        ("Canonical", "claimarc_canonical"), ("w/o fusion", "no_fusion"),
+    fusion_ablation = (
+        ("With validation-locked fusion", "with_fusion")
+        if no_fusion_main else ("w/o fusion", "no_fusion")
+    )
+    metric_table(lines, "Table 8. Claim/argument interaction ablations", (
+        ("Canonical", "claimarc_canonical"), fusion_ablation,
         ("Claim only", "claim_only"), ("Evidence only", "evidence_only"),
     ), agg)
+    retrieval_ablation = (
+        ("Global RACL retrieval", "global_racl_retrieval")
+        if attribute_blocked_main
+        else ("Same-attribute RACL retrieval", "same_attribute_negative")
+    )
     metric_table(lines, "Table 9. RACL mining", (
         ("Canonical", "claimarc_canonical"), ("Hard positive", "hard_positive"),
-        ("Same-attribute negative", "same_attribute_negative"),
+        retrieval_ablation,
         ("Same-evidence-type negative", "same_evidence_type_negative"),
         ("Kp=1", "kp1"), ("Kp=5", "kp5"), ("Kn=1", "kn1"), ("Kn=10", "kn10"),
     ), agg)
@@ -282,14 +294,19 @@ def main():
     ), agg)
     lines.extend(["## Table 11", "", "The current manuscript has no Table 11 (numbering gap).", ""])
 
+    canonical_hp_label = (
+        "Canonical LoRA (no fusion, r16, lambda=.10, tau=.10, Kp3/Kn5, BCE)"
+        if no_fusion_main
+        else "Canonical LoRA (N2, h8, r16, lambda=.5, tau=.07, Kp3/Kn5, BCE)"
+    )
     hp_entries = (
-        ("Canonical LoRA (N2, h8, r16, lambda=.5, tau=.07, Kp3/Kn5, BCE)", "hp_lora_canonical"),
+        (canonical_hp_label, "hp_lora_canonical"),
         ("Fusion blocks N=1", "hp_fusion1"), ("Fusion blocks N=3", "hp_fusion3"),
         ("Fusion blocks N=4", "hp_fusion4"), ("Attention heads=4", "hp_heads4"),
         ("Attention heads=16", "hp_heads16"), ("LoRA rank=8", "hp_rank8"),
-        ("LoRA rank=32", "hp_rank32"), ("lambda_CL=0.1", "hp_lambda0p1"),
-        ("lambda_CL=0.3", "hp_lambda0p3"), ("lambda_CL=1.0", "hp_lambda1p0"),
-        ("tau=0.05", "hp_tau0p05"), ("tau=0.10", "hp_tau0p10"),
+        ("LoRA rank=32", "hp_rank32"), ("lambda_CL=0.05", "hp_lambda0p05"),
+        ("lambda_CL=0.20", "hp_lambda0p2"), ("lambda_CL=0.50", "hp_lambda0p5"),
+        ("tau=0.05", "hp_tau0p05"), ("tau=0.15", "hp_tau0p15"),
         ("tau=0.20", "hp_tau0p20"), ("Kp/Kn=(1,1)", "hp_k1_1"),
         ("Kp/Kn=(5,10)", "hp_k5_10"), ("ASL", "hp_loss_asl"),
         ("Focal loss", "hp_loss_focal"), ("FFN GeLU", "hp_ffn_gelu"),

@@ -68,17 +68,21 @@ def attach_fold_provenance(path, metadata):
 def clarc_args(dataset, seed, save_emb, tag, warmup, cl_epochs,
                enc_train="lora", lr=2e-5, cl_no_attr_block=False,
                cl_class_balanced=False, cl_hard_pos=False,
+               cl_exclude_self=False, no_fusion=False,
+               lambda_cl=0.5, tau=0.07, kp=3, kn=5,
                rel_soft=False, rel_aux_weight=0.0, rel_pow=1.0, c_transform="none",
                evidence_policy="sources_only", encoder_name="BAAI/bge-large-zh-v1.5"):
     return Namespace(
         dataset=dataset, seed=seed, save_emb=save_emb, tag=tag,
         bs=12, accum=3, lr=lr, lr_head=1e-4,
-        warmup=warmup, cl_epochs=cl_epochs, lambda_cl=0.5, pos_weight=-1.0,
+        warmup=warmup, cl_epochs=cl_epochs, lambda_cl=lambda_cl, pos_weight=-1.0,
         loss="bce", gamma_neg=4.0, gamma_pos=0.0,
-        no_cl=False, swa=False, no_fusion=False, n_fusion=2, fusion_dropout=0.2,
-        no_lora=False, no_weight=False, lora_rank=16, heads=8, tau=0.07, Kp=3, Kn=5,
+        no_cl=False, swa=False, no_fusion=no_fusion, n_fusion=2, fusion_dropout=0.2,
+        no_lora=False, no_weight=False, lora_rank=16, heads=8,
+        tau=tau, Kp=kp, Kn=kn,
         cl_no_attr_block=cl_no_attr_block, cl_class_balanced=cl_class_balanced,
-        cl_hard_pos=cl_hard_pos, rel_soft=rel_soft, rel_aux_weight=rel_aux_weight,
+        cl_hard_pos=cl_hard_pos, cl_exclude_self=cl_exclude_self,
+        rel_soft=rel_soft, rel_aux_weight=rel_aux_weight,
         rel_pow=rel_pow, c_transform=c_transform,
         global_neg=False, cl_c_min=0.0, cl_neg_c_min=0.0, cl_teacher_mode="off",
         cl_teacher_conf_min=0.0, cl_neg_filter="none", cl_neg_bonus=0.0,
@@ -122,8 +126,14 @@ def main():
     ap.add_argument("--cl_epochs", type=int, default=4)
     ap.add_argument("--enc_train", default="lora", choices=["lora", "topk", "full"])
     ap.add_argument("--lr", type=float, default=2e-5)
+    ap.add_argument("--lambda_cl", type=float, default=0.5)
+    ap.add_argument("--tau", type=float, default=0.07)
+    ap.add_argument("--Kp", type=int, default=3)
+    ap.add_argument("--Kn", type=int, default=5)
+    ap.add_argument("--no_fusion", action="store_true")
     ap.add_argument("--cl_no_attr_block", action="store_true")
     ap.add_argument("--cl_class_balanced", action="store_true")
+    ap.add_argument("--cl_exclude_self", action="store_true")
     ap.add_argument("--evidence_policy", default="sources_only")
     ap.add_argument("--encoder_name", default=os.environ.get(
         "CLAIMARC_BGE_PATH", "BAAI/bge-large-zh-v1.5"))
@@ -165,8 +175,12 @@ def main():
         res = train(clarc_args(args.dataset, args.seed, emb, f"xdom_{pre}",
                                args.warmup, args.cl_epochs,
                                enc_train=args.enc_train, lr=args.lr,
+                               lambda_cl=args.lambda_cl, tau=args.tau,
+                               kp=args.Kp, kn=args.Kn,
+                               no_fusion=args.no_fusion,
                                cl_no_attr_block=args.cl_no_attr_block,
                                cl_class_balanced=args.cl_class_balanced,
+                               cl_exclude_self=args.cl_exclude_self,
                                evidence_policy=args.evidence_policy,
                                encoder_name=args.encoder_name), splits=splits)
         attach_fold_provenance(emb, fold_meta)
