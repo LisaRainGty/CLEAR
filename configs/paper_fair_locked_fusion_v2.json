@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "paper_snapshot": "paper/draft/实验结果与分析.docx",
   "dataset": {
     "path": "data/arguments_only/dataset_arguments_only_20260722.jsonl",
@@ -25,9 +25,10 @@
     "seeds": [0, 1, 2],
     "threshold_selection": "validation macro-F1 only",
     "checkpoint_selection": "validation macro-F1 + 0.5 * validation AP",
-    "test_use": "one final evaluation after validation-only fusion selection is frozen",
+    "test_use": "one final evaluation after validation-only fusion and global-RACL selections are frozen",
     "primary_metric": "auprc",
     "reported_metrics": ["acc", "pos_f1", "macro_f1", "auprc", "auroc", "wF1", "ece"],
+    "standard_deviation": "sample ddof=1 across seeds",
     "paired_bootstrap_repetitions": 2000
   },
   "argument_generation": {
@@ -44,12 +45,16 @@
     "historical_arguments_reused": false
   },
   "paper_suite": {
-    "artifact_namespace": "arguments_only_locked_fusion_v2",
-    "figure_namespace": "arguments_only_locked_fusion_v2",
+    "artifact_namespace": "arguments_only_rerun",
+    "figure_namespace": "arguments_only_locked_fusion_global_racl",
     "api_llm_default_enabled": false,
     "api_llm_jobs": 0,
     "api_llm_requirement": "No new hosted API calls authorized",
     "exclude_legacy_qwen": true,
+    "evidence_view_ablations": {
+      "sources_only": "sources_only",
+      "sources_plus_arguments": "source_first"
+    },
     "supervised_llm_result_namespace": "arguments_only_llm_sft_v2",
     "table12_settings": 22,
     "table12_seed": 0,
@@ -84,6 +89,23 @@
       "heads": 8,
       "fusion_dropout": 0.2,
       "lr_fusion": 0.00005
+    },
+    "locked_racl": {
+      "revision": "locked_fusion_global_racl_20260724",
+      "selection_manifest": "results/arguments_only_locked_fusion_global_racl_tune/racl_locked_fusion_selection.json",
+      "selection_manifest_sha256": "3eb6016fb3550f7ed766507b26fa7beeb825571817de70f00cb38d8aa3de84c2",
+      "selected_candidate": "global_l050_t007_k3_5_w3c6_reused",
+      "selection_primary_metric": "validation auprc mean over seeds 0,1,2 among mandatory global-RACL candidates",
+      "test_metrics_accessed_during_selection": false,
+      "warmup_epochs": 3,
+      "contrastive_epochs": 6,
+      "lambda_cl": 0.5,
+      "tau": 0.07,
+      "kp": 3,
+      "kn": 5,
+      "exclude_self": false,
+      "attribute_blocked": false,
+      "class_balanced": true
     }
   }
 }

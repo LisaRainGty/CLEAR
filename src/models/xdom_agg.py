@@ -110,7 +110,8 @@ def aggregate(per_model):
         for k in METRIC_KEYS:
             vals = [f[k] for f in folds if f[k] == f[k]]  # drop nan
             agg[k] = {"mean": round(float(np.mean(vals)), 1) if vals else None,
-                      "std": round(float(np.std(vals)), 1) if vals else None}
+                      "std": (round(float(np.std(vals, ddof=1)), 1)
+                              if len(vals) > 1 else (0.0 if vals else None))}
         # 微平均（pos/N 加权可选）：这里另报总样本量
         agg["total_test"] = int(sum(f["n"] for f in folds))
         agg["total_pos"] = int(sum(f["pos"] for f in folds))

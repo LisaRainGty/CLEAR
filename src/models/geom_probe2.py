@@ -127,7 +127,8 @@ def _agg(rows):
         if not vals:
             continue
         out[k] = round(float(np.mean(vals)), 4)
-        out[k + "_std"] = round(float(np.std(vals)), 4)
+        out[k + "_std"] = round(
+            float(np.std(vals, ddof=1)) if len(vals) > 1 else 0.0, 4)
     return out
 
 

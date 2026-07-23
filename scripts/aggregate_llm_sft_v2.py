@@ -97,7 +97,7 @@ def main() -> None:
         values = [float(row[metric]) for row in rows]
         aggregates[metric] = {
             "mean": float(np.mean(values)),
-            "std": float(np.std(values, ddof=0)),
+            "std": float(np.std(values, ddof=1)) if len(values) > 1 else 0.0,
             "values": values,
         }
     output = {
@@ -111,7 +111,7 @@ def main() -> None:
         "selected_candidate": selected_name,
         "selected_hyperparameters": candidate,
         "seeds": seeds,
-        "standard_deviation": "population ddof=0",
+        "standard_deviation": "sample ddof=1",
         "runs": rows,
         "metrics": aggregates,
     }

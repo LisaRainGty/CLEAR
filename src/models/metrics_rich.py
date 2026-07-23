@@ -105,7 +105,14 @@ def agg(files):
         m = metrics_one(d)
         for k, v in m.items():
             vals.setdefault(k, []).append(v)
-    return {k: (float(np.mean(v)), float(np.std(v)), len(v)) for k, v in vals.items()}
+    return {
+        k: (
+            float(np.mean(v)),
+            float(np.std(v, ddof=1)) if len(v) > 1 else 0.0,
+            len(v),
+        )
+        for k, v in vals.items()
+    }
 
 
 def main():

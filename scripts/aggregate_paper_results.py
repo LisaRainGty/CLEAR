@@ -27,7 +27,9 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
-def load_rows(root: Path, result_root: Path, evidence_policy: str):
+def load_rows(root: Path, result_root: Path, evidence_policy: str,
+              evidence_policy_overrides=None):
+    evidence_policy_overrides = evidence_policy_overrides or {}
     rows = []
     rejected = []
     for path in sorted((result_root / "jobs").glob("*.jsonl")):
@@ -38,8 +40,11 @@ def load_rows(root: Path, result_root: Path, evidence_policy: str):
                 row = json.loads(line)
                 row["_result_file"] = str(path.relative_to(root))
                 reasons = []
-                if row.get("evidence_policy") not in (None, evidence_policy):
-                    reasons.append(f"non_{evidence_policy}")
+                row_tag = str(row.get("tag") or "")
+                expected_policy = evidence_policy_overrides.get(
+                    row_tag, evidence_policy)
+                if row.get("evidence_policy") not in (None, expected_policy):
+                    reasons.append(f"non_{expected_policy}")
                 for field in ("n_err_val", "n_err_test", "n_err"):
                     if int(row.get(field) or 0) > 0:
                         reasons.append(f"{field}={int(row[field])}")
@@ -147,7 +152,13 @@ def main():
         config.get("claimarc", {}).get("attribute_blocked_contrast", False))
     namespace = str(config.get("paper_suite", {}).get("artifact_namespace", "fair_rerun"))
     result_root = root / "results" / namespace
-    rows, rejected_rows = load_rows(root, result_root, policy)
+    evidence_policy_overrides = {
+        f"input_{name}": str(view_policy)
+        for name, view_policy in config.get("paper_suite", {}).get(
+            "evidence_view_ablations", {}).items()
+    }
+    rows, rejected_rows = load_rows(
+        root, result_root, policy, evidence_policy_overrides)
     agg = aggregate(rows)
     agg_seed0 = aggregate([row for row in rows if row.get("seed") == 0])
     audit = load_json(result_root / "reproducibility_report.json")
@@ -281,6 +292,8 @@ def main():
     metric_table(lines, "Table 8. Claim/argument interaction ablations", (
         ("Canonical", "claimarc_canonical"), fusion_ablation,
         ("Claim only", "claim_only"), ("Evidence only", "evidence_only"),
+        ("Sources only", "input_sources_only"),
+        ("Sources + arguments", "input_sources_plus_arguments"),
     ), agg)
     retrieval_ablation = (
         ("Global RACL retrieval", "global_racl_retrieval")

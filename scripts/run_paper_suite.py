@@ -108,8 +108,19 @@ def configure(config_path: str | Path) -> dict:
             raise ValueError("locked RACL selection did not prove test isolation")
         if selection.get("racl_mandatory") is not True:
             raise ValueError("locked RACL selection did not keep RACL mandatory")
-        if selection.get("architecture") != "no_fusion" or not MAIN_NO_FUSION:
-            raise ValueError("locked RACL final architecture must be no_fusion")
+        architecture = selection.get("architecture")
+        if architecture == "no_fusion":
+            if not MAIN_NO_FUSION:
+                raise ValueError("no_fusion RACL selection requires no_fusion_main")
+        elif architecture == "locked_fusion_global":
+            if MAIN_NO_FUSION or not LOCKED_FUSION:
+                raise ValueError(
+                    "locked_fusion_global RACL selection requires locked fusion")
+            if bool(LOCKED_RACL["attribute_blocked"]):
+                raise ValueError(
+                    "locked_fusion_global RACL selection must use global retrieval")
+        else:
+            raise ValueError(f"unsupported locked RACL architecture: {architecture!r}")
         if bool(LOCKED_RACL["attribute_blocked"]) != MAIN_ATTRIBUTE_BLOCKED:
             raise ValueError("locked RACL attribute policy disagrees with final config")
     if MAIN_NO_FUSION and not LOCKED_RACL:
@@ -217,7 +228,7 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
         if bool(LOCKED_RACL.get("class_balanced", True)) \
                 and "--cl_class_balanced" not in extra:
             locked_args.append("--cl_class_balanced")
-        if with_fusion:
+        if with_fusion and MAIN_NO_FUSION:
             if not FUSION_REFERENCE:
                 raise ValueError("with_fusion requested without a frozen reference")
             for flag, key in (
@@ -371,6 +382,22 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 if name == "global_racl_retrieval":
                     command.append("--cl_no_attr_block")
                 jobs.append(Job(f"{name}_s{seed}", "ablation", tuple(command), (bundle,)))
+        # The canonical run is already the arguments-only evidence view.  Train
+        # only the two additional views requested for the paper: raw sources,
+        # and raw sources concatenated with the frozen arguments.
+        evidence_views = cfg.get("paper_suite", {}).get(
+            "evidence_view_ablations", {})
+        for name, evidence_policy in evidence_views.items():
+            tag = f"input_{name}"
+            for seed in SEEDS:
+                bundle = ABL / f"{tag}_s{seed}.pt"
+                command = list(claimarc_command(
+                    py, tag, seed, bundle=bundle,
+                ))
+                policy_index = command.index("--evidence_policy") + 1
+                command[policy_index] = str(evidence_policy)
+                jobs.append(Job(
+                    f"{tag}_s{seed}", "ablation", tuple(command), (bundle,)))
         # Uniform weighting is exactly the Table 7 no-reliability ablation;
         # reuse that three-seed run in Table 10 instead of training it twice.
         for transform in ("inverse", "permute", "binary", "count", "sqrt"):
@@ -587,19 +614,29 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "--cl_class_balanced",
             "--evidence_policy", POLICY,
         )
+        locked_fusion_args = (
+            "--n_fusion", str(int(LOCKED_FUSION["n_fusion"])),
+            "--heads", str(int(LOCKED_FUSION["heads"])),
+            "--fusion_dropout", str(float(LOCKED_FUSION["fusion_dropout"])),
+            "--lr_fusion", str(float(LOCKED_FUSION["lr_fusion"])),
+        ) if LOCKED_FUSION else ()
         for category in CATEGORIES:
             label = category[:24]
             for model in ("clarc", "bert_cls", "roberta_cls", "esim"):
                 output = XDOM / f"{model}_category_{label}_s0.pt"
                 jobs.append(Job(f"xdom_category_{label}_{model}", "xdom", (
-                    py, "-m", "models.xdom_fold", *common, "--mode", "category",
+                    py, "-m", "models.xdom_fold", *common,
+                    *(locked_fusion_args if model == "clarc" else ()),
+                    "--mode", "category",
                     "--holdout", category, "--seed", "0", "--models", model,
                 ), (output,)))
         for seed in SEEDS:
             for model in ("clarc", "bert_cls", "roberta_cls", "esim"):
                 output = XDOM / f"{model}_rooms_rooms_s{seed}.pt"
                 jobs.append(Job(f"xdom_rooms_s{seed}_{model}", "xdom", (
-                    py, "-m", "models.xdom_fold", *common, "--mode", "rooms",
+                    py, "-m", "models.xdom_fold", *common,
+                    *(locked_fusion_args if model == "clarc" else ()),
+                    "--mode", "rooms",
                     "--seed", str(seed), "--models", model,
                 ), (output,)))
         cat_out = OUT / "table4_xdom_category.json"
@@ -748,6 +785,22 @@ def verify_frozen_contract(jobs: list[Job]) -> None:
         "models.baselines_frozen", "models.qwen_sft", "models.xdom_fold",
         "models.run_llm_baselines", "models.xdom_llm",
     }
+    evidence_views = cfg.get("paper_suite", {}).get(
+        "evidence_view_ablations", {})
+    evidence_job_policies = {
+        f"input_{name}": str(policy)
+        for name, policy in evidence_views.items()
+    }
+    allowed_model_policies = {
+        "sources_only", "args_only", "args_first", "source_first",
+        "params_only", "ocr_only", "vlm_only", "params_args", "ocr_args",
+        "vlm_args",
+    }
+    unknown_policies = sorted(
+        set(evidence_job_policies.values()) - allowed_model_policies)
+    if unknown_policies:
+        raise RuntimeError(
+            f"unsupported evidence-view ablation policies: {unknown_policies}")
     for job in jobs:
         cmd = list(job.command)
         module = cmd[cmd.index("-m") + 1] if "-m" in cmd else ""
@@ -756,13 +809,19 @@ def verify_frozen_contract(jobs: list[Job]) -> None:
         if "--evidence_policy" not in cmd:
             raise RuntimeError(f"{job.name}: missing explicit evidence policy")
         value = cmd[cmd.index("--evidence_policy") + 1]
-        if value != POLICY:
-            raise RuntimeError(f"{job.name}: forbidden evidence policy {value}")
-        other_policies = {
-            "sources_only", "args_only", "args_first", "source_first",
-            "params_only", "ocr_only", "vlm_only", "params_args", "ocr_args",
-            "vlm_args",
-        } - {POLICY}
+        expected_policy = POLICY
+        matching_overrides = [
+            policy for tag, policy in evidence_job_policies.items()
+            if job.name.startswith(f"{tag}_s")
+        ]
+        if len(matching_overrides) > 1:
+            raise RuntimeError(f"{job.name}: ambiguous evidence-view ablation")
+        if matching_overrides:
+            expected_policy = matching_overrides[0]
+        if value != expected_policy:
+            raise RuntimeError(
+                f"{job.name}: evidence policy {value} != {expected_policy}")
+        other_policies = allowed_model_policies - {expected_policy}
         if other_policies.intersection(cmd):
             raise RuntimeError(f"{job.name}: another evidence view leaked into command")
 

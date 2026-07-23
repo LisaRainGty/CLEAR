@@ -69,16 +69,18 @@ def clarc_args(dataset, seed, save_emb, tag, warmup, cl_epochs,
                enc_train="lora", lr=2e-5, cl_no_attr_block=False,
                cl_class_balanced=False, cl_hard_pos=False,
                cl_exclude_self=False, no_fusion=False,
+               n_fusion=2, heads=8, fusion_dropout=0.2, lr_fusion=None,
                lambda_cl=0.5, tau=0.07, kp=3, kn=5,
                rel_soft=False, rel_aux_weight=0.0, rel_pow=1.0, c_transform="none",
                evidence_policy="sources_only", encoder_name="BAAI/bge-large-zh-v1.5"):
     return Namespace(
         dataset=dataset, seed=seed, save_emb=save_emb, tag=tag,
-        bs=12, accum=3, lr=lr, lr_head=1e-4,
+        bs=12, accum=3, lr=lr, lr_head=1e-4, lr_fusion=lr_fusion,
         warmup=warmup, cl_epochs=cl_epochs, lambda_cl=lambda_cl, pos_weight=-1.0,
         loss="bce", gamma_neg=4.0, gamma_pos=0.0,
-        no_cl=False, swa=False, no_fusion=no_fusion, n_fusion=2, fusion_dropout=0.2,
-        no_lora=False, no_weight=False, lora_rank=16, heads=8,
+        no_cl=False, swa=False, no_fusion=no_fusion, n_fusion=n_fusion,
+        fusion_dropout=fusion_dropout,
+        no_lora=False, no_weight=False, lora_rank=16, heads=heads,
         tau=tau, Kp=kp, Kn=kn,
         cl_no_attr_block=cl_no_attr_block, cl_class_balanced=cl_class_balanced,
         cl_hard_pos=cl_hard_pos, cl_exclude_self=cl_exclude_self,
@@ -131,6 +133,10 @@ def main():
     ap.add_argument("--Kp", type=int, default=3)
     ap.add_argument("--Kn", type=int, default=5)
     ap.add_argument("--no_fusion", action="store_true")
+    ap.add_argument("--n_fusion", type=int, default=2)
+    ap.add_argument("--heads", type=int, default=8)
+    ap.add_argument("--fusion_dropout", type=float, default=0.2)
+    ap.add_argument("--lr_fusion", type=float, default=None)
     ap.add_argument("--cl_no_attr_block", action="store_true")
     ap.add_argument("--cl_class_balanced", action="store_true")
     ap.add_argument("--cl_exclude_self", action="store_true")
@@ -178,6 +184,9 @@ def main():
                                lambda_cl=args.lambda_cl, tau=args.tau,
                                kp=args.Kp, kn=args.Kn,
                                no_fusion=args.no_fusion,
+                               n_fusion=args.n_fusion, heads=args.heads,
+                               fusion_dropout=args.fusion_dropout,
+                               lr_fusion=args.lr_fusion,
                                cl_no_attr_block=args.cl_no_attr_block,
                                cl_class_balanced=args.cl_class_balanced,
                                cl_exclude_self=args.cl_exclude_self,
