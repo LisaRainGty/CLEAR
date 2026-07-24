@@ -110,8 +110,10 @@ def main() -> None:
         })
         if args.dry_run:
             continue
+        if len(source_job.outputs) != len(target_job.outputs):
+            raise RuntimeError(f"{name}: source/target output count mismatch")
         for source_output, target_output in zip(
-                source_job.outputs, target_job.outputs, strict=True
+                source_job.outputs, target_job.outputs
         ):
             copy_output(source_output, target_output)
         for subdir, suffix in (("jobs", ".jsonl"), ("logs", ".log")):
