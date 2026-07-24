@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "paper_snapshot": "paper/draft/实验结果与分析.docx",
+  "dataset": {
+    "path": "data/arguments_only/dataset_arguments_only_20260722.jsonl",
+    "sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+    "label_field": "y",
+    "split_field": "split",
+    "group_field": "room_id",
+    "expected_rows": 4883,
+    "expected_split_rows": {
+      "train": 3636,
+      "val": 392,
+      "test": 855
+    },
+    "expected_split_positives": {
+      "train": 879,
+      "val": 122,
+      "test": 249
+    },
+    "expected_argument_records": 4883
+  },
+  "fair_comparison": {
+    "evidence_policy": "args_only",
+    "evidence_order": ["ARG_SUP", "ARG_REF", "ARG_GAP"],
+    "argument_markers": ["[ARG_SUP]", "[ARG_REF]", "[ARG_GAP]"],
+    "separator": "[SEP_E]",
+    "arguments_allowed": true,
+    "single_source_experiments_allowed": false,
+    "seeds": [0, 1, 2],
+    "threshold_selection": "validation macro-F1 only",
+    "checkpoint_selection": "validation macro-F1 + 0.5 * validation AP",
+    "test_use": "forbidden during RACL v2 tuning; one final evaluation after lock",
+    "primary_metric": "auprc",
+    "reported_metrics": [
+      "acc",
+      "pos_f1",
+      "macro_f1",
+      "wF1",
+      "auprc",
+      "auroc",
+      "ece"
+    ]
+  },
+  "paper_suite": {
+    "artifact_namespace": "arguments_only_racl_v2_tune",
+    "figure_namespace": "arguments_only_racl_v2_tune",
+    "api_llm_default_enabled": false,
+    "api_llm_jobs": 0
+  },
+  "claimarc": {
+    "backbone": "BAAI/bge-large-zh-v1.5",
+    "encoder_train": "full",
+    "encoder_lr": 0.00001,
+    "head_lr": 0.0001,
+    "warmup_epochs": 2,
+    "contrastive_epochs": 4,
+    "loss": "bce",
+    "lambda_cl": 0.05,
+    "tau": 0.1,
+    "kp": 3,
+    "kn": 5,
+    "effective_batch": 36,
+    "class_balanced_contrast": true,
+    "attribute_blocked_contrast": false,
+    "locked_fusion": {
+      "revision": "fusion_v2_locked_20260723",
+      "selection_manifest": "results/arguments_only_fusion_v2/fusion_v2_selection.json",
+      "selection_manifest_sha256": "a27beb2702f09409100563b76fab597568efeee2f6df8fb5ac070c73b6f73dd3",
+      "selected_candidate": "n1_d020_lr5e5",
+      "n_fusion": 1,
+      "heads": 8,
+      "fusion_dropout": 0.2,
+      "lr_fusion": 0.00005
+    }
+  },
+  "racl_tuning": {
+    "revision": "racl_v2_shared_decision_set_nce_20260724",
+    "purpose": "Test whether coupling the retrieval representation to the classifier and reliability-weighting retrieved sets makes RACL affect the decision boundary.",
+    "architecture": "locked_fusion_global",
+    "job_prefix": "racl_v2",
+    "selection_output": "racl_v2_selection.json",
+    "test_access_forbidden": true,
+    "seeds": [0, 1, 2],
+    "fixed_fusion": {
+      "n_fusion": 1,
+      "heads": 8,
+      "fusion_dropout": 0.2,
+      "lr_fusion": 0.00005
+    },
+    "selection": {
+      "primary_metric": "auprc",
+      "tie_breaker": "pos_f1",
+      "aggregation": "mean over seeds 0,1,2",
+      "standard_deviation": "population ddof=0",
+      "diagnostic_control": "no_racl_shared"
+    },
+    "candidates": [
+      {
+        "name": "no_racl_shared",
+        "racl_enabled": false,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.0,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": false,
+        "hard_positive": false,
+        "set_nce": false,
+        "racl_logit_alpha": 1.0,
+        "attribute_blocked": false
+      },
+      {
+        "name": "shared_pair_l005_t010",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.05,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "set_nce": false,
+        "racl_logit_alpha": 1.0,
+        "attribute_blocked": false
+      },
+      {
+        "name": "shared_set_l005_t010",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.05,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "set_nce": true,
+        "racl_logit_alpha": 1.0,
+        "attribute_blocked": false
+      },
+      {
+        "name": "shared_set_l010_t010",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.1,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "set_nce": true,
+        "racl_logit_alpha": 1.0,
+        "attribute_blocked": false
+      }
+    ]
+  },
+  "status": "preregistered_validation_only_not_started"
+}

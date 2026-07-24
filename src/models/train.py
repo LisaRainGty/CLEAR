@@ -514,6 +514,30 @@ def info_nce(g_anchor, g_pos, g_negs, tau=0.07):
     return -(pos - denom)
 
 
+def reliability_set_nce(g_anchor, g_pos, g_negs, pos_weights, neg_weights,
+                        tau=0.07):
+    """Reliability-weighted set-to-set InfoNCE used by RACL v2.
+
+    Positives and negatives are each normalized as a weighted set before the
+    two set scores are contrasted.  This avoids making the loss depend on Kp
+    or Kn merely through the number of exponentiated terms, while downweighting
+    noisy retrieved records.  The anchor reliability and class balance remain
+    outside this function, matching the original RACL aggregation.
+    """
+    if len(g_pos) == 0 or len(g_negs) == 0:
+        return torch.tensor(0.0, device=g_anchor.device)
+    eps = 1e-6
+    pos_w = pos_weights.to(g_anchor.device, dtype=g_anchor.dtype).clamp_min(eps)
+    neg_w = neg_weights.to(g_anchor.device, dtype=g_anchor.dtype).clamp_min(eps)
+    pos_w = pos_w / pos_w.sum().clamp_min(eps)
+    neg_w = neg_w / neg_w.sum().clamp_min(eps)
+    pos_logits = (g_pos @ g_anchor) / tau + torch.log(pos_w)
+    neg_logits = (g_negs @ g_anchor) / tau + torch.log(neg_w)
+    pos_score = torch.logsumexp(pos_logits, dim=0)
+    neg_score = torch.logsumexp(neg_logits, dim=0)
+    return F.softplus(neg_score - pos_score)
+
+
 def supcon_loss(g, batch, tau=0.07):
     """Faithful supervised contrastive loss (Khosla et al., 2020), L_out form.
 
@@ -554,7 +578,8 @@ def contrastive_loss(g, batch, bank: MemoryBank, cw, Kp=3, Kn=5, tau=0.07, globa
                      cl_neg_filter="none", cl_neg_bonus=0.0,
                      cl_neg_bonus_filter="none",
                      cl_attr_block=True, cl_class_balanced=False, cl_hard_pos=False,
-                     cl_exclude_self=False):
+                     cl_exclude_self=False, cl_set_nce=False,
+                     cl_bank_rel_weight=True):
     """检索增强监督对比（RACL）。
 
     B 优化旋钮（消融证实属性分块作用很小，默认仍保留以兼容 canonical）：
@@ -652,10 +677,24 @@ def contrastive_loss(g, batch, bank: MemoryBank, cw, Kp=3, Kn=5, tau=0.07, globa
         if len(pos_idx) == 0:
             continue
         g_negs = bank.g[neg_idx] if len(neg_idx) else bank.g[:0]
-        li = 0.0
-        for pj in pos_idx:
-            li = li + info_nce(g_d[i], bank.g[pj], g_negs, tau)
-        losses.append(class_w[yi] * cw[i] * li / max(1, len(pos_idx)))
+        if cl_set_nce:
+            pos_weights = (
+                torch.as_tensor(bank.c[pos_idx], device=g.device)
+                if cl_bank_rel_weight else torch.ones(len(pos_idx), device=g.device)
+            )
+            neg_weights = (
+                torch.as_tensor(bank.c[neg_idx], device=g.device)
+                if cl_bank_rel_weight else torch.ones(len(neg_idx), device=g.device)
+            )
+            li = reliability_set_nce(
+                g_d[i], bank.g[pos_idx], g_negs, pos_weights, neg_weights, tau
+            )
+        else:
+            li = 0.0
+            for pj in pos_idx:
+                li = li + info_nce(g_d[i], bank.g[pj], g_negs, tau)
+            li = li / max(1, len(pos_idx))
+        losses.append(class_w[yi] * cw[i] * li)
     if not losses:
         return torch.tensor(0.0, device=g.device)
     return torch.stack(losses).mean()
@@ -989,7 +1028,8 @@ def train(args, splits=None, return_model=False):
                      ret_disc=not getattr(args, "no_ret_disc", False),
                      head_4tuple=not getattr(args, "head_concat_only", False),
                      joint_encode=getattr(args, "joint_encode", False),
-                     single_stream=(getattr(args, "stream_mode", "dual") != "dual")).to(device)
+                     single_stream=(getattr(args, "stream_mode", "dual") != "dual"),
+                     racl_logit_alpha=getattr(args, "racl_logit_alpha", 0.0)).to(device)
     if getattr(args, "load_ckpt", ""):
         sd = torch.load(args.load_ckpt, map_location=device, weights_only=False)
         miss, unexp = model.load_state_dict(sd, strict=False)
@@ -1192,7 +1232,9 @@ def train(args, splits=None, return_model=False):
                                           cl_attr_block=not getattr(args, "cl_no_attr_block", False),
                                           cl_class_balanced=getattr(args, "cl_class_balanced", False),
                                           cl_hard_pos=getattr(args, "cl_hard_pos", False),
-                                          cl_exclude_self=getattr(args, "cl_exclude_self", False))
+                                          cl_exclude_self=getattr(args, "cl_exclude_self", False),
+                                          cl_set_nce=getattr(args, "cl_set_nce", False),
+                                          cl_bank_rel_weight=not args.no_weight)
             proto_loss = torch.tensor(0.0, device=device)
             proto_on = (
                 getattr(args, "proto_aux_weight", 0.0) > 0
@@ -1291,6 +1333,8 @@ def train(args, splits=None, return_model=False):
             "cl_c_min": float(args.cl_c_min),
             "cl_neg_c_min": float(args.cl_neg_c_min),
             "cl_hard_pos": bool(args.cl_hard_pos),
+            "cl_set_nce": bool(args.cl_set_nce),
+            "racl_logit_alpha": float(args.racl_logit_alpha),
             "cl_attribute_blocked": not bool(args.cl_no_attr_block),
         }
         attach_run_provenance(res, args, bge)
@@ -1380,6 +1424,10 @@ def main():
                     help="同标签正例取相似度最低的 Kp 个（hard positive，避免易正例梯度消失）")
     ap.add_argument("--cl_exclude_self", action="store_true",
                     help="从 RACL 正例检索中排除与 anchor 相同 pair_id 的内存库记录")
+    ap.add_argument("--cl_set_nce", action="store_true",
+                    help="RACL v2：使用可靠性加权的多正例集合 InfoNCE；--no_weight 同时移除库权重")
+    ap.add_argument("--racl_logit_alpha", type=float, default=0.0,
+                    help="RACL v2：把检索表示接回分类器的固定残差系数；0 保持原架构")
     # ---- C 优化：可靠性建模 ----
     ap.add_argument("--rel_soft", action="store_true",
                     help="noise-aware 软标签：低可靠性 c 的标签向数据集基率收缩（弱监督去噪）")

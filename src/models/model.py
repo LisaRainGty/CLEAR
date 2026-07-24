@@ -84,7 +84,8 @@ class CLAIMARC(nn.Module):
                  use_lora=True, ret_dim=256, fusion_dropout=0.1, lora_rank=16,
                  xattn_dir="both", indep_proj=False, ffn="swiglu", heads=8,
                  enc_train="lora", unfreeze_top=0, ret_disc=True,
-                 head_4tuple=True, joint_encode=False, single_stream=False):
+                 head_4tuple=True, joint_encode=False, single_stream=False,
+                 racl_logit_alpha=0.0):
         super().__init__()
         from transformers import AutoModel
         self.encoder = AutoModel.from_pretrained(bge_path)
@@ -135,6 +136,16 @@ class CLAIMARC(nn.Module):
         self.ret = nn.Sequential(
             nn.Linear(ret_in, 512), nn.GELU(), nn.Dropout(0.1), nn.Linear(512, ret_dim)
         )
+        # RACL v2 can couple the retrieval representation back into the
+        # classifier.  The same branch is retained in the matched no-RACL
+        # control, so any gain is attributable to contrastive shaping rather
+        # than extra classifier capacity.  Zero initialization preserves the
+        # original classifier at the start of training.
+        self.racl_logit_alpha = float(racl_logit_alpha)
+        self.racl_lrc = nn.Linear(ret_dim, 1) if self.racl_logit_alpha > 0 else None
+        if self.racl_lrc is not None:
+            nn.init.zeros_(self.racl_lrc.weight)
+            nn.init.zeros_(self.racl_lrc.bias)
 
     def _unfreeze_encoder_extras(self, vocab_size, n_special, use_lora,
                                  enc_train="lora", unfreeze_top=0):
@@ -210,8 +221,10 @@ class CLAIMARC(nn.Module):
         else:
             z = torch.cat([h_c, h_e], dim=-1)
             ret_in = z
-        logit = self.lrc(self.lrc_drop(self.lrc_ln(z))).squeeze(-1)
         g = F.normalize(self.ret(ret_in), dim=-1)
+        logit = self.lrc(self.lrc_drop(self.lrc_ln(z))).squeeze(-1)
+        if self.racl_lrc is not None:
+            logit = logit + self.racl_logit_alpha * self.racl_lrc(g).squeeze(-1)
         return logit, g
 
     def param_groups(self, lr_encoder=2e-5, lr_head=1e-4, lr_fusion=None):

@@ -198,6 +198,11 @@ def main() -> None:
                 raise RuntimeError(f"self-exclusion mismatch in {path}")
             if bool(row.get("cl_hard_pos")) != bool(candidate.get("hard_positive", False)):
                 raise RuntimeError(f"hard-positive mismatch in {path}")
+            if bool(row.get("cl_set_nce")) != bool(candidate.get("set_nce", False)):
+                raise RuntimeError(f"set-NCE mismatch in {path}")
+            if abs(float(row.get("racl_logit_alpha", 0.0))
+                   - float(candidate.get("racl_logit_alpha", 0.0))) > 1e-12:
+                raise RuntimeError(f"RACL logit coupling mismatch in {path}")
             if bool(row.get("cl_attribute_blocked")) != bool(
                     candidate.get("attribute_blocked", False)):
                 raise RuntimeError(f"attribute-blocking mismatch in {path}")

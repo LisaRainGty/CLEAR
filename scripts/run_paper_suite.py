@@ -257,6 +257,15 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
         if bool(LOCKED_RACL.get("hard_positive", False)) \
                 and "--cl_hard_pos" not in extra:
             locked_args.append("--cl_hard_pos")
+        if bool(LOCKED_RACL.get("set_nce", False)) \
+                and "--cl_set_nce" not in extra:
+            locked_args.append("--cl_set_nce")
+        if float(LOCKED_RACL.get("racl_logit_alpha", 0.0)) > 0 \
+                and "--racl_logit_alpha" not in extra:
+            locked_args.extend((
+                "--racl_logit_alpha",
+                str(float(LOCKED_RACL["racl_logit_alpha"])),
+            ))
         if with_fusion and MAIN_NO_FUSION:
             if not FUSION_REFERENCE:
                 raise ValueError("with_fusion requested without a frozen reference")
@@ -291,13 +300,14 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
     for flag in (
         "--warmup", "--cl_epochs", "--loss", "--lambda_cl", "--tau", "--Kp", "--Kn",
         "--n_fusion", "--heads", "--fusion_dropout", "--lr_fusion", "--lora_rank",
+        "--racl_logit_alpha",
     ):
         while command.count(flag) > 1:
             index = command.index(flag)
             del command[index:index + 2]
     for flag in (
         "--no_fusion", "--cl_exclude_self", "--cl_class_balanced",
-        "--cl_no_attr_block", "--cl_hard_pos",
+        "--cl_no_attr_block", "--cl_hard_pos", "--cl_set_nce",
     ):
         while command.count(flag) > 1:
             command.remove(flag)
@@ -535,6 +545,13 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 extra.append("--cl_exclude_self")
             if bool(candidate.get("hard_positive", False)):
                 extra.append("--cl_hard_pos")
+            if bool(candidate.get("set_nce", False)):
+                extra.append("--cl_set_nce")
+            if float(candidate.get("racl_logit_alpha", 0.0)) > 0:
+                extra.extend((
+                    "--racl_logit_alpha",
+                    str(float(candidate["racl_logit_alpha"])),
+                ))
             if float(candidate.get("cl_c_min", 0.0)) > 0:
                 extra.extend(("--cl_c_min", str(float(candidate["cl_c_min"]))))
             if float(candidate.get("cl_neg_c_min", 0.0)) > 0:
