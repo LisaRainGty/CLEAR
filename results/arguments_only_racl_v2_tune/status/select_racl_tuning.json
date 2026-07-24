@@ -1,0 +1,27 @@
+{
+  "job": "select_racl_tuning",
+  "stage": "racl_tune",
+  "signature": "5708d7cd369f31e4ec49ef9b506efe0577e354bf7180de71c5363bc3f8eb4a09",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "/root/CLEAR_run/scripts/select_racl_no_fusion.py",
+    "--config",
+    "/root/CLEAR_run/configs/racl_v2_shared_decision_tuning.json",
+    "--result-root",
+    "/root/CLEAR_run/results/arguments_only_racl_v2_tune",
+    "--output",
+    "/root/CLEAR_run/results/arguments_only_racl_v2_tune/racl_v2_selection.json"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python /root/CLEAR_run/scripts/select_racl_no_fusion.py --config /root/CLEAR_run/configs/racl_v2_shared_decision_tuning.json --result-root /root/CLEAR_run/results/arguments_only_racl_v2_tune --output /root/CLEAR_run/results/arguments_only_racl_v2_tune/racl_v2_selection.json",
+  "started_utc": "2026-07-24T10:36:20.857627+00:00",
+  "finished_utc": "2026-07-24T10:36:20.971323+00:00",
+  "returncode": 0,
+  "log": "results/arguments_only_racl_v2_tune/logs/select_racl_tuning.log",
+  "result_file": "results/arguments_only_racl_v2_tune/jobs/select_racl_tuning.jsonl",
+  "outputs": [
+    "results/arguments_only_racl_v2_tune/racl_v2_selection.json"
+  ],
+  "removed_failed_outputs": [],
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only"
+}

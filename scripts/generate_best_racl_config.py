@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the final paper config from the audited four-combination selector."""
+"""Generate the final paper config from an audited RACL selector."""
 from __future__ import annotations
 
 import argparse
@@ -28,14 +28,36 @@ def build_config(
     if selection.get("evidence_policy") != base["fair_comparison"]["evidence_policy"]:
         raise RuntimeError("combo selector evidence-policy mismatch")
     selected = str(selection["selected_candidate"])
-    spec = dict(selection["selected_spec"])
+    selected_spec = selection.get("selected_spec")
+    if selected_spec is None:
+        aggregates = selection.get("aggregates", {})
+        if selected not in aggregates:
+            raise RuntimeError("selected RACL candidate is missing from aggregates")
+        selected_spec = aggregates[selected].get("spec")
+        if selected_spec is None:
+            raise RuntimeError("selected RACL candidate has no recorded spec")
+    spec = dict(selected_spec)
+    architecture = selection.get("architecture")
+    if "no_fusion" not in spec:
+        if architecture == "locked_fusion_global":
+            spec["no_fusion"] = False
+        elif architecture == "no_fusion":
+            spec["no_fusion"] = True
+        else:
+            raise RuntimeError("selector does not identify the final architecture")
+    if "racl_mandatory" not in spec:
+        spec["racl_mandatory"] = bool(spec.get("racl_enabled", False))
+    if "class_balanced" not in spec:
+        spec["class_balanced"] = bool(
+            base.get("claimarc", {}).get("class_balanced_contrast", False)
+        )
     if spec.get("racl_mandatory") is not True:
         raise RuntimeError("selected combo is not RACL-enabled")
     if bool(spec.get("attribute_blocked", True)):
         raise RuntimeError("selected combo is not global RACL")
 
     cfg = copy.deepcopy(base)
-    cfg["status"] = "final_validation_selected_fusion_racl_combo_20260724"
+    cfg["status"] = "final_validation_selected_racl_20260724"
     cfg["paper_suite"]["figure_namespace"] = (
         f"arguments_only_best_racl_{selected}"
     )
@@ -68,7 +90,7 @@ def build_config(
     ):
         claimarc[cfg_key] = spec[spec_key]
     claimarc["locked_racl"] = {
-        "revision": "best_fusion_racl_combo_locked_20260724",
+        "revision": "validation_selected_racl_locked_20260724",
         "selection_manifest": selection_path,
         "selection_manifest_sha256": selection_sha256,
         "selected_candidate": selected,
@@ -82,7 +104,9 @@ def build_config(
         "kp": int(spec["kp"]),
         "kn": int(spec["kn"]),
         "exclude_self": bool(spec.get("exclude_self", False)),
-        "hard_positive": bool(spec["hard_positive"]),
+        "hard_positive": bool(spec.get("hard_positive", False)),
+        "set_nce": bool(spec.get("set_nce", False)),
+        "racl_logit_alpha": float(spec.get("racl_logit_alpha", 0.0)),
         "attribute_blocked": False,
         "class_balanced": bool(spec["class_balanced"]),
     }
