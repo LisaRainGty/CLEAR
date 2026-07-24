@@ -19,7 +19,7 @@ class LockedNoFusionRaclSuiteTest(unittest.TestCase):
         cls.commands = {job.name: list(job.command) for job in cls.jobs}
 
     def test_expected_job_budget(self):
-        self.assertEqual(len(self.jobs), 184)
+        self.assertEqual(len(self.jobs), 185)
 
     def test_canonical_is_locked_no_fusion_attribute_racl(self):
         command = self.commands["claimarc_canonical_s0"]

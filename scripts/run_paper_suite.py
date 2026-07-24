@@ -109,6 +109,13 @@ def configure(config_path: str | Path) -> dict:
         if selection.get("racl_mandatory") is not True:
             raise ValueError("locked RACL selection did not keep RACL mandatory")
         architecture = selection.get("architecture")
+        selected_spec = selection.get("selected_spec") or {}
+        if architecture is None and "no_fusion" in selected_spec:
+            architecture = (
+                "no_fusion"
+                if bool(selected_spec["no_fusion"])
+                else "locked_fusion_global"
+            )
         if architecture == "no_fusion":
             if not MAIN_NO_FUSION:
                 raise ValueError("no_fusion RACL selection requires no_fusion_main")
@@ -123,6 +130,24 @@ def configure(config_path: str | Path) -> dict:
             raise ValueError(f"unsupported locked RACL architecture: {architecture!r}")
         if bool(LOCKED_RACL["attribute_blocked"]) != MAIN_ATTRIBUTE_BLOCKED:
             raise ValueError("locked RACL attribute policy disagrees with final config")
+        if selected_spec:
+            for locked_key, spec_key in (
+                ("exclude_self", "exclude_self"),
+                ("attribute_blocked", "attribute_blocked"),
+                ("hard_positive", "hard_positive"),
+                ("class_balanced", "class_balanced"),
+                ("warmup_epochs", "warmup_epochs"),
+                ("contrastive_epochs", "contrastive_epochs"),
+                ("lambda_cl", "lambda_cl"),
+                ("tau", "tau"),
+                ("kp", "kp"),
+                ("kn", "kn"),
+            ):
+                if locked_key not in LOCKED_RACL or spec_key not in selected_spec:
+                    continue
+                if LOCKED_RACL[locked_key] != selected_spec[spec_key]:
+                    raise ValueError(
+                        f"locked RACL {locked_key} disagrees with selected combo")
     tuning_protocol = cfg.get("racl_tuning", cfg.get("racl_no_fusion"))
     if MAIN_NO_FUSION and not LOCKED_RACL and not tuning_protocol:
         raise ValueError("no_fusion_main requires a validation-locked RACL config")
@@ -447,7 +472,7 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "independent_projection": ("--indep_proj",),
         }
         for blocks in (1, 2, 3, 4):
-            if blocks != canonical_fusion_blocks:
+            if MAIN_NO_FUSION or blocks != canonical_fusion_blocks:
                 variants[f"fusion{blocks}"] = ("--n_fusion", str(blocks))
         for name, extra in variants.items():
             # Table 12 is explicitly the paper's single-seed LoRA sensitivity

@@ -407,18 +407,25 @@ def main():
     lines.extend(["## Table 11", "", "The current manuscript has no Table 11 (numbering gap).", ""])
 
     locked_fusion = config.get("claimarc", {}).get("locked_fusion", {})
+    locked_racl = config.get("claimarc", {}).get("locked_racl", {})
     canonical_fusion_blocks = int(locked_fusion.get("n_fusion", 2))
     canonical_heads = int(locked_fusion.get("heads", 8))
+    canonical_lambda = float(locked_racl.get("lambda_cl", 0.5))
+    canonical_tau = float(locked_racl.get("tau", 0.07))
+    canonical_kp = int(locked_racl.get("kp", 3))
+    canonical_kn = int(locked_racl.get("kn", 5))
     canonical_hp_label = (
-        "Canonical LoRA (no fusion, r16, lambda=.10, tau=.10, Kp3/Kn5, BCE)"
+        f"Canonical LoRA (no fusion, r16, lambda={canonical_lambda:g}, "
+        f"tau={canonical_tau:g}, Kp{canonical_kp}/Kn{canonical_kn}, BCE)"
         if no_fusion_main
         else (f"Canonical LoRA (N{canonical_fusion_blocks}, h{canonical_heads}, "
-              "r16, lambda=.5, tau=.07, Kp3/Kn5, BCE)")
+              f"r16, lambda={canonical_lambda:g}, tau={canonical_tau:g}, "
+              f"Kp{canonical_kp}/Kn{canonical_kn}, BCE)")
     )
     fusion_hp_entries = tuple(
         (f"Fusion blocks N={blocks}", f"hp_fusion{blocks}")
         for blocks in (1, 2, 3, 4)
-        if blocks != canonical_fusion_blocks
+        if no_fusion_main or blocks != canonical_fusion_blocks
     )
     hp_entries = (
         (canonical_hp_label, "hp_lora_canonical"),

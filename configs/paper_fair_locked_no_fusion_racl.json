@@ -50,7 +50,7 @@
   "paper_suite": {
     "artifact_namespace": "arguments_only_locked_no_fusion_racl",
     "figure_namespace": "arguments_only_locked_no_fusion_racl",
-    "non_api_jobs": 184,
+    "non_api_jobs": 185,
     "api_llm_default_enabled": false,
     "api_llm_jobs": 0,
     "api_llm_requirement": "No new hosted API calls authorized",
