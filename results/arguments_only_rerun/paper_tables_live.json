@@ -196,6 +196,55 @@
         "args_only"
       ]
     },
+    "claim_only": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8182999999999999,
+        "std": 0.0074478184725461855,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7321,
+        "std": 0.016300920219423188,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.7972666666666667,
+        "std": 0.00935004456317363,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7149000000000001,
+        "std": 0.013028814220795427,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.9016333333333334,
+        "std": 0.007344612537999061,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7744666666666666,
+        "std": 0.008519585279421378,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.1512,
+        "std": 0.017459667808981925,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
     "claimarc_canonical": {
       "n": 3,
       "seeds": [
@@ -1149,32 +1198,8 @@
       ]
     }
   },
-  "fresh_rows": 54,
+  "fresh_rows": 57,
   "rejected_rows": [
-    {
-      "result_file": "results/arguments_only_rerun/jobs/claim_only_s0.jsonl",
-      "suite_job": "claim_only_s0",
-      "tag": "claim_only",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/claim_only_s1.jsonl",
-      "suite_job": "claim_only_s1",
-      "tag": "claim_only",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/claim_only_s2.jsonl",
-      "suite_job": "claim_only_s2",
-      "tag": "claim_only",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
     {
       "result_file": "results/arguments_only_rerun/jobs/evidence_only_s0.jsonl",
       "suite_job": "evidence_only_s0",

@@ -5,8 +5,8 @@
 - Dataset SHA-256: `b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618`
 - Rows: 4883
 - Argument records: 4883
-- Accepted fresh RESULT rows: 54
-- Rejected incomplete/off-protocol RESULT rows: 11
+- Accepted fresh RESULT rows: 57
+- Rejected incomplete/off-protocol RESULT rows: 8
 
 ## Table 1. Dataset split and statistics
 
@@ -102,7 +102,7 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Canonical | 81.40±0.42 | 71.76±1.78 | 78.93±0.76 | 75.16±1.68 | 90.17±0.47 | 76.85±0.81 | 13.02±0.29 | 3 |
 | w/o fusion | 81.29±0.47 | 74.24±0.69 | 79.77±0.49 | 75.31±1.47 | 90.66±0.34 | 77.54±0.57 | 11.11±0.47 | 3 |
-| Claim only | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| Claim only | 81.83±0.74 | 73.21±1.63 | 79.73±0.94 | 71.49±1.30 | 90.16±0.73 | 77.45±0.85 | 15.12±1.75 | 3 |
 | Evidence only | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Sources only | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Sources + arguments | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
