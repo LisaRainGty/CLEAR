@@ -85,6 +85,8 @@
     "seeds": [0, 1, 2],
     "semantic_revision": "dualspace_bge_joint_v1",
     "semantic_cache": "cache/arguments_only_dualspace_racl/fixed_semantic_train_val.npz",
+    "semantic_cache_sha256": "8688bfeffcb62d13914c3c8e1a047039de826e4b6224653e66c404890f67dba7",
+    "semantic_cache_splits": ["train", "val"],
     "save_validation_predictions": true,
     "fixed_fusion": {
       "n_fusion": 1,

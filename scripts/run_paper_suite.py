@@ -303,6 +303,7 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
         "--racl_logit_alpha", "--racl_margin", "--racl_geom_weight",
         "--racl_rank_weight", "--racl_memory_head_alpha", "--racl_memory_k",
         "--racl_semantic_revision", "--racl_semantic_cache",
+        "--racl_semantic_cache_sha256",
     ):
         while command.count(flag) > 1:
             index = command.index(flag)
@@ -587,6 +588,12 @@ def build_jobs(stages: set[str]) -> list[Job]:
                 extra.extend((
                     "--racl_semantic_cache",
                     str((ROOT / str(semantic_cache)).resolve()),
+                ))
+            semantic_cache_sha256 = protocol.get("semantic_cache_sha256")
+            if semantic_cache_sha256:
+                extra.extend((
+                    "--racl_semantic_cache_sha256",
+                    str(semantic_cache_sha256),
                 ))
             if float(candidate.get("cl_c_min", 0.0)) > 0:
                 extra.extend(("--cl_c_min", str(float(candidate["cl_c_min"]))))

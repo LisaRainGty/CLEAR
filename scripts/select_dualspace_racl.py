@@ -103,6 +103,11 @@ def main() -> None:
     if not semantic_cache.exists():
         raise RuntimeError(f"missing frozen semantic cache: {semantic_cache}")
     cached = np.load(semantic_cache, allow_pickle=False)
+    semantic_cache_sha256 = hashlib.sha256(semantic_cache.read_bytes()).hexdigest()
+    if semantic_cache_sha256 != protocol["semantic_cache_sha256"]:
+        raise RuntimeError("semantic cache SHA-256 mismatch")
+    if protocol.get("semantic_cache_splits") != ["train", "val"]:
+        raise RuntimeError("semantic cache split declaration changed")
     if any(key.startswith("test_") for key in cached.files):
         raise RuntimeError("validation-only semantic cache contains forbidden test data")
     if str(cached["dataset_sha256"].item()) != expected_hash:
@@ -187,6 +192,8 @@ def main() -> None:
                     raise RuntimeError(f"{key} mismatch in {result_path}")
             if row.get("racl_semantic_revision") != protocol["semantic_revision"]:
                 raise RuntimeError(f"semantic revision mismatch in {result_path}")
+            if row.get("racl_semantic_cache_sha256") != protocol["semantic_cache_sha256"]:
+                raise RuntimeError(f"semantic cache SHA-256 mismatch in {result_path}")
             prediction_path = Path(str(row["validation_prediction_file"]))
             if not prediction_path.is_absolute():
                 prediction_path = (project_root / prediction_path).resolve()

@@ -648,10 +648,19 @@ def _fixed_semantic_embeddings(splits: dict[str, list[dict]], bge: str,
         open(args.dataset, "rb").read()
     ).hexdigest()
     revision = str(getattr(args, "racl_semantic_revision", "dualspace_bge_joint_v1"))
+    expected_cache_sha256 = str(
+        getattr(args, "racl_semantic_cache_sha256", "") or ""
+    )
     if cache_path:
         from pathlib import Path
         path = Path(cache_path)
         if path.exists():
+            cache_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+            if expected_cache_sha256 and cache_sha256 != expected_cache_sha256:
+                raise RuntimeError(
+                    "frozen semantic cache SHA-256 mismatch: "
+                    f"{cache_sha256} != {expected_cache_sha256}"
+                )
             cached = np.load(path, allow_pickle=False)
             if (
                 str(cached["dataset_sha256"].item()) == dataset_sha
@@ -696,6 +705,12 @@ def _fixed_semantic_embeddings(splits: dict[str, list[dict]], bge: str,
             payload[f"{split}_pair_id"] = pair_ids[split]
             payload[f"{split}_q"] = result[split]
         np.savez_compressed(path, **payload)
+        cache_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+        if expected_cache_sha256 and cache_sha256 != expected_cache_sha256:
+            raise RuntimeError(
+                "new frozen semantic cache does not match preregistered SHA-256: "
+                f"{cache_sha256} != {expected_cache_sha256}"
+            )
         print(f"[dualspace] wrote frozen semantic cache {path}", flush=True)
     return result
 
@@ -1725,6 +1740,7 @@ def train(args, splits=None, return_model=False):
             "racl_memory_k": int(args.racl_memory_k),
             "racl_semantic_revision": str(args.racl_semantic_revision),
             "racl_semantic_cache": str(args.racl_semantic_cache),
+            "racl_semantic_cache_sha256": str(args.racl_semantic_cache_sha256),
             "racl_semantic_stats": semantic_stats,
             "cl_class_balanced": bool(args.cl_class_balanced),
             "cl_attribute_blocked": not bool(args.cl_no_attr_block),
@@ -1871,6 +1887,8 @@ def main():
                     help="冻结语义文本/编码规则版本，写入缓存和结果清单")
     ap.add_argument("--racl_semantic_cache", default="",
                     help="冻结 train/val 语义向量缓存；validation-only 时严禁包含 test")
+    ap.add_argument("--racl_semantic_cache_sha256", default="",
+                    help="预注册冻结语义缓存 SHA-256；不匹配时拒绝训练")
     # ---- C 优化：可靠性建模 ----
     ap.add_argument("--rel_soft", action="store_true",
                     help="noise-aware 软标签：低可靠性 c 的标签向数据集基率收缩（弱监督去噪）")

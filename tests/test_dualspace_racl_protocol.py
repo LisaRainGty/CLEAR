@@ -74,6 +74,10 @@ class DualSpaceRaclProtocolTest(unittest.TestCase):
                     command[command.index("--racl_semantic_revision") + 1],
                     "dualspace_bge_joint_v1",
                 )
+                self.assertEqual(
+                    command[command.index("--racl_semantic_cache_sha256") + 1],
+                    "8688bfeffcb62d13914c3c8e1a047039de826e4b6224653e66c404890f67dba7",
+                )
 
     def test_memory_context_is_only_enabled_for_the_third_candidate(self):
         enabled = {
