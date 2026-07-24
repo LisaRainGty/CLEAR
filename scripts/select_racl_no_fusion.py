@@ -269,6 +269,7 @@ def main() -> None:
         "architecture": architecture,
         "test_metrics_accessed": False,
         "selection": selection,
+        "decision_provenance": protocol.get("decision_provenance"),
         "racl_mandatory": True,
         "phase_selected_candidate": phase_selected,
         "selected_candidate": selected,

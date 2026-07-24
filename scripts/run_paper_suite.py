@@ -123,7 +123,8 @@ def configure(config_path: str | Path) -> dict:
             raise ValueError(f"unsupported locked RACL architecture: {architecture!r}")
         if bool(LOCKED_RACL["attribute_blocked"]) != MAIN_ATTRIBUTE_BLOCKED:
             raise ValueError("locked RACL attribute policy disagrees with final config")
-    if MAIN_NO_FUSION and not LOCKED_RACL:
+    tuning_protocol = cfg.get("racl_tuning", cfg.get("racl_no_fusion"))
+    if MAIN_NO_FUSION and not LOCKED_RACL and not tuning_protocol:
         raise ValueError("no_fusion_main requires a validation-locked RACL config")
     if FUSION_REFERENCE:
         required = {"n_fusion", "heads", "fusion_dropout", "lr_fusion"}
@@ -228,6 +229,9 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
         if bool(LOCKED_RACL.get("class_balanced", True)) \
                 and "--cl_class_balanced" not in extra:
             locked_args.append("--cl_class_balanced")
+        if bool(LOCKED_RACL.get("hard_positive", False)) \
+                and "--cl_hard_pos" not in extra:
+            locked_args.append("--cl_hard_pos")
         if with_fusion and MAIN_NO_FUSION:
             if not FUSION_REFERENCE:
                 raise ValueError("with_fusion requested without a frozen reference")
@@ -361,7 +365,10 @@ def build_jobs(stages: set[str]) -> list[Job]:
             "claim_only": ("--no_fusion", "--stream_mode", "claim"),
             "evidence_only": ("--no_fusion", "--stream_mode", "evidence"),
             # Table 9
-            "hard_positive": ("--cl_hard_pos",),
+            ("easy_positive" if bool(LOCKED_RACL.get("hard_positive", False))
+             else "hard_positive"):
+                (() if bool(LOCKED_RACL.get("hard_positive", False))
+                 else ("--cl_hard_pos",)),
             ("global_racl_retrieval" if MAIN_ATTRIBUTE_BLOCKED
              else "same_attribute_negative"): (),
             "same_evidence_type_negative": ("--cl_neg_filter", "same_evtype"),
@@ -381,6 +388,8 @@ def build_jobs(stages: set[str]) -> list[Job]:
                     command.remove("--cl_no_attr_block")
                 if name == "global_racl_retrieval":
                     command.append("--cl_no_attr_block")
+                if name == "easy_positive":
+                    command.remove("--cl_hard_pos")
                 jobs.append(Job(f"{name}_s{seed}", "ablation", tuple(command), (bundle,)))
         # The canonical run is already the arguments-only evidence view.  Train
         # only the two additional views requested for the paper: raw sources,
@@ -614,6 +623,8 @@ def build_jobs(stages: set[str]) -> list[Job]:
               if bool(LOCKED_RACL.get("exclude_self", False)) else ()),
             *(("--cl_no_attr_block",) if not MAIN_ATTRIBUTE_BLOCKED else ()),
             "--cl_class_balanced",
+            *(("--cl_hard_pos",)
+              if bool(LOCKED_RACL.get("hard_positive", False)) else ()),
             "--evidence_policy", POLICY,
         )
         locked_fusion_args = (

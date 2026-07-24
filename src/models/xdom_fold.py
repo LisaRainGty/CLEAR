@@ -139,6 +139,7 @@ def main():
     ap.add_argument("--lr_fusion", type=float, default=None)
     ap.add_argument("--cl_no_attr_block", action="store_true")
     ap.add_argument("--cl_class_balanced", action="store_true")
+    ap.add_argument("--cl_hard_pos", action="store_true")
     ap.add_argument("--cl_exclude_self", action="store_true")
     ap.add_argument("--evidence_policy", default="sources_only")
     ap.add_argument("--encoder_name", default=os.environ.get(
@@ -189,6 +190,7 @@ def main():
                                lr_fusion=args.lr_fusion,
                                cl_no_attr_block=args.cl_no_attr_block,
                                cl_class_balanced=args.cl_class_balanced,
+                               cl_hard_pos=args.cl_hard_pos,
                                cl_exclude_self=args.cl_exclude_self,
                                evidence_policy=args.evidence_policy,
                                encoder_name=args.encoder_name), splits=splits)

@@ -386,8 +386,14 @@ def main():
         if attribute_blocked_main
         else ("Same-attribute RACL retrieval", "same_attribute_negative")
     )
+    positive_mining_ablation = (
+        ("w/o hard-positive mining", "easy_positive")
+        if bool(config.get("claimarc", {}).get("locked_racl", {}).get(
+            "hard_positive", False))
+        else ("Hard positive", "hard_positive")
+    )
     metric_table(lines, "Table 9. RACL mining", (
-        ("Canonical", "claimarc_canonical"), ("Hard positive", "hard_positive"),
+        ("Canonical", "claimarc_canonical"), positive_mining_ablation,
         retrieval_ablation,
         ("Same-evidence-type negative", "same_evidence_type_negative"),
         ("Kp=1", "kp1"), ("Kp=5", "kp5"), ("Kn=1", "kn1"), ("Kn=10", "kn10"),
