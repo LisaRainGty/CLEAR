@@ -1343,6 +1343,17 @@ def train(args, splits=None, return_model=False):
     tok = build_tokenizer(bge)
     if splits is None:
         splits = load_split(args.dataset)
+    if getattr(args, "validation_only", False):
+        if getattr(args, "infer_jsonl", ""):
+            raise ValueError("--validation_only cannot be combined with --infer_jsonl")
+        # Keep the held-out test records out of every downstream code path:
+        # evidence transforms, dataset statistics, loaders, frozen semantic
+        # encoding, prediction and export.  The source JSONL is hashed for
+        # provenance, but no test label or metric is inspected during tuning.
+        splits = {
+            "train": splits["train"],
+            "val": splits["val"],
+        }
     if getattr(args, "infer_jsonl", ""):
         # 反事实/构造样本推理：用外部 jsonl 替换 test 划分（train/val 仍用于 bank/阈值/RKC 索引）
         recs = [json.loads(l) for l in open(args.infer_jsonl, encoding="utf-8") if l.strip()]
@@ -1371,8 +1382,11 @@ def train(args, splits=None, return_model=False):
             inner_folds=getattr(args, "distill_bge_folds", 5),
             seed=getattr(args, "distill_teacher_seed", 0),
         )
-    print({k: len(v) for k, v in splits.items()},
-          "pos:", {k: int(sum(r["y"] for r in v)) for k, v in splits.items()}, flush=True)
+    print(
+        {k: len(v) for k, v in splits.items()},
+        "pos:", {k: int(sum(r["y"] for r in v)) for k, v in splits.items()},
+        flush=True,
+    )
     collate = make_collate(tok.pad_token_id, getattr(args, "stream_mode", "dual"))
     evidence_policy_mix = parse_evidence_policy_mix(getattr(args, "evidence_policy_mix", ""))
     evidence_consistency_mix = parse_evidence_policy_mix(
@@ -1396,7 +1410,8 @@ def train(args, splits=None, return_model=False):
         ), batch_size=args.bs,
                       shuffle=(s == "train"), collate_fn=collate, num_workers=6,
                       pin_memory=True, persistent_workers=True)
-        for s in ("train", "val", "test")
+        for s in (("train", "val") if args.validation_only
+                  else ("train", "val", "test"))
     }
     loaders["train_eval"] = DataLoader(ClaimDataset(splits["train"], tok), batch_size=args.bs,
                                        shuffle=False, collate_fn=collate, num_workers=6,
