@@ -300,7 +300,9 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
     for flag in (
         "--warmup", "--cl_epochs", "--loss", "--lambda_cl", "--tau", "--Kp", "--Kn",
         "--n_fusion", "--heads", "--fusion_dropout", "--lr_fusion", "--lora_rank",
-        "--racl_logit_alpha",
+        "--racl_logit_alpha", "--racl_margin", "--racl_geom_weight",
+        "--racl_rank_weight", "--racl_memory_head_alpha", "--racl_memory_k",
+        "--racl_semantic_revision", "--racl_semantic_cache",
     ):
         while command.count(flag) > 1:
             index = command.index(flag)
@@ -308,6 +310,8 @@ def claimarc_command(py: str, tag: str, seed: int, extra=(), *, lora=False,
     for flag in (
         "--no_fusion", "--cl_exclude_self", "--cl_class_balanced",
         "--cl_no_attr_block", "--cl_hard_pos", "--cl_set_nce",
+        "--racl_dual_space", "--racl_all_samples", "--racl_local_margin",
+        "--racl_memory_context",
     ):
         while command.count(flag) > 1:
             command.remove(flag)
@@ -552,6 +556,38 @@ def build_jobs(stages: set[str]) -> list[Job]:
                     "--racl_logit_alpha",
                     str(float(candidate["racl_logit_alpha"])),
                 ))
+            if float(candidate.get("racl_memory_head_alpha", 0.0)) > 0:
+                extra.extend((
+                    "--racl_memory_head_alpha",
+                    str(float(candidate["racl_memory_head_alpha"])),
+                ))
+            if bool(candidate.get("dual_space", False)):
+                extra.extend((
+                    "--racl_dual_space",
+                    "--racl_all_samples",
+                    "--racl_local_margin",
+                ))
+            if bool(candidate.get("memory_context", False)):
+                extra.append("--racl_memory_context")
+            for flag, key, default in (
+                ("--racl_margin", "margin", 0.15),
+                ("--racl_geom_weight", "geom_weight", 0.05),
+                ("--racl_rank_weight", "rank_weight", 0.25),
+                ("--racl_memory_k", "memory_k", 10),
+            ):
+                if key in candidate:
+                    extra.extend((flag, str(candidate.get(key, default))))
+            semantic_revision = protocol.get("semantic_revision")
+            if semantic_revision:
+                extra.extend((
+                    "--racl_semantic_revision", str(semantic_revision),
+                ))
+            semantic_cache = protocol.get("semantic_cache")
+            if semantic_cache:
+                extra.extend((
+                    "--racl_semantic_cache",
+                    str((ROOT / str(semantic_cache)).resolve()),
+                ))
             if float(candidate.get("cl_c_min", 0.0)) > 0:
                 extra.extend(("--cl_c_min", str(float(candidate["cl_c_min"]))))
             if float(candidate.get("cl_neg_c_min", 0.0)) > 0:
@@ -559,11 +595,24 @@ def build_jobs(stages: set[str]) -> list[Job]:
             for seed in tune_seeds:
                 job_name = f"{job_prefix}_{name}_s{seed}"
                 result_file = JOB_RESULTS / f"{job_name}.jsonl"
+                validation_prediction = None
+                seed_extra = list(extra)
+                if bool(protocol.get("save_validation_predictions", False)):
+                    validation_prediction = (
+                        ROOT / "embeddings" / OUT.name / "racl_validation"
+                        / f"{job_name}.npz"
+                    )
+                    seed_extra.extend((
+                        "--save_val_pred", str(validation_prediction),
+                    ))
                 command = list(claimarc_command(
-                    py, f"{job_prefix}_{name}", seed, tuple(extra)
+                    py, f"{job_prefix}_{name}", seed, tuple(seed_extra)
                 ))
                 if bool(candidate.get("attribute_blocked", False)):
                     command.remove("--cl_no_attr_block")
+                if not bool(candidate.get("class_balanced", True)):
+                    if "--cl_class_balanced" in command:
+                        command.remove("--cl_class_balanced")
                 # Keep the recorded command unambiguous: replace the canonical
                 # RACL defaults instead of relying on argparse's last-value rule.
                 for flag, value in (
@@ -586,14 +635,21 @@ def build_jobs(stages: set[str]) -> list[Job]:
                     job_name,
                     "racl_tune",
                     tuple(command),
-                    (result_file,),
+                    (
+                        (result_file, validation_prediction)
+                        if validation_prediction is not None
+                        else (result_file,)
+                    ),
                 ))
         selection_name = str(
             protocol.get("selection_output", "racl_no_fusion_selection.json")
         )
         selection = OUT / selection_name
+        selector_script = str(
+            protocol.get("selector_script", "scripts/select_racl_no_fusion.py")
+        )
         jobs.append(Job("select_racl_tuning", "racl_tune", (
-            py, str(ROOT / "scripts/select_racl_no_fusion.py"),
+            py, str((ROOT / selector_script).resolve()),
             "--config", str(CONFIG), "--result-root", str(OUT),
             "--output", str(selection),
         ), (selection,)))

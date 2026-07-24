@@ -1,0 +1,11 @@
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=1
+[ep0] warmup ce=0.3031 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7002 val_ap=0.5787
+[ep1] warmup ce=0.2194 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7397 val_ap=0.6197
+[ep2] CL ce=0.1358 td=0.0000 cl=0.4395 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7301 val_ap=0.5891
+[ep3] CL ce=0.0650 td=0.0000 cl=0.4685 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7389 val_ap=0.6327
+[ep4] CL ce=0.0278 td=0.0000 cl=0.1299 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7345 val_ap=0.6407
+[ep5] CL ce=0.0097 td=0.0000 cl=0.1438 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7413 val_ap=0.6329
+[select] best single-val checkpoint score=1.0577
+RESULT {"tag": "claimarc_canonical", "seed": 1, "thr": 0.14, "acc": 0.8105, "macro_f1": 0.7879, "pos_f1": 0.7187, "wF1": 0.7671, "auprc": 0.7477, "auroc": 0.903, "ece": 0.1528, "n_test": 855, "pos_test": 249, "alpha_rkc": 1.0, "auprc_rkc": 0.7477, "auroc_rkc": 0.903, "acc_rkc": 0.8105, "pos_f1_rkc": 0.7187, "macro_f1_rkc": 0.7879, "wF1_rkc": 0.7671, "label_match@10": 0.792, "attr_mAP@10": 0.3086, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
+[save_emb] -> /root/CLEAR_run/embeddings/arguments_only_racl_v2_final/emb_geom/emb_geom_racl_s1.pt

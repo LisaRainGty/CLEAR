@@ -194,6 +194,7 @@ class Batch:
     confidence: list
     attr: list
     pair_id: list
+    racl_memory: torch.Tensor
 
 
 def source_count(rec: dict) -> int:
@@ -293,6 +294,7 @@ class ClaimDataset(Dataset):
             "confidence": confidence_bin(r),
             "attr": r.get("attribute_id", ""),
             "pair_id": r.get("pair_id", ""),
+            "racl_memory": list(r.get("_racl_memory", [0.0, 0.0, 0.0])),
         }
         if self.evidence_consistency_mix:
             base_policy = policy or r.get("_evidence_policy", r.get("evidence_policy", "args_first"))
@@ -346,6 +348,9 @@ def make_collate(pad_id: int, stream_mode: str = "dual"):
             confidence=[it["confidence"] for it in items],
             attr=[it["attr"] for it in items],
             pair_id=[it["pair_id"] for it in items],
+            racl_memory=torch.tensor(
+                [it["racl_memory"] for it in items], dtype=torch.float
+            ),
         )
     return collate
 

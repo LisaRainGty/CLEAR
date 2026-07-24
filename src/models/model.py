@@ -85,7 +85,7 @@ class CLAIMARC(nn.Module):
                  xattn_dir="both", indep_proj=False, ffn="swiglu", heads=8,
                  enc_train="lora", unfreeze_top=0, ret_disc=True,
                  head_4tuple=True, joint_encode=False, single_stream=False,
-                 racl_logit_alpha=0.0):
+                 racl_logit_alpha=0.0, racl_memory_head_alpha=0.0):
         super().__init__()
         from transformers import AutoModel
         self.encoder = AutoModel.from_pretrained(bge_path)
@@ -146,6 +146,23 @@ class CLAIMARC(nn.Module):
         if self.racl_lrc is not None:
             nn.init.zeros_(self.racl_lrc.weight)
             nn.init.zeros_(self.racl_lrc.bias)
+        # Dual-space RACL uses three frozen-retrieval features:
+        # centered neighbour risk, neighbour consensus, and mean semantic
+        # similarity.  Every tuning candidate, including matched no-RACL,
+        # instantiates this exact head.  Controls receive an all-zero context,
+        # so gains cannot be attributed to parameter count.
+        self.racl_memory_head_alpha = float(racl_memory_head_alpha)
+        self.racl_memory_head = (
+            nn.Sequential(
+                nn.Linear(3, 8),
+                nn.GELU(),
+                nn.Linear(8, 1),
+            )
+            if self.racl_memory_head_alpha > 0 else None
+        )
+        if self.racl_memory_head is not None:
+            nn.init.zeros_(self.racl_memory_head[-1].weight)
+            nn.init.zeros_(self.racl_memory_head[-1].bias)
 
     def _unfreeze_encoder_extras(self, vocab_size, n_special, use_lora,
                                  enc_train="lora", unfreeze_top=0):
@@ -188,7 +205,7 @@ class CLAIMARC(nn.Module):
         out = self.encoder(input_ids=ids, attention_mask=mask)
         return out.last_hidden_state
 
-    def forward(self, c_ids, c_mask, e_ids, e_mask):
+    def forward(self, c_ids, c_mask, e_ids, e_mask, racl_memory=None):
         if self.joint_encode:
             # 统一编码再拆流：claim+evidence 拼成单序列由共享编码器一次性编码，
             # 跨流自注意力在编码阶段即发生；随后按 claim 长度拆回两流，融合/头保持不变。
@@ -225,6 +242,15 @@ class CLAIMARC(nn.Module):
         logit = self.lrc(self.lrc_drop(self.lrc_ln(z))).squeeze(-1)
         if self.racl_lrc is not None:
             logit = logit + self.racl_logit_alpha * self.racl_lrc(g).squeeze(-1)
+        if self.racl_memory_head is not None:
+            if racl_memory is None:
+                racl_memory = torch.zeros(
+                    (logit.shape[0], 3), device=logit.device, dtype=logit.dtype
+                )
+            memory_delta = self.racl_memory_head(
+                racl_memory.to(device=logit.device, dtype=logit.dtype)
+            ).squeeze(-1)
+            logit = logit + self.racl_memory_head_alpha * memory_delta
         return logit, g
 
     def param_groups(self, lr_encoder=2e-5, lr_head=1e-4, lr_fusion=None):
