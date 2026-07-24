@@ -1,5 +1,54 @@
 {
   "aggregates": {
+    "bert_backbone": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8089666666666666,
+        "std": 0.005887557501488506,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7262333333333334,
+        "std": 0.012988199772614098,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.7896333333333333,
+        "std": 0.006412747721011093,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7079333333333332,
+        "std": 0.016748233737720934,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.8918333333333334,
+        "std": 0.0012662279942148673,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7643333333333334,
+        "std": 0.008895129753597405,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.13553333333333334,
+        "std": 0.009612665256490181,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
     "bert_cls": {
       "n": 3,
       "seeds": [
@@ -805,6 +854,55 @@
         "args_only"
       ]
     },
+    "no_fusion": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8128666666666667,
+        "std": 0.004650089604871417,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7424333333333334,
+        "std": 0.006898067362191621,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.7977333333333334,
+        "std": 0.004895235779135995,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7530666666666667,
+        "std": 0.014710993621551666,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.9065666666666666,
+        "std": 0.003365016097039246,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7753666666666668,
+        "std": 0.005749202843293421,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.11106666666666666,
+        "std": 0.004742713709821979,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
     "no_racl": {
       "n": 3,
       "seeds": [
@@ -1051,32 +1149,8 @@
       ]
     }
   },
-  "fresh_rows": 48,
+  "fresh_rows": 54,
   "rejected_rows": [
-    {
-      "result_file": "results/arguments_only_rerun/jobs/bert_backbone_s0.jsonl",
-      "suite_job": "bert_backbone_s0",
-      "tag": "bert_backbone",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/bert_backbone_s1.jsonl",
-      "suite_job": "bert_backbone_s1",
-      "tag": "bert_backbone",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/bert_backbone_s2.jsonl",
-      "suite_job": "bert_backbone_s2",
-      "tag": "bert_backbone",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
     {
       "result_file": "results/arguments_only_rerun/jobs/claim_only_s0.jsonl",
       "suite_job": "claim_only_s0",
@@ -1137,30 +1211,6 @@
       "result_file": "results/arguments_only_rerun/jobs/hard_positive_s1.jsonl",
       "suite_job": "hard_positive_s1",
       "tag": "hard_positive",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_fusion_s0.jsonl",
-      "suite_job": "no_fusion_s0",
-      "tag": "no_fusion",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_fusion_s1.jsonl",
-      "suite_job": "no_fusion_s1",
-      "tag": "no_fusion",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/no_fusion_s2.jsonl",
-      "suite_job": "no_fusion_s2",
-      "tag": "no_fusion",
       "reasons": [
         "stale_job_command"
       ]

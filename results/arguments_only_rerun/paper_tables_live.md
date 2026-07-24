@@ -5,8 +5,8 @@
 - Dataset SHA-256: `b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618`
 - Rows: 4883
 - Argument records: 4883
-- Accepted fresh RESULT rows: 48
-- Rejected incomplete/off-protocol RESULT rows: 17
+- Accepted fresh RESULT rows: 54
+- Rejected incomplete/off-protocol RESULT rows: 11
 
 ## Table 1. Dataset split and statistics
 
@@ -94,14 +94,14 @@ Construction sources: {'factrecords': 2278, 'factrecords_neg': 2605}; aligned-co
 | w/o reliability | 81.05±0.51 | 73.06±0.32 | 79.22±0.42 | 75.19±1.38 | 90.18±0.49 | 76.81±0.52 | 11.82±1.82 | 3 |
 | w/o class balance | 81.40±1.04 | 72.38±1.04 | 79.18±0.92 | 74.74±1.12 | 90.04±0.45 | 77.04±0.93 | 14.35±1.71 | 3 |
 | w/o four-tuple | 82.15±1.08 | 73.41±1.72 | 79.98±1.16 | 75.01±1.86 | 90.42±0.52 | 77.86±1.51 | 11.70±1.48 | 3 |
-| BERT backbone | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| BERT backbone | 80.90±0.59 | 72.62±1.30 | 78.96±0.64 | 70.79±1.67 | 89.18±0.13 | 76.43±0.89 | 13.55±0.96 | 3 |
 
 ## Table 8. Claim/argument interaction ablations
 
 | 方法/设定 | acc | pos_f1 | macro_f1 | auprc | auroc | wF1 | ece | n |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Canonical | 81.40±0.42 | 71.76±1.78 | 78.93±0.76 | 75.16±1.68 | 90.17±0.47 | 76.85±0.81 | 13.02±0.29 | 3 |
-| w/o fusion | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
+| w/o fusion | 81.29±0.47 | 74.24±0.69 | 79.77±0.49 | 75.31±1.47 | 90.66±0.34 | 77.54±0.57 | 11.11±0.47 | 3 |
 | Claim only | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Evidence only | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
 | Sources only | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING |
