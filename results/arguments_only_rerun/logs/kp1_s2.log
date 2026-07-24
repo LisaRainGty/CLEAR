@@ -1,0 +1,14 @@
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=2
+[ep0] warmup ce=0.3138 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7270 val_ap=0.5469
+[ep1] warmup ce=0.2302 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7287 val_ap=0.5815
+[ep2] warmup ce=0.1433 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7269 val_ap=0.6681
+[ep3] CL ce=0.0801 td=0.0000 cl=0.0153 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7312 val_ap=0.6774
+[ep4] CL ce=0.0383 td=0.0000 cl=0.0005 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7214 val_ap=0.6846
+[ep5] CL ce=0.0143 td=0.0000 cl=0.0060 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7201 val_ap=0.6789
+[ep6] CL ce=0.0052 td=0.0000 cl=0.0017 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7260 val_ap=0.6893
+[ep7] CL ce=0.0026 td=0.0000 cl=0.0004 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7201 val_ap=0.6786
+[ep8] CL ce=0.0007 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7176 val_ap=0.6779
+[select] best single-val checkpoint score=1.0707
+RESULT {"tag": "kp1", "seed": 2, "thr": 0.16, "acc": 0.8129, "macro_f1": 0.7895, "pos_f1": 0.7193, "wF1": 0.7712, "auprc": 0.7404, "auroc": 0.8992, "ece": 0.1649, "n_test": 855, "pos_test": 249, "alpha_rkc": 0.1, "auprc_rkc": 0.7396, "auroc_rkc": 0.898, "acc_rkc": 0.8105, "pos_f1_rkc": 0.6873, "macro_f1_rkc": 0.7757, "wF1_rkc": 0.7564, "label_match@10": 0.8009, "attr_mAP@10": 0.3012, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
+[save_emb] -> /root/CLEAR_run/embeddings/arguments_only_rerun/ablations/kp1_s2.pt
