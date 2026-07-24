@@ -392,6 +392,55 @@
         "args_only"
       ]
     },
+    "evidence_only": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.6698,
+        "std": 0.018941224881195033,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.46773333333333333,
+        "std": 0.016334421732443823,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.6141333333333333,
+        "std": 0.015204056476260986,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.48469999999999996,
+        "std": 0.019414427624836136,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.6830333333333334,
+        "std": 0.012945398152754238,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.6209333333333333,
+        "std": 0.011631996102704545,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.25146666666666667,
+        "std": 0.026063448224157407,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
     "BGEfz_LR_4tuple": {
       "n": 1,
       "seeds": [
@@ -571,6 +620,55 @@
       "ece": {
         "mean": 0.0836,
         "std": 0.0,
+        "std_ddof": 1
+      },
+      "dataset_sha256": [
+        "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618"
+      ],
+      "evidence_policy": [
+        "args_only"
+      ]
+    },
+    "hard_positive": {
+      "n": 3,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "acc": {
+        "mean": 0.8222,
+        "std": 0.004229657196511316,
+        "std_ddof": 1
+      },
+      "pos_f1": {
+        "mean": 0.7459333333333333,
+        "std": 0.011594107698884524,
+        "std_ddof": 1
+      },
+      "macro_f1": {
+        "mean": 0.8045999999999999,
+        "std": 0.006618912297349164,
+        "std_ddof": 1
+      },
+      "auprc": {
+        "mean": 0.7559999999999999,
+        "std": 0.0026627053911388553,
+        "std_ddof": 1
+      },
+      "auroc": {
+        "mean": 0.9051666666666667,
+        "std": 0.0015885003409925312,
+        "std_ddof": 1
+      },
+      "wF1": {
+        "mean": 0.7849,
+        "std": 0.006939740629159011,
+        "std_ddof": 1
+      },
+      "ece": {
+        "mean": 0.12576666666666667,
+        "std": 0.01804226519407508,
         "std_ddof": 1
       },
       "dataset_sha256": [
@@ -1198,48 +1296,8 @@
       ]
     }
   },
-  "fresh_rows": 57,
+  "fresh_rows": 63,
   "rejected_rows": [
-    {
-      "result_file": "results/arguments_only_rerun/jobs/evidence_only_s0.jsonl",
-      "suite_job": "evidence_only_s0",
-      "tag": "evidence_only",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/evidence_only_s1.jsonl",
-      "suite_job": "evidence_only_s1",
-      "tag": "evidence_only",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/evidence_only_s2.jsonl",
-      "suite_job": "evidence_only_s2",
-      "tag": "evidence_only",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/hard_positive_s0.jsonl",
-      "suite_job": "hard_positive_s0",
-      "tag": "hard_positive",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
-    {
-      "result_file": "results/arguments_only_rerun/jobs/hard_positive_s1.jsonl",
-      "suite_job": "hard_positive_s1",
-      "tag": "hard_positive",
-      "reasons": [
-        "stale_job_command"
-      ]
-    },
     {
       "result_file": "results/arguments_only_rerun/jobs/qwen2p5_7b_qlora_s0.jsonl",
       "suite_job": "qwen2p5_7b_qlora_s0",
