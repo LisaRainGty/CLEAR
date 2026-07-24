@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-07-24T03:13:13.889452+00:00",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only",
+  "selection_split": "validation",
+  "selection_primary_metric": "auprc",
+  "selection_tie_breaker": "pos_f1",
+  "selection_rule": "highest three-seed validation AUPRC mean, then positive-F1 mean, then lexical alias",
+  "test_metrics_accessed": false,
+  "prior_test_metrics_informed_high_level_search_scope": true,
+  "clean_confirmatory_claim_requires_new_untouched_holdout": true,
+  "racl_mandatory": true,
+  "ranked_candidates": [
+    "fusion_easy",
+    "fusion_hard",
+    "no_fusion_hard",
+    "no_fusion_easy"
+  ],
+  "selected_candidate": "fusion_easy",
+  "selected_spec": {
+    "source_manifest": "/root/CLEAR_run/results/arguments_only_locked_fusion_global_racl_tune/racl_locked_fusion_selection.json",
+    "source_manifest_sha256": "3eb6016fb3550f7ed766507b26fa7beeb825571817de70f00cb38d8aa3de84c2",
+    "source_candidate": "global_l050_t007_k3_5_w3c6_reused",
+    "no_fusion": false,
+    "hard_positive": false,
+    "racl_mandatory": true,
+    "attribute_blocked": false,
+    "class_balanced": true,
+    "warmup_epochs": 3,
+    "contrastive_epochs": 6,
+    "lambda_cl": 0.5,
+    "tau": 0.07,
+    "kp": 3,
+    "kn": 5,
+    "metrics": {
+      "acc": {
+        "mean": 0.7602000000000001,
+        "std": 0.011017259187293349
+      },
+      "pos_f1": {
+        "mean": 0.6516,
+        "std": 0.013278805167132582
+      },
+      "macro_f1": {
+        "mean": 0.7338999999999999,
+        "std": 0.0013735598518691031
+      },
+      "wF1": {
+        "mean": 0.7274666666666668,
+        "std": 0.0032887011958454694
+      },
+      "auprc": {
+        "mean": 0.6705333333333333,
+        "std": 0.017512154509241717
+      },
+      "auroc": {
+        "mean": 0.8393333333333334,
+        "std": 0.0032826141344293853
+      },
+      "ece": {
+        "mean": 0.18336666666666668,
+        "std": 0.0036935379004718848
+      }
+    }
+  },
+  "candidates": {
+    "fusion_easy": {
+      "source_manifest": "/root/CLEAR_run/results/arguments_only_locked_fusion_global_racl_tune/racl_locked_fusion_selection.json",
+      "source_manifest_sha256": "3eb6016fb3550f7ed766507b26fa7beeb825571817de70f00cb38d8aa3de84c2",
+      "source_candidate": "global_l050_t007_k3_5_w3c6_reused",
+      "no_fusion": false,
+      "hard_positive": false,
+      "racl_mandatory": true,
+      "attribute_blocked": false,
+      "class_balanced": true,
+      "warmup_epochs": 3,
+      "contrastive_epochs": 6,
+      "lambda_cl": 0.5,
+      "tau": 0.07,
+      "kp": 3,
+      "kn": 5,
+      "metrics": {
+        "acc": {
+          "mean": 0.7602000000000001,
+          "std": 0.011017259187293349
+        },
+        "pos_f1": {
+          "mean": 0.6516,
+          "std": 0.013278805167132582
+        },
+        "macro_f1": {
+          "mean": 0.7338999999999999,
+          "std": 0.0013735598518691031
+        },
+        "wF1": {
+          "mean": 0.7274666666666668,
+          "std": 0.0032887011958454694
+        },
+        "auprc": {
+          "mean": 0.6705333333333333,
+          "std": 0.017512154509241717
+        },
+        "auroc": {
+          "mean": 0.8393333333333334,
+          "std": 0.0032826141344293853
+        },
+        "ece": {
+          "mean": 0.18336666666666668,
+          "std": 0.0036935379004718848
+        }
+      }
+    },
+    "fusion_hard": {
+      "source_manifest": "/root/CLEAR_run/results/arguments_only_locked_fusion_global_racl_tune/racl_locked_fusion_hard_positive_selection.json",
+      "source_manifest_sha256": "9b5e2990899c070d4efd680add24a1944993236c1cccc885179a5420d7dc6511",
+      "source_candidate": "global_hardpos_l050_t007_k3_5_w3c6",
+      "no_fusion": false,
+      "hard_positive": true,
+      "racl_mandatory": true,
+      "attribute_blocked": false,
+      "class_balanced": true,
+      "warmup_epochs": 3,
+      "contrastive_epochs": 6,
+      "lambda_cl": 0.5,
+      "tau": 0.07,
+      "kp": 3,
+      "kn": 5,
+      "metrics": {
+        "acc": {
+          "mean": 0.7534,
+          "std": 0.008668333173107723
+        },
+        "pos_f1": {
+          "mean": 0.6659333333333334,
+          "std": 0.011400974617208025
+        },
+        "macro_f1": {
+          "mean": 0.7352333333333334,
+          "std": 0.009132481712120888
+        },
+        "wF1": {
+          "mean": 0.7250333333333333,
+          "std": 0.0074481914284982974
+        },
+        "auprc": {
+          "mean": 0.6566666666666667,
+          "std": 0.01133147043512985
+        },
+        "auroc": {
+          "mean": 0.8382666666666666,
+          "std": 0.002982541794435661
+        },
+        "ece": {
+          "mean": 0.18106666666666663,
+          "std": 0.014851786274908333
+        }
+      }
+    },
+    "no_fusion_easy": {
+      "source_manifest": "/root/CLEAR_run/results/arguments_only_no_fusion_racl_tune/racl_no_fusion_selection.json",
+      "source_manifest_sha256": "1882dd519075e7973415785bc980bb59e754074a0b46d99fdb1d8fef6105c377",
+      "source_candidate": "racl_legacy_l050_t007",
+      "no_fusion": true,
+      "hard_positive": false,
+      "racl_mandatory": true,
+      "attribute_blocked": false,
+      "class_balanced": true,
+      "warmup_epochs": 3,
+      "contrastive_epochs": 6,
+      "lambda_cl": 0.5,
+      "tau": 0.07,
+      "kp": 3,
+      "kn": 5,
+      "metrics": {
+        "acc": {
+          "mean": 0.7449,
+          "std": 0.006287023673143524
+        },
+        "pos_f1": {
+          "mean": 0.6779999999999999,
+          "std": 0.00980646045557045
+        },
+        "macro_f1": {
+          "mean": 0.7333333333333334,
+          "std": 0.006563704915839984
+        },
+        "wF1": {
+          "mean": 0.7134,
+          "std": 0.004982636517614607
+        },
+        "auprc": {
+          "mean": 0.6459666666666667,
+          "std": 0.009593863779636572
+        },
+        "auroc": {
+          "mean": 0.8331,
+          "std": 0.0018018509002319736
+        },
+        "ece": {
+          "mean": 0.16903333333333334,
+          "std": 0.011190869294007309
+        }
+      }
+    },
+    "no_fusion_hard": {
+      "source_manifest": "/root/CLEAR_run/results/arguments_only_no_fusion_racl_tune/racl_no_fusion_hard_positive_selection.json",
+      "source_manifest_sha256": "5e5813e9db7a0c0a765a491365c6763fbd3f6902a8d50d7a0029b7781a0abf7b",
+      "source_candidate": "racl_hardpos_l050_t007",
+      "no_fusion": true,
+      "hard_positive": true,
+      "racl_mandatory": true,
+      "attribute_blocked": false,
+      "class_balanced": true,
+      "warmup_epochs": 3,
+      "contrastive_epochs": 6,
+      "lambda_cl": 0.5,
+      "tau": 0.07,
+      "kp": 3,
+      "kn": 5,
+      "metrics": {
+        "acc": {
+          "mean": 0.7543000000000001,
+          "std": 0.0024041630560342584
+        },
+        "pos_f1": {
+          "mean": 0.6633666666666667,
+          "std": 0.025852444543773598
+        },
+        "macro_f1": {
+          "mean": 0.7345,
+          "std": 0.009922701245124732
+        },
+        "wF1": {
+          "mean": 0.7161666666666667,
+          "std": 0.006343675765849211
+        },
+        "auprc": {
+          "mean": 0.6476333333333334,
+          "std": 0.014130424228907222
+        },
+        "auroc": {
+          "mean": 0.8334,
+          "std": 0.0034244220923634098
+        },
+        "ece": {
+          "mean": 0.20186666666666667,
+          "std": 0.008517563553557372
+        }
+      }
+    }
+  }
+}
