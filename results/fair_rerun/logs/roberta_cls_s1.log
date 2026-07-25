@@ -1,0 +1,12 @@
+2026-07-21 20:56:01,683 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 20:56:01,684 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 20:56:01,726 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+2026-07-21 20:56:02,765 - modelscope - WARNING - Model revision not specified, use revision: v1.0.0
+/root/miniconda3/envs/myconda/lib/python3.9/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+[roberta_cls ep0] loss=0.3922 val_mF1=0.7068
+[roberta_cls ep1] loss=0.2570 val_mF1=0.7511
+[roberta_cls ep2] loss=0.1671 val_mF1=0.7523
+[roberta_cls ep3] loss=0.0885 val_mF1=0.7571
+RESULT {"tag": "roberta_cls", "seed": 1, "thr": 0.48, "acc": 0.8129, "macro_f1": 0.7906, "pos_f1": 0.7222, "wF1": 0.766, "auprc": 0.6822, "auroc": 0.8869, "ece": 0.1395, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/dienstag/chinese-roberta-wwm-ext", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/roberta_cls_s1.pt

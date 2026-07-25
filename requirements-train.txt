@@ -1,0 +1,20 @@
+# Reviewer training environment used on the MatPool A30 rerun (Python 3.9).
+# Install PyTorch 2.0.0+cu117 separately from the official PyTorch wheel index,
+# then install this file. Do not install requirements_lock.txt on this host: it
+# is an archival snapshot of the original development environment.
+transformers==4.40.2
+sentence-transformers==2.7.0
+peft==0.10.0
+accelerate==0.29.3
+modelscope==1.14.0
+safetensors==0.4.3
+bitsandbytes==0.43.1
+numpy==1.24.2
+scipy==1.12.0
+scikit-learn==1.2.2
+pandas==2.2.2
+faiss-cpu==1.8.0
+matplotlib==3.8.4
+seaborn==0.13.2
+umap-learn==0.5.6
+zstandard==0.23.0

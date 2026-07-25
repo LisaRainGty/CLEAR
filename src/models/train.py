@@ -26,8 +26,9 @@ from sklearn.metrics import f1_score, roc_auc_score, average_precision_score
 import config
 from models.data import (ClaimDataset, make_collate, load_split, build_tokenizer,
                          resolve_bge_path, SPECIAL_TOKENS,
-                         evidence_combo, confidence_bin)
+                         evidence_combo, confidence_bin, apply_evidence_policy)
 from models.model import CLAIMARC
+from models.provenance import attach_run_provenance
 
 
 COMBO_LABELS = ("none", "P", "O", "V", "PO", "PV", "OV", "POV")
@@ -162,15 +163,6 @@ def recompute_c(splits: dict[str, list[dict]], spec: str):
         r["c"] = float(max(c, d["floor"]))
         n_changed += 1
     print(f"[c_recompute={spec}] recomputed train c on {n_changed} comment-driven pairs", flush=True)
-
-
-def apply_evidence_policy(splits: dict[str, list[dict]], policy: str | None):
-    """Force a tokenization-time evidence policy while preserving default record policy."""
-    if not policy or policy == "record":
-        return
-    for rows in splits.values():
-        for r in rows:
-            r["_evidence_policy"] = policy
 
 
 def parse_evidence_policy_mix(value) -> list[str]:
@@ -454,6 +446,8 @@ def view_consistency_loss(logit, g, logit_view, g_view, cw,
 class MemoryBank:
     def __init__(self, g: torch.Tensor, attrs: list[str], y: torch.Tensor,
                  c: torch.Tensor | np.ndarray | None = None,
+                 p: torch.Tensor | np.ndarray | None = None,
+                 pair_ids: list[str] | np.ndarray | None = None,
                  teacher_p: torch.Tensor | np.ndarray | None = None,
                  evidence_combo: list[str] | np.ndarray | None = None,
                  confidence: list[str] | np.ndarray | None = None,
@@ -468,6 +462,18 @@ class MemoryBank:
             self.c = c.cpu().numpy()
         else:
             self.c = np.asarray(c, dtype=float)
+        if p is None:
+            self.logit = torch.zeros(len(self.y), device=g.device, dtype=g.dtype)
+        else:
+            prob = p.detach().cpu().numpy() if isinstance(p, torch.Tensor) else np.asarray(p)
+            prob = np.clip(prob.astype(float), 1e-6, 1 - 1e-6)
+            self.logit = torch.as_tensor(
+                np.log(prob / (1 - prob)), device=g.device, dtype=g.dtype
+            )
+        if pair_ids is None:
+            self.pair_ids = np.asarray([""] * len(self.y), dtype=object)
+        else:
+            self.pair_ids = np.asarray(pair_ids, dtype=object)
         if teacher_p is None:
             self.teacher_p = np.full(len(self.y), -1.0, dtype=float)
         elif isinstance(teacher_p, torch.Tensor):
@@ -508,6 +514,350 @@ class MemoryBank:
         return idx[top]
 
 
+class FixedSemanticRACL:
+    """Label-aware neighbours mined once in a frozen semantic space.
+
+    The learned risk representation never changes this index.  This breaks the
+    circular feedback in legacy RACL where the same trainable ``g`` both mined
+    and optimized its neighbours.
+    """
+
+    def __init__(self, q: np.ndarray, rows: list[dict], kp: int, kn: int,
+                 device: str):
+        self.q = np.asarray(q, dtype=np.float32)
+        self.rows = rows
+        self.kp = int(kp)
+        self.kn = int(kn)
+        self.pair_ids = [str(r.get("pair_id", "")) for r in rows]
+        self.pair_to_index = {pair_id: i for i, pair_id in enumerate(self.pair_ids)}
+        if len(self.pair_to_index) != len(self.pair_ids):
+            raise RuntimeError("dual-space RACL requires unique non-empty train pair_id")
+        if any(not pair_id for pair_id in self.pair_ids):
+            raise RuntimeError("dual-space RACL found an empty train pair_id")
+        self.y = np.asarray([int(r["y"]) for r in rows], dtype=int)
+        self.c = np.asarray(
+            [float(r.get("c", 0.05) or 0.05) for r in rows], dtype=np.float32
+        )
+        self.groups = np.asarray([
+            str(r.get("room_id") or r.get("product_id") or r.get("pair_id"))
+            for r in rows
+        ], dtype=object)
+        group_lookup = {
+            value: index for index, value in enumerate(sorted(set(self.groups.tolist())))
+        }
+        self.group_ids = np.asarray(
+            [group_lookup[value] for value in self.groups], dtype=np.int64
+        )
+        self.pos_idx = np.full((len(rows), self.kp), -1, dtype=np.int64)
+        self.neg_idx = np.full((len(rows), self.kn), -1, dtype=np.int64)
+        self.pos_sim = np.zeros((len(rows), self.kp), dtype=np.float32)
+        self.neg_sim = np.zeros((len(rows), self.kn), dtype=np.float32)
+        self._mine(device)
+        sqrt_c = np.sqrt(np.clip(self.c, 1e-6, None))
+        self.anchor_weight = np.ones(len(rows), dtype=np.float32)
+        for label in (0, 1):
+            mask = self.y == label
+            prevalence = float(mask.mean())
+            mean_rel = float(sqrt_c[mask].mean())
+            self.anchor_weight[mask] = (
+                (0.5 / max(prevalence, 1e-6))
+                * sqrt_c[mask]
+                / max(mean_rel, 1e-6)
+            )
+
+    def _mine(self, device: str) -> None:
+        q = torch.as_tensor(self.q, device=device)
+        n = len(self.rows)
+        y = torch.as_tensor(self.y, device=device)
+        group_ids = torch.as_tensor(self.group_ids, device=device)
+        for start in range(0, n, 256):
+            stop = min(start + 256, n)
+            sims = q[start:stop] @ q.T
+            for local, row_index in enumerate(range(start, stop)):
+                valid = torch.ones(n, dtype=torch.bool, device=device)
+                valid[row_index] = False
+                valid &= group_ids != group_ids[row_index]
+                pos_mask = valid & (y == int(self.y[row_index]))
+                neg_mask = valid & (y != int(self.y[row_index]))
+                for mask, count, out_idx, out_sim in (
+                    (pos_mask, self.kp, self.pos_idx, self.pos_sim),
+                    (neg_mask, self.kn, self.neg_idx, self.neg_sim),
+                ):
+                    available = int(mask.sum().item())
+                    if available == 0:
+                        continue
+                    take = min(count, available)
+                    score = sims[local].masked_fill(~mask, -2.0)
+                    top = torch.topk(score, take, largest=True)
+                    out_idx[row_index, :take] = top.indices.detach().cpu().numpy()
+                    out_sim[row_index, :take] = top.values.detach().cpu().numpy()
+
+    def get(self, pair_id: str):
+        row_index = self.pair_to_index[str(pair_id)]
+        pos_valid = self.pos_idx[row_index] >= 0
+        neg_valid = self.neg_idx[row_index] >= 0
+        return (
+            self.pos_idx[row_index, pos_valid],
+            self.neg_idx[row_index, neg_valid],
+            self.pos_sim[row_index, pos_valid],
+            self.neg_sim[row_index, neg_valid],
+            float(self.anchor_weight[row_index]),
+        )
+
+    @property
+    def stats(self) -> dict:
+        return {
+            "train_rows": len(self.rows),
+            "positive_coverage": float((self.pos_idx[:, 0] >= 0).mean()),
+            "negative_coverage": float((self.neg_idx[:, 0] >= 0).mean()),
+            "mean_positive_semantic_similarity": float(
+                self.pos_sim[self.pos_idx >= 0].mean()
+            ),
+            "mean_negative_semantic_similarity": float(
+                self.neg_sim[self.neg_idx >= 0].mean()
+            ),
+        }
+
+
+def _semantic_text(record: dict) -> str:
+    from models.baselines import claim_text, evidence_text
+    return (
+        "[CLAIM] " + claim_text(record)
+        + " [EVIDENCE] " + evidence_text(record)
+    ).strip()
+
+
+def _fixed_semantic_embeddings(splits: dict[str, list[dict]], bge: str,
+                               device: str, args) -> dict[str, np.ndarray]:
+    """Load or create frozen train/validation semantic embeddings.
+
+    Validation-only tuning intentionally omits the held-out test split from
+    both the cache and the encoder call.
+    """
+    cache_path = str(getattr(args, "racl_semantic_cache", "") or "")
+    selected_splits = ["train", "val"]
+    if not getattr(args, "validation_only", False):
+        selected_splits.append("test")
+    pair_ids = {
+        split: np.asarray(
+            [str(row.get("pair_id", "")) for row in splits[split]], dtype=str
+        )
+        for split in selected_splits
+    }
+    dataset_sha = hashlib.sha256(
+        open(args.dataset, "rb").read()
+    ).hexdigest()
+    revision = str(getattr(args, "racl_semantic_revision", "dualspace_bge_joint_v1"))
+    expected_cache_sha256 = str(
+        getattr(args, "racl_semantic_cache_sha256", "") or ""
+    )
+    if cache_path:
+        from pathlib import Path
+        path = Path(cache_path)
+        if path.exists():
+            cache_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+            if expected_cache_sha256 and cache_sha256 != expected_cache_sha256:
+                raise RuntimeError(
+                    "frozen semantic cache SHA-256 mismatch: "
+                    f"{cache_sha256} != {expected_cache_sha256}"
+                )
+            cached = np.load(path, allow_pickle=False)
+            if (
+                str(cached["dataset_sha256"].item()) == dataset_sha
+                and str(cached["revision"].item()) == revision
+                and all(
+                    np.array_equal(cached[f"{split}_pair_id"], pair_ids[split])
+                    for split in selected_splits
+                )
+                and all(f"{split}_q" in cached.files for split in selected_splits)
+            ):
+                print(f"[dualspace] loaded frozen semantic cache {path}", flush=True)
+                return {
+                    split: np.asarray(cached[f"{split}_q"], dtype=np.float32)
+                    for split in selected_splits
+                }
+    from sentence_transformers import SentenceTransformer
+    semantic_encoder = SentenceTransformer(bge, device=device)
+    result = {}
+    for split in selected_splits:
+        texts = [_semantic_text(row) for row in splits[split]]
+        result[split] = np.asarray(
+            semantic_encoder.encode(
+                texts,
+                normalize_embeddings=True,
+                batch_size=64,
+                show_progress_bar=False,
+            ),
+            dtype=np.float32,
+        )
+    del semantic_encoder
+    if device == "cuda":
+        torch.cuda.empty_cache()
+    if cache_path:
+        from pathlib import Path
+        path = Path(cache_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "dataset_sha256": np.asarray(dataset_sha),
+            "revision": np.asarray(revision),
+        }
+        for split in selected_splits:
+            payload[f"{split}_pair_id"] = pair_ids[split]
+            payload[f"{split}_q"] = result[split]
+        np.savez_compressed(path, **payload)
+        cache_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+        if expected_cache_sha256 and cache_sha256 != expected_cache_sha256:
+            raise RuntimeError(
+                "new frozen semantic cache does not match preregistered SHA-256: "
+                f"{cache_sha256} != {expected_cache_sha256}"
+            )
+        print(f"[dualspace] wrote frozen semantic cache {path}", flush=True)
+    return result
+
+
+def _memory_features(query_q: np.ndarray, query_rows: list[dict],
+                     train_q: np.ndarray, train_rows: list[dict],
+                     k: int = 10, device: str = "cpu") -> np.ndarray:
+    """Compute leakage-safe labelled-train memory features for one split."""
+    q_train = torch.as_tensor(train_q, device=device)
+    train_y = np.asarray([int(row["y"]) for row in train_rows], dtype=float)
+    train_c = np.asarray(
+        [float(row.get("c", 0.05) or 0.05) for row in train_rows], dtype=float
+    )
+    train_group = np.asarray([
+        str(row.get("room_id") or row.get("product_id") or row.get("pair_id"))
+        for row in train_rows
+    ], dtype=object)
+    train_pair = np.asarray(
+        [str(row.get("pair_id", "")) for row in train_rows], dtype=object
+    )
+    features = np.zeros((len(query_rows), 3), dtype=np.float32)
+    for start in range(0, len(query_rows), 256):
+        stop = min(start + 256, len(query_rows))
+        sims = (
+            torch.as_tensor(query_q[start:stop], device=device) @ q_train.T
+        ).detach().cpu().numpy()
+        for local, query_index in enumerate(range(start, stop)):
+            row = query_rows[query_index]
+            group = str(row.get("room_id") or row.get("product_id") or row.get("pair_id"))
+            pair_id = str(row.get("pair_id", ""))
+            valid = (train_group != group) & (train_pair != pair_id)
+            idx = np.flatnonzero(valid)
+            if len(idx) == 0:
+                continue
+            take = min(int(k), len(idx))
+            nearest = idx[np.argpartition(-sims[local, idx], take - 1)[:take]]
+            similarity = np.clip(sims[local, nearest], 0.0, None)
+            weight = similarity * np.sqrt(np.clip(train_c[nearest], 1e-6, None))
+            if float(weight.sum()) <= 1e-8:
+                weight = np.ones_like(weight)
+            p_memory = float(np.sum(weight * train_y[nearest]) / np.sum(weight))
+            features[query_index] = (
+                2.0 * p_memory - 1.0,
+                abs(2.0 * p_memory - 1.0),
+                float(np.mean(similarity)),
+            )
+    return features
+
+
+def prepare_dualspace_racl(splits: dict[str, list[dict]], bge: str,
+                           device: str, args):
+    need_index = bool(getattr(args, "racl_dual_space", False))
+    need_memory = bool(getattr(args, "racl_memory_context", False))
+    if not (need_index or need_memory):
+        for rows in splits.values():
+            for row in rows:
+                row["_racl_memory"] = [0.0, 0.0, 0.0]
+        return None, {}
+    fixed = _fixed_semantic_embeddings(splits, bge, device, args)
+    semantic_index = (
+        FixedSemanticRACL(
+            fixed["train"], splits["train"], args.Kp, args.Kn, device
+        )
+        if need_index else None
+    )
+    selected_splits = ["train", "val"]
+    if not getattr(args, "validation_only", False):
+        selected_splits.append("test")
+    for split in selected_splits:
+        values = (
+            _memory_features(
+                fixed[split], splits[split], fixed["train"], splits["train"],
+                k=getattr(args, "racl_memory_k", 10),
+                device=device,
+            )
+            if need_memory else np.zeros((len(splits[split]), 3), dtype=np.float32)
+        )
+        for row, feature in zip(splits[split], values):
+            row["_racl_memory"] = feature.tolist()
+    for split in set(splits).difference(selected_splits):
+        for row in splits[split]:
+            row["_racl_memory"] = [0.0, 0.0, 0.0]
+    stats = semantic_index.stats if semantic_index is not None else {}
+    stats["memory_context_enabled"] = need_memory
+    stats["semantic_revision"] = str(
+        getattr(args, "racl_semantic_revision", "dualspace_bge_joint_v1")
+    )
+    print(f"[dualspace] {json.dumps(stats, ensure_ascii=False)}", flush=True)
+    return semantic_index, stats
+
+
+def dualspace_boundary_loss(logit, g, batch, bank: MemoryBank,
+                            semantic_index: FixedSemanticRACL, args):
+    """Local semantic-boundary RACL with continuous reliability weighting."""
+    if semantic_index is None:
+        raise RuntimeError("dual-space RACL enabled without frozen semantic index")
+    z = F.normalize(g.float(), dim=-1)
+    losses = []
+    tau = max(float(args.tau), 1e-4)
+    margin = float(getattr(args, "racl_margin", 0.15))
+    geom_weight = float(getattr(args, "racl_geom_weight", 0.05))
+    rank_weight = float(getattr(args, "racl_rank_weight", 0.25))
+    for i, pair_id in enumerate(batch.pair_id):
+        pos_idx, neg_idx, q_pos, q_neg, anchor_weight = semantic_index.get(pair_id)
+        if len(pos_idx) == 0 or len(neg_idx) == 0:
+            continue
+        pos = torch.as_tensor(pos_idx, device=g.device)
+        neg = torch.as_tensor(neg_idx, device=g.device)
+        sim_pos = bank.g[pos] @ z[i]
+        sim_neg = bank.g[neg] @ z[i]
+        pair_margin = (
+            sim_neg.view(-1, 1) - sim_pos.view(1, -1) + margin
+        )
+        local = F.softplus(pair_margin / tau) * tau
+        c_anchor = batch.c[i].to(g.device).float().clamp_min(1e-6)
+        c_pos = torch.as_tensor(
+            semantic_index.c[pos_idx], device=g.device, dtype=torch.float
+        )
+        c_neg = torch.as_tensor(
+            semantic_index.c[neg_idx], device=g.device, dtype=torch.float
+        )
+        pair_weight = torch.sqrt(
+            c_anchor * c_neg.view(-1, 1) * c_pos.view(1, -1)
+        )
+        local = (local * pair_weight).sum() / pair_weight.sum().clamp_min(1e-6)
+
+        q_pos_t = torch.as_tensor(q_pos, device=g.device, dtype=torch.float)
+        q_neg_t = torch.as_tensor(q_neg, device=g.device, dtype=torch.float)
+        geometry = (
+            F.mse_loss(sim_pos.float(), q_pos_t)
+            + F.mse_loss(sim_neg.float(), q_neg_t)
+        ) * 0.5
+
+        label_sign = 1.0 if float(batch.y[i].item()) > 0.5 else -1.0
+        order_gap = label_sign * (logit[i].float() - bank.logit[neg].float())
+        rank = (F.softplus((margin - order_gap) / tau) * tau)
+        neg_rel = torch.sqrt(c_anchor * c_neg)
+        rank = (rank * neg_rel).sum() / neg_rel.sum().clamp_min(1e-6)
+        losses.append(
+            float(anchor_weight)
+            * (local + geom_weight * geometry + rank_weight * rank)
+        )
+    if not losses:
+        return torch.tensor(0.0, device=g.device)
+    return torch.stack(losses).mean()
+
+
 def info_nce(g_anchor, g_pos, g_negs, tau=0.07):
     pos = (g_anchor * g_pos).sum() / tau
     if len(g_negs) == 0:
@@ -515,6 +865,30 @@ def info_nce(g_anchor, g_pos, g_negs, tau=0.07):
     neg = (g_negs @ g_anchor) / tau
     denom = torch.logsumexp(torch.cat([pos.unsqueeze(0), neg]), 0)
     return -(pos - denom)
+
+
+def reliability_set_nce(g_anchor, g_pos, g_negs, pos_weights, neg_weights,
+                        tau=0.07):
+    """Reliability-weighted set-to-set InfoNCE used by RACL v2.
+
+    Positives and negatives are each normalized as a weighted set before the
+    two set scores are contrasted.  This avoids making the loss depend on Kp
+    or Kn merely through the number of exponentiated terms, while downweighting
+    noisy retrieved records.  The anchor reliability and class balance remain
+    outside this function, matching the original RACL aggregation.
+    """
+    if len(g_pos) == 0 or len(g_negs) == 0:
+        return torch.tensor(0.0, device=g_anchor.device)
+    eps = 1e-6
+    pos_w = pos_weights.to(g_anchor.device, dtype=g_anchor.dtype).clamp_min(eps)
+    neg_w = neg_weights.to(g_anchor.device, dtype=g_anchor.dtype).clamp_min(eps)
+    pos_w = pos_w / pos_w.sum().clamp_min(eps)
+    neg_w = neg_w / neg_w.sum().clamp_min(eps)
+    pos_logits = (g_pos @ g_anchor) / tau + torch.log(pos_w)
+    neg_logits = (g_negs @ g_anchor) / tau + torch.log(neg_w)
+    pos_score = torch.logsumexp(pos_logits, dim=0)
+    neg_score = torch.logsumexp(neg_logits, dim=0)
+    return F.softplus(neg_score - pos_score)
 
 
 def supcon_loss(g, batch, tau=0.07):
@@ -556,7 +930,9 @@ def contrastive_loss(g, batch, bank: MemoryBank, cw, Kp=3, Kn=5, tau=0.07, globa
                      cl_teacher_mode="off", cl_teacher_conf_min=0.0,
                      cl_neg_filter="none", cl_neg_bonus=0.0,
                      cl_neg_bonus_filter="none",
-                     cl_attr_block=True, cl_class_balanced=False, cl_hard_pos=False):
+                     cl_attr_block=True, cl_class_balanced=False, cl_hard_pos=False,
+                     cl_exclude_self=False, cl_set_nce=False,
+                     cl_bank_rel_weight=True):
     """检索增强监督对比（RACL）。
 
     B 优化旋钮（消融证实属性分块作用很小，默认仍保留以兼容 canonical）：
@@ -598,8 +974,17 @@ def contrastive_loss(g, batch, bank: MemoryBank, cw, Kp=3, Kn=5, tau=0.07, globa
         same = (bank.attrs == a) if cl_attr_block else np.ones(len(bank.y), dtype=bool)
         eligible = bank.contrastive_mask
         pos_mask = same & (bank.y == yi) & (bank.c >= cl_c_min) & bank_teacher_ok & eligible
+        if cl_exclude_self:
+            # The memory bank contains the same training record as the anchor.
+            # Without this exclusion, the anchor itself is usually the easiest
+            # positive and consumes one of the Kp slots, weakening RACL.
+            pair_id = str(batch.pair_id[i])
+            if pair_id:
+                pos_mask &= bank.pair_ids != pair_id
         if pos_mask.sum() == 0 and cl_attr_block:
             pos_mask = (bank.y == yi) & (bank.c >= cl_c_min) & bank_teacher_ok & eligible
+            if cl_exclude_self and pair_id:
+                pos_mask &= bank.pair_ids != pair_id
         if global_neg or not cl_attr_block:
             base_neg_mask = (bank.y != yi) & (bank.c >= cl_neg_c_min) & neg_teacher_ok & eligible  # 全集合反标签
         else:
@@ -645,10 +1030,24 @@ def contrastive_loss(g, batch, bank: MemoryBank, cw, Kp=3, Kn=5, tau=0.07, globa
         if len(pos_idx) == 0:
             continue
         g_negs = bank.g[neg_idx] if len(neg_idx) else bank.g[:0]
-        li = 0.0
-        for pj in pos_idx:
-            li = li + info_nce(g_d[i], bank.g[pj], g_negs, tau)
-        losses.append(class_w[yi] * cw[i] * li / max(1, len(pos_idx)))
+        if cl_set_nce:
+            pos_weights = (
+                torch.as_tensor(bank.c[pos_idx], device=g.device)
+                if cl_bank_rel_weight else torch.ones(len(pos_idx), device=g.device)
+            )
+            neg_weights = (
+                torch.as_tensor(bank.c[neg_idx], device=g.device)
+                if cl_bank_rel_weight else torch.ones(len(neg_idx), device=g.device)
+            )
+            li = reliability_set_nce(
+                g_d[i], bank.g[pos_idx], g_negs, pos_weights, neg_weights, tau
+            )
+        else:
+            li = 0.0
+            for pj in pos_idx:
+                li = li + info_nce(g_d[i], bank.g[pj], g_negs, tau)
+            li = li / max(1, len(pos_idx))
+        losses.append(class_w[yi] * cw[i] * li)
     if not losses:
         return torch.tensor(0.0, device=g.device)
     return torch.stack(losses).mean()
@@ -774,7 +1173,11 @@ def predict(model, loader, device):
     logits, gs, ys, cs, attrs = [], [], [], [], []
     for b in loader:
         with torch.autocast("cuda", dtype=torch.bfloat16, enabled=(device == "cuda")):
-            lg, g = model(b.c_ids.to(device), b.c_mask.to(device), b.e_ids.to(device), b.e_mask.to(device))
+            lg, g = model(
+                b.c_ids.to(device), b.c_mask.to(device),
+                b.e_ids.to(device), b.e_mask.to(device),
+                racl_memory=b.racl_memory.to(device),
+            )
         logits.append(torch.sigmoid(lg.float()).cpu()); gs.append(g.float().cpu())
         ys.append(b.y); cs.append(b.c); attrs += b.attr
     return (torch.cat(logits).numpy(), torch.cat(gs), torch.cat(ys).numpy(),
@@ -866,6 +1269,24 @@ def retrieval_quality(test_g, test_y, test_attr, k=10):
     return round(float(lm), 4), round(float(np.mean(aps)), 4)
 
 
+def representation_health(g: torch.Tensor) -> dict[str, float]:
+    """Small validation-only collapse diagnostic for the learned risk space."""
+    z = F.normalize(g.float(), dim=-1)
+    centered = z - z.mean(dim=0, keepdim=True)
+    singular = torch.linalg.svdvals(centered)
+    energy = singular.square()
+    effective_rank = (
+        energy.sum().square() / energy.square().sum().clamp_min(1e-12)
+    )
+    gram = z @ z.T
+    n = int(z.shape[0])
+    offdiag = (gram.sum() - torch.diagonal(gram).sum()) / max(1, n * (n - 1))
+    return {
+        "val_g_mean_cosine": float(offdiag.item()),
+        "val_g_effective_rank": float(effective_rank.item()),
+    }
+
+
 def evaluate(model, loaders, device, train_pack, tag="", seed=0):
     p_val, g_val, y_val, _, attr_val = predict(model, loaders["val"], device)
     thr = best_threshold_macroF1(y_val, p_val)
@@ -922,6 +1343,17 @@ def train(args, splits=None, return_model=False):
     tok = build_tokenizer(bge)
     if splits is None:
         splits = load_split(args.dataset)
+    if getattr(args, "validation_only", False):
+        if getattr(args, "infer_jsonl", ""):
+            raise ValueError("--validation_only cannot be combined with --infer_jsonl")
+        # Keep the held-out test records out of every downstream code path:
+        # evidence transforms, dataset statistics, loaders, frozen semantic
+        # encoding, prediction and export.  The source JSONL is hashed for
+        # provenance, but no test label or metric is inspected during tuning.
+        splits = {
+            "train": splits["train"],
+            "val": splits["val"],
+        }
     if getattr(args, "infer_jsonl", ""):
         # 反事实/构造样本推理：用外部 jsonl 替换 test 划分（train/val 仍用于 bank/阈值/RKC 索引）
         recs = [json.loads(l) for l in open(args.infer_jsonl, encoding="utf-8") if l.strip()]
@@ -932,6 +1364,14 @@ def train(args, splits=None, return_model=False):
     apply_evidence_policy(splits, getattr(args, "evidence_policy", ""))
     apply_c_transform(splits, getattr(args, "c_transform", "none"), seed=args.seed)
     recompute_c(splits, getattr(args, "c_recompute", "none"))
+    semantic_index, semantic_stats = prepare_dualspace_racl(
+        splits, bge, device, args
+    )
+    if getattr(args, "racl_dual_space", False):
+        if not getattr(args, "racl_all_samples", False):
+            raise ValueError("dual-space RACL requires --racl_all_samples")
+        if not getattr(args, "racl_local_margin", False):
+            raise ValueError("dual-space RACL requires --racl_local_margin")
     needs_teacher = (
         getattr(args, "distill_bge_weight", 0.0) > 0
         or getattr(args, "cl_teacher_mode", "off") != "off"
@@ -942,8 +1382,11 @@ def train(args, splits=None, return_model=False):
             inner_folds=getattr(args, "distill_bge_folds", 5),
             seed=getattr(args, "distill_teacher_seed", 0),
         )
-    print({k: len(v) for k, v in splits.items()},
-          "pos:", {k: int(sum(r["y"] for r in v)) for k, v in splits.items()}, flush=True)
+    print(
+        {k: len(v) for k, v in splits.items()},
+        "pos:", {k: int(sum(r["y"] for r in v)) for k, v in splits.items()},
+        flush=True,
+    )
     collate = make_collate(tok.pad_token_id, getattr(args, "stream_mode", "dual"))
     evidence_policy_mix = parse_evidence_policy_mix(getattr(args, "evidence_policy_mix", ""))
     evidence_consistency_mix = parse_evidence_policy_mix(
@@ -967,7 +1410,8 @@ def train(args, splits=None, return_model=False):
         ), batch_size=args.bs,
                       shuffle=(s == "train"), collate_fn=collate, num_workers=6,
                       pin_memory=True, persistent_workers=True)
-        for s in ("train", "val", "test")
+        for s in (("train", "val") if args.validation_only
+                  else ("train", "val", "test"))
     }
     loaders["train_eval"] = DataLoader(ClaimDataset(splits["train"], tok), batch_size=args.bs,
                                        shuffle=False, collate_fn=collate, num_workers=6,
@@ -981,7 +1425,12 @@ def train(args, splits=None, return_model=False):
                      unfreeze_top=getattr(args, "unfreeze_top", 0),
                      ret_disc=not getattr(args, "no_ret_disc", False),
                      head_4tuple=not getattr(args, "head_concat_only", False),
-                     joint_encode=getattr(args, "joint_encode", False)).to(device)
+                     joint_encode=getattr(args, "joint_encode", False),
+                     single_stream=(getattr(args, "stream_mode", "dual") != "dual"),
+                     racl_logit_alpha=getattr(args, "racl_logit_alpha", 0.0),
+                     racl_memory_head_alpha=getattr(
+                         args, "racl_memory_head_alpha", 0.0
+                     )).to(device)
     if getattr(args, "load_ckpt", ""):
         sd = torch.load(args.load_ckpt, map_location=device, weights_only=False)
         miss, unexp = model.load_state_dict(sd, strict=False)
@@ -1016,7 +1465,8 @@ def train(args, splits=None, return_model=False):
               f"c_min={getattr(args, 'proto_aux_c_min', 0.10)} "
               f"in_warmup={getattr(args, 'proto_aux_in_warmup', False)}",
               flush=True)
-    param_groups = model.param_groups(args.lr, args.lr_head)
+    fusion_lr = getattr(args, "lr_fusion", None)
+    param_groups = model.param_groups(args.lr, args.lr_head, fusion_lr)
     if source_aux_heads is not None:
         param_groups.append({"params": source_aux_heads.parameters(), "lr": args.lr_head})
     if rel_aux_head is not None:
@@ -1042,7 +1492,7 @@ def train(args, splits=None, return_model=False):
     sched = torch.optim.lr_scheduler.LambdaLR(opt, lr_lambda)
 
     def build_bank():
-        _p, g, y, c, attrs = predict(model, loaders["train_eval"], device)
+        p, g, y, c, attrs = predict(model, loaders["train_eval"], device)
         teacher_p = np.array([float(r.get("_teacher_p", -1.0)) for r in splits["train"]], dtype=float)
         ev_combo = [evidence_combo(r) for r in splits["train"]]
         conf = [confidence_bin(r) for r in splits["train"]]
@@ -1059,7 +1509,8 @@ def train(args, splits=None, return_model=False):
             src_bin.append(source_bin_from_count_value(sc))
         cmask = [bool(r.get("contrastive_mask", True)) for r in splits["train"]]
         return (
-            MemoryBank(g.to(device), attrs, torch.tensor(y), c,
+            MemoryBank(g.to(device), attrs, torch.tensor(y), c, p=p,
+                       pair_ids=[r.get("pair_id", "") for r in splits["train"]],
                        teacher_p=teacher_p, evidence_combo=ev_combo,
                        confidence=conf, source_bin=src_bin,
                        contrastive_mask=cmask),
@@ -1099,8 +1550,11 @@ def train(args, splits=None, return_model=False):
         opt.zero_grad()
         for bi, b in enumerate(loaders["train"]):
             with torch.autocast("cuda", dtype=torch.bfloat16, enabled=(device == "cuda")):
-                logit, g = model(b.c_ids.to(device), b.c_mask.to(device),
-                                 b.e_ids.to(device), b.e_mask.to(device))
+                logit, g = model(
+                    b.c_ids.to(device), b.c_mask.to(device),
+                    b.e_ids.to(device), b.e_mask.to(device),
+                    racl_memory=b.racl_memory.to(device),
+                )
                 y = b.y.to(device)
                 base_cw = b.c.to(device) if not args.no_weight else torch.ones_like(b.c).to(device)
                 rp = float(getattr(args, "rel_pow", 1.0))
@@ -1155,6 +1609,7 @@ def train(args, splits=None, return_model=False):
                     logit_view, g_view = model(
                         b.c_ids.to(device), b.c_mask.to(device),
                         b.e_view_ids.to(device), b.e_view_mask.to(device),
+                        racl_memory=b.racl_memory.to(device),
                     )
                     if getattr(args, "view_ce_weight", 0.0) > 0:
                         view_loss = view_loss + float(args.view_ce_weight) * cls_loss(
@@ -1169,6 +1624,10 @@ def train(args, splits=None, return_model=False):
             cl_val = torch.tensor(0.0, device=device)
             if cl_on and cl_mode == "supcon":
                 cl_val = supcon_loss(g.float(), b, tau=args.tau)
+            elif cl_on and getattr(args, "racl_dual_space", False):
+                cl_val = dualspace_boundary_loss(
+                    logit.float(), g.float(), b, bank, semantic_index, args
+                )
             elif cl_on:
                 cl_val = contrastive_loss(g.float(), b, bank, cl_cw, Kp=args.Kp, Kn=args.Kn,
                                           tau=args.tau, global_neg=args.global_neg,
@@ -1181,7 +1640,10 @@ def train(args, splits=None, return_model=False):
                                           cl_neg_bonus_filter=getattr(args, "cl_neg_bonus_filter", "none"),
                                           cl_attr_block=not getattr(args, "cl_no_attr_block", False),
                                           cl_class_balanced=getattr(args, "cl_class_balanced", False),
-                                          cl_hard_pos=getattr(args, "cl_hard_pos", False))
+                                          cl_hard_pos=getattr(args, "cl_hard_pos", False),
+                                          cl_exclude_self=getattr(args, "cl_exclude_self", False),
+                                          cl_set_nce=getattr(args, "cl_set_nce", False),
+                                          cl_bank_rel_weight=not args.no_weight)
             proto_loss = torch.tensor(0.0, device=device)
             proto_on = (
                 getattr(args, "proto_aux_weight", 0.0) > 0
@@ -1239,8 +1701,104 @@ def train(args, splits=None, return_model=False):
     if getattr(args, "save_ckpt", "") and not eval_only:
         torch.save(model.state_dict(), args.save_ckpt)
         print(f"[save_ckpt] -> {args.save_ckpt}", flush=True)
+    if getattr(args, "validation_only", False):
+        # Hyper-parameter selection must not touch the held-out test split.
+        # Return immediately after scoring the selected checkpoint on val,
+        # before test prediction, RKC tuning, or embedding export.
+        pv, gv, yv, cv, _ = predict(model, loaders["val"], device)
+        vthr = best_threshold_macroF1(yv, pv)
+        vpred = (pv >= vthr).astype(int)
+        res = {
+            "tag": args.tag,
+            "seed": args.seed,
+            "evaluation_split": "validation",
+            "validation_only": True,
+            "thr": round(float(vthr), 3),
+            "acc": round(float((vpred == yv).mean()), 4),
+            "macro_f1": round(macro_f1(yv, vpred), 4),
+            "pos_f1": round(f1_score(yv, vpred, zero_division=0), 4),
+            "wF1": round(macro_f1(yv, vpred, w=np.clip(cv, 0.05, None)), 4),
+            "auprc": round(average_precision_score(yv, pv), 4)
+            if len(set(yv)) > 1 else None,
+            "auroc": round(roc_auc_score(yv, pv), 4)
+            if len(set(yv)) > 1 else None,
+            "ece": round(ece(yv, pv), 4),
+            "n_val": int(len(yv)),
+            "pos_val": int(yv.sum()),
+            "no_fusion": bool(args.no_fusion),
+            "n_fusion": int(args.n_fusion),
+            "heads": int(args.heads),
+            "fusion_dropout": float(args.fusion_dropout),
+            "lr_fusion": float(args.lr_head if fusion_lr is None else fusion_lr),
+            "no_cl": bool(args.no_cl),
+            "cl_mode": str(args.cl_mode),
+            "lambda_cl": float(args.lambda_cl),
+            "tau": float(args.tau),
+            "Kp": int(args.Kp),
+            "Kn": int(args.Kn),
+            "warmup_epochs": int(args.warmup),
+            "contrastive_epochs": int(args.cl_epochs),
+            "cl_exclude_self": bool(args.cl_exclude_self),
+            "cl_c_min": float(args.cl_c_min),
+            "cl_neg_c_min": float(args.cl_neg_c_min),
+            "cl_hard_pos": bool(args.cl_hard_pos),
+            "cl_set_nce": bool(args.cl_set_nce),
+            "racl_logit_alpha": float(args.racl_logit_alpha),
+            "racl_dual_space": bool(args.racl_dual_space),
+            "racl_all_samples": bool(args.racl_all_samples),
+            "racl_local_margin": bool(args.racl_local_margin),
+            "racl_margin": float(args.racl_margin),
+            "racl_geom_weight": float(args.racl_geom_weight),
+            "racl_rank_weight": float(args.racl_rank_weight),
+            "racl_memory_head_alpha": float(args.racl_memory_head_alpha),
+            "racl_memory_context": bool(args.racl_memory_context),
+            "racl_memory_k": int(args.racl_memory_k),
+            "racl_semantic_revision": str(args.racl_semantic_revision),
+            "racl_semantic_cache": str(args.racl_semantic_cache),
+            "racl_semantic_cache_sha256": str(args.racl_semantic_cache_sha256),
+            "racl_semantic_stats": semantic_stats,
+            "cl_class_balanced": bool(args.cl_class_balanced),
+            "cl_attribute_blocked": not bool(args.cl_no_attr_block),
+        }
+        res.update(representation_health(gv))
+        if getattr(args, "save_val_pred", ""):
+            from pathlib import Path
+            prediction_path = Path(args.save_val_pred)
+            prediction_path.parent.mkdir(parents=True, exist_ok=True)
+            np.savez_compressed(
+                prediction_path,
+                p=np.asarray(pv, dtype=np.float32),
+                y=np.asarray(yv, dtype=np.int8),
+                c=np.asarray(cv, dtype=np.float32),
+                pair_id=np.asarray(
+                    [str(row.get("pair_id", "")) for row in splits["val"]],
+                    dtype=str,
+                ),
+            )
+            project_root = Path(__file__).resolve().parents[2]
+            try:
+                recorded_prediction_path = str(
+                    prediction_path.resolve().relative_to(project_root)
+                )
+            except ValueError:
+                recorded_prediction_path = str(prediction_path)
+            res["validation_prediction_file"] = recorded_prediction_path
+            res["validation_prediction_sha256"] = hashlib.sha256(
+                prediction_path.read_bytes()
+            ).hexdigest()
+        attach_run_provenance(res, args, bge)
+        res["encoder_train_mode"] = getattr(args, "enc_train", "lora")
+        res["loss"] = getattr(args, "loss", "bce")
+        print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
+        if return_model:
+            return model, loaders, device, None, res
+        return res
+
     _, train_pack = build_bank()
     res = evaluate(model, loaders, device, train_pack, tag=args.tag, seed=args.seed)
+    attach_run_provenance(res, args, bge)
+    res["encoder_train_mode"] = getattr(args, "enc_train", "lora")
+    res["loss"] = getattr(args, "loss", "bce")
     print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
     if args.save_emb:
         # 完整导出三划分的 (g, p_cls, y, c, attr, pair_id)，供离线 ARF/集成/标定迭代（§3.4）。
@@ -1250,6 +1808,10 @@ def train(args, splits=None, return_model=False):
         pid = lambda s: [r.get("pair_id", "") for r in splits[s]]
         torch.save({
             "thr": res["thr"], "alpha_rkc": res.get("alpha_rkc", 1.0),
+            "provenance": {k: res.get(k) for k in (
+                "dataset", "dataset_sha256", "label_field", "split_field", "split_group",
+                "evidence_policy", "resolved_model", "encoder_train_mode", "loss", "seed", "tag"
+            )},
             "train": {"g": gtr_f, "p": ptr, "y": ytr, "c": ctr, "attr": attr_tr, "pair_id": pid("train")},
             "val": {"g": gva, "p": pva, "y": yva, "c": cva, "attr": attr_va, "pair_id": pid("val")},
             "test": {"g": gte, "p": pte, "y": yte, "c": cte, "attr": attr_te, "pair_id": pid("test")},
@@ -1267,6 +1829,8 @@ def main():
     ap.add_argument("--accum", type=int, default=2)
     ap.add_argument("--lr", type=float, default=2e-5)
     ap.add_argument("--lr_head", type=float, default=1e-4)
+    ap.add_argument("--lr_fusion", type=float, default=None,
+                    help="optional fusion-only learning rate; default preserves lr_head")
     ap.add_argument("--warmup", type=int, default=3)
     ap.add_argument("--cl_epochs", type=int, default=6)
     ap.add_argument("--lambda_cl", type=float, default=0.5)  # 调参后的最优 canonical
@@ -1290,11 +1854,15 @@ def main():
                     help="编码顺序消融：先把 claim+evidence 拼为单序列统一编码再拆回两流，"
                          "对照默认的独立编码再融合（融合/头不变）")
     ap.add_argument("--fusion_dropout", type=float, default=0.2)
+    ap.add_argument("--validation_only", action="store_true",
+                    help="select/report on validation only; never evaluate or export test")
+    ap.add_argument("--save_val_pred", default="",
+                    help="validation-only 配对 bootstrap 预测 .npz；禁止包含 test")
     ap.add_argument("--no_lora", action="store_true")
     ap.add_argument("--no_weight", action="store_true", help="退化为未加权 BCE")
     ap.add_argument("--lora_rank", type=int, default=16)
     ap.add_argument("--heads", type=int, default=8)
-    ap.add_argument("--tau", type=float, default=0.07)  # paper canonical
+    ap.add_argument("--tau", type=float, default=0.05)  # 调参后的最优 canonical
     ap.add_argument("--Kp", type=int, default=3)
     ap.add_argument("--Kn", type=int, default=5)
     ap.add_argument("--global_neg", action="store_true", help="全集合随机反标签（消融）")
@@ -1305,6 +1873,37 @@ def main():
                     help="按 0.5/p_y 类频逆权重缩放每个 anchor 的对比损失，抵消正类被多数类淹没")
     ap.add_argument("--cl_hard_pos", action="store_true",
                     help="同标签正例取相似度最低的 Kp 个（hard positive，避免易正例梯度消失）")
+    ap.add_argument("--cl_exclude_self", action="store_true",
+                    help="从 RACL 正例检索中排除与 anchor 相同 pair_id 的内存库记录")
+    ap.add_argument("--cl_set_nce", action="store_true",
+                    help="RACL v2：使用可靠性加权的多正例集合 InfoNCE；--no_weight 同时移除库权重")
+    ap.add_argument("--racl_logit_alpha", type=float, default=0.0,
+                    help="RACL v2：把检索表示接回分类器的固定残差系数；0 保持原架构")
+    # ---- Dual-space boundary RACL：冻结语义检索 + 局部风险边界 ----
+    ap.add_argument("--racl_dual_space", action="store_true",
+                    help="用冻结 BGE 语义空间检索邻居，并仅在可训练风险空间优化局部边界")
+    ap.add_argument("--racl_all_samples", action="store_true",
+                    help="dual-space RACL 不使用历史二值 contrastive_mask；连续可靠性覆盖全部样本")
+    ap.add_argument("--racl_local_margin", action="store_true",
+                    help="dual-space RACL 使用局部正负边界 margin，而非全局类簇 InfoNCE")
+    ap.add_argument("--racl_margin", type=float, default=0.15,
+                    help="dual-space 局部几何与风险排序 margin")
+    ap.add_argument("--racl_geom_weight", type=float, default=0.05,
+                    help="保持冻结语义近邻几何的关系蒸馏权重")
+    ap.add_argument("--racl_rank_weight", type=float, default=0.25,
+                    help="与 AUPRC 风险排序对齐的检索配对 logit ranking 权重")
+    ap.add_argument("--racl_memory_head_alpha", type=float, default=0.0,
+                    help="三维冻结检索上下文到主 logit 的匹配容量残差头；所有候选保持一致")
+    ap.add_argument("--racl_memory_context", action="store_true",
+                    help="启用仅从有标签训练库计算的置信门控检索上下文")
+    ap.add_argument("--racl_memory_k", type=int, default=10,
+                    help="冻结语义空间中构造训练库风险上下文的近邻数")
+    ap.add_argument("--racl_semantic_revision", default="dualspace_bge_joint_v1",
+                    help="冻结语义文本/编码规则版本，写入缓存和结果清单")
+    ap.add_argument("--racl_semantic_cache", default="",
+                    help="冻结 train/val 语义向量缓存；validation-only 时严禁包含 test")
+    ap.add_argument("--racl_semantic_cache_sha256", default="",
+                    help="预注册冻结语义缓存 SHA-256；不匹配时拒绝训练")
     # ---- C 优化：可靠性建模 ----
     ap.add_argument("--rel_soft", action="store_true",
                     help="noise-aware 软标签：低可靠性 c 的标签向数据集基率收缩（弱监督去噪）")
@@ -1368,11 +1967,11 @@ def main():
     ap.add_argument("--xattn_dir", default="both", choices=["both", "c2e", "e2c"])
     ap.add_argument("--indep_proj", action="store_true")
     ap.add_argument("--ffn", default="swiglu", choices=["swiglu", "gelu"])
-    ap.add_argument("--evidence_policy", default=str(getattr(config, "EVIDENCE_POLICY_CANONICAL", "sources_only")),
+    ap.add_argument("--evidence_policy", default="",
                     choices=["", "record", "args_first", "source_first", "no_args",
                              "source_only", "sources_only", "args_only", "params_only",
                              "ocr_only", "vlm_only", "params_args", "ocr_args", "vlm_args"],
-                    help="证据视图；论文公平口径默认 sources_only（仅三源，不用 arguments）")
+                    help="覆盖记录内 _evidence_policy；用于训练分源 evidence experts")
     ap.add_argument("--evidence_policy_mix", default="",
                     help="逗号或空格分隔的 train-only evidence views；例如 source_first,no_args,ocr_only,params_only")
     ap.add_argument("--view_consistency_mix", default="",

@@ -1,0 +1,33 @@
+{
+  "job": "textcnn_s0",
+  "stage": "table3",
+  "signature": "6f3ba865c1b2b751903955eefdee545a76ea82512102238e7d13dd1c669d3276",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_neural",
+    "--dataset",
+    "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "--kind",
+    "textcnn",
+    "--seed",
+    "0",
+    "--loss",
+    "bce",
+    "--evidence_policy",
+    "sources_only",
+    "--save_pred",
+    "/root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/textcnn_s0.pt"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_neural --dataset /root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl --kind textcnn --seed 0 --loss bce --evidence_policy sources_only --save_pred /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/textcnn_s0.pt",
+  "started_utc": "2026-07-21T13:20:53.968105+00:00",
+  "finished_utc": "2026-07-21T13:21:19.730356+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/textcnn_s0.log",
+  "result_file": "results/fair_rerun/jobs/textcnn_s0.jsonl",
+  "outputs": [
+    "embeddings/fair_rerun/baseline_predictions/textcnn_s0.pt"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

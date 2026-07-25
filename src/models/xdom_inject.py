@@ -55,12 +55,14 @@ def _stratified_half(y, seed):
 
 def analyze_fold(path):
     b = torch.load(path, map_location="cpu", weights_only=False)
-    alpha = float(b.get("alpha_rkc", 0.5) or 0.5)
     tr, va, te = b["train"], b["val"], b["test"]
     g_src, y_src, c_src, a_src = (_arr(tr, "g"), _arr(tr, "y"), _arr(tr, "c"), _arr(tr, "attr"))
     g_val, y_val, a_val, p_val = (_arr(va, "g"), _arr(va, "y"), _arr(va, "attr"), _arr(va, "p"))
     g_t, y_t, c_t, a_t, p_t = (_arr(te, "g"), _arr(te, "y"), _arr(te, "c"),
                                _arr(te, "attr"), _arr(te, "p"))
+    pair_ids_t = [str(value) for value in te.get("pair_id", [])]
+    if len(pair_ids_t) != len(y_t) or len(set(pair_ids_t)) != len(pair_ids_t):
+        raise ValueError(f"{path}: missing or duplicate target pair_id")
     if len(set(y_t.tolist())) < 2 or y_t.sum() < 3:
         return None
 
@@ -68,20 +70,29 @@ def analyze_fold(path):
     g_t_t = torch.tensor(g_t, dtype=torch.float32)
     evl, pool = _stratified_half(y_t, seed=0)
 
-    # val combination -> alpha-blended threshold (source val), reused for all conditions
+    # Each prediction path selects its own operating threshold on the same source-domain val.
     prkc_val = rkc_attr_predict(g_src_t, y_src, c_src, a_src,
                                 torch.tensor(g_val, dtype=torch.float32), a_val)
-    thr = best_threshold_macroF1(y_val, alpha * p_val + (1 - alpha) * prkc_val) \
+    thr_forward = best_threshold_macroF1(y_val, p_val) \
         if len(set(y_val.tolist())) > 1 else 0.5
 
     ye, pe = y_t[evl], p_t[evl]
-    out = {"n_eval": int(len(evl)), "pos_eval": int(ye.sum()), "alpha": round(alpha, 2)}
+    eval_ids = [pair_ids_t[i] for i in evl]
+    pool_ids = [pair_ids_t[i] for i in pool]
+    if set(eval_ids) & set(pool_ids):
+        raise ValueError(f"{path}: target injection/evaluation leakage")
+    out = {
+        "n_eval": int(len(evl)), "pos_eval": int(ye.sum()),
+        "n_injection_pool": int(len(pool)),
+        "eval_pair_id": eval_ids, "injection_pool_pair_id": pool_ids,
+        "eval_injection_overlap": [],
+    }
     # forward classifier reference: the FROZEN parametric part, which cannot adapt
     # to the target without a gradient pass.
     out["forward"] = {
         "ap": 100 * average_precision_score(ye, pe),
         "auc": 100 * roc_auc_score(ye, pe),
-        "f1": 100 * f1_score(ye, (pe >= thr).astype(int), zero_division=0)}
+        "f1": 100 * f1_score(ye, (pe >= thr_forward).astype(int), zero_division=0)}
 
     g_eval_t = torch.tensor(g_t[evl], dtype=torch.float32)
     rng = np.random.RandomState(0)

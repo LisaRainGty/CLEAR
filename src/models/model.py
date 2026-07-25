@@ -9,6 +9,8 @@
 """
 from __future__ import annotations
 
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -82,7 +84,8 @@ class CLAIMARC(nn.Module):
                  use_lora=True, ret_dim=256, fusion_dropout=0.1, lora_rank=16,
                  xattn_dir="both", indep_proj=False, ffn="swiglu", heads=8,
                  enc_train="lora", unfreeze_top=0, ret_disc=True,
-                 head_4tuple=True, joint_encode=False):
+                 head_4tuple=True, joint_encode=False, single_stream=False,
+                 racl_logit_alpha=0.0, racl_memory_head_alpha=0.0):
         super().__init__()
         from transformers import AutoModel
         self.encoder = AutoModel.from_pretrained(bge_path)
@@ -94,6 +97,7 @@ class CLAIMARC(nn.Module):
         #   （跨流交互在编码阶段已发生），随后融合/头保持不变（消融"独立编码再融合"vs"统一编码再拆流"）。
         self.head_4tuple = head_4tuple
         self.joint_encode = joint_encode
+        self.single_stream = single_stream
         self.max_pos = int(getattr(self.encoder.config, "max_position_embeddings", 512) or 512)
         # enc_train: lora（默认，LoRA+LN+特殊embedding）| topk（解冻顶部 unfreeze_top 层）| full（全参微调）
         self.enc_train = enc_train
@@ -109,6 +113,15 @@ class CLAIMARC(nn.Module):
             self.encoder = get_peft_model(self.encoder, cfg)
         self._unfreeze_encoder_extras(vocab_size, n_special, use_lora,
                                       enc_train=enc_train, unfreeze_top=unfreeze_top)
+        # Preserve the paper's original full-fine-tuning computation by default.
+        # Checkpointed recomputation is an explicit OOM fallback and is recorded
+        # separately because it can change the floating-point training trajectory.
+        use_gc = os.environ.get("CLAIMARC_GRADIENT_CHECKPOINTING", "0") == "1"
+        if (enc_train == "full" and use_gc
+                and hasattr(self.encoder, "gradient_checkpointing_enable")):
+            self.encoder.gradient_checkpointing_enable()
+            if hasattr(self.encoder, "config"):
+                self.encoder.config.use_cache = False
         self.fusion = nn.ModuleList([
             FusionLayer(d, heads=heads, dropout=fusion_dropout, xattn_dir=xattn_dir,
                         indep_proj=indep_proj, ffn=ffn) for _ in range(n_fusion)])
@@ -123,6 +136,33 @@ class CLAIMARC(nn.Module):
         self.ret = nn.Sequential(
             nn.Linear(ret_in, 512), nn.GELU(), nn.Dropout(0.1), nn.Linear(512, ret_dim)
         )
+        # RACL v2 can couple the retrieval representation back into the
+        # classifier.  The same branch is retained in the matched no-RACL
+        # control, so any gain is attributable to contrastive shaping rather
+        # than extra classifier capacity.  Zero initialization preserves the
+        # original classifier at the start of training.
+        self.racl_logit_alpha = float(racl_logit_alpha)
+        self.racl_lrc = nn.Linear(ret_dim, 1) if self.racl_logit_alpha > 0 else None
+        if self.racl_lrc is not None:
+            nn.init.zeros_(self.racl_lrc.weight)
+            nn.init.zeros_(self.racl_lrc.bias)
+        # Dual-space RACL uses three frozen-retrieval features:
+        # centered neighbour risk, neighbour consensus, and mean semantic
+        # similarity.  Every tuning candidate, including matched no-RACL,
+        # instantiates this exact head.  Controls receive an all-zero context,
+        # so gains cannot be attributed to parameter count.
+        self.racl_memory_head_alpha = float(racl_memory_head_alpha)
+        self.racl_memory_head = (
+            nn.Sequential(
+                nn.Linear(3, 8),
+                nn.GELU(),
+                nn.Linear(8, 1),
+            )
+            if self.racl_memory_head_alpha > 0 else None
+        )
+        if self.racl_memory_head is not None:
+            nn.init.zeros_(self.racl_memory_head[-1].weight)
+            nn.init.zeros_(self.racl_memory_head[-1].bias)
 
     def _unfreeze_encoder_extras(self, vocab_size, n_special, use_lora,
                                  enc_train="lora", unfreeze_top=0):
@@ -165,7 +205,7 @@ class CLAIMARC(nn.Module):
         out = self.encoder(input_ids=ids, attention_mask=mask)
         return out.last_hidden_state
 
-    def forward(self, c_ids, c_mask, e_ids, e_mask):
+    def forward(self, c_ids, c_mask, e_ids, e_mask, racl_memory=None):
         if self.joint_encode:
             # 统一编码再拆流：claim+evidence 拼成单序列由共享编码器一次性编码，
             # 跨流自注意力在编码阶段即发生；随后按 claim 长度拆回两流，融合/头保持不变。
@@ -178,9 +218,16 @@ class CLAIMARC(nn.Module):
             e_pad = joint_mask[:, Lc:] == 0
         else:
             hc = self.encode(c_ids, c_mask)
-            he = self.encode(e_ids, e_mask)
             c_pad = c_mask == 0
-            e_pad = e_mask == 0
+            if self.single_stream:
+                # The collator mirrors the selected claim/evidence stream into
+                # both slots.  A genuine single-stream ablation encodes it once
+                # and reuses the same representation; two stochastic encoder
+                # passes would be a dual-view model and doubles peak memory.
+                he, e_pad = hc, c_pad
+            else:
+                he = self.encode(e_ids, e_mask)
+                e_pad = e_mask == 0
         for layer in self.fusion:
             hc, he = layer(hc, he, c_pad, e_pad)
         h_c = hc[:, 0]
@@ -191,15 +238,41 @@ class CLAIMARC(nn.Module):
         else:
             z = torch.cat([h_c, h_e], dim=-1)
             ret_in = z
-        logit = self.lrc(self.lrc_drop(self.lrc_ln(z))).squeeze(-1)
         g = F.normalize(self.ret(ret_in), dim=-1)
+        logit = self.lrc(self.lrc_drop(self.lrc_ln(z))).squeeze(-1)
+        if self.racl_lrc is not None:
+            logit = logit + self.racl_logit_alpha * self.racl_lrc(g).squeeze(-1)
+        if self.racl_memory_head is not None:
+            if racl_memory is None:
+                racl_memory = torch.zeros(
+                    (logit.shape[0], 3), device=logit.device, dtype=logit.dtype
+                )
+            memory_delta = self.racl_memory_head(
+                racl_memory.to(device=logit.device, dtype=logit.dtype)
+            ).squeeze(-1)
+            logit = logit + self.racl_memory_head_alpha * memory_delta
         return logit, g
 
-    def param_groups(self, lr_encoder=2e-5, lr_head=1e-4):
-        """§3.2.8 差分学习率：编码器侧(LoRA/LayerNorm/特殊embedding)=2e-5；融合+头=1e-4。"""
-        enc, head = [], []
+    def param_groups(self, lr_encoder=2e-5, lr_head=1e-4, lr_fusion=None):
+        """Build explicit encoder, fusion, and task-head optimizer groups.
+
+        ``lr_fusion=None`` preserves the original behavior by assigning the
+        head learning rate to fusion parameters.  A separate fusion rate is
+        used only by the documented validation-only v2 tuning protocol.
+        """
+        fusion_lr = lr_head if lr_fusion is None else lr_fusion
+        enc, fusion, head = [], [], []
         for n, p in self.named_parameters():
             if not p.requires_grad:
                 continue
-            (enc if n.startswith("encoder.") else head).append(p)
-        return [{"params": enc, "lr": lr_encoder}, {"params": head, "lr": lr_head}]
+            if n.startswith("encoder."):
+                enc.append(p)
+            elif n.startswith("fusion."):
+                fusion.append(p)
+            else:
+                head.append(p)
+        groups = [{"params": enc, "lr": lr_encoder}]
+        if fusion:
+            groups.append({"params": fusion, "lr": fusion_lr})
+        groups.append({"params": head, "lr": lr_head})
+        return groups

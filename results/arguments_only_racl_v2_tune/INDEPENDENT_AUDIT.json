@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "selector": "results/arguments_only_racl_v2_tune/racl_v2_selection.json",
+  "selector_sha256": "fe1f336885a046438b548a3f2b989be55d773a93da69a05df13a9054c867115d",
+  "config": "configs/racl_v2_shared_decision_tuning.json",
+  "config_sha256": "c234431351d42e8379e5b5fb8f81879fdd61441dcbcc798c8ae9d324f9191bd4",
+  "code_commit": "0c45c9c",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only",
+  "successful_training_jobs": 12,
+  "failed_training_jobs": 0,
+  "seeds_per_candidate": [
+    0,
+    1,
+    2
+  ],
+  "evaluation_split": "validation",
+  "test_metrics_accessed": false,
+  "rkc_accessed": false,
+  "selection_rule": {
+    "primary": "mean validation AUPRC",
+    "tie_breaker": "mean validation positive-F1",
+    "selected_candidate": "shared_pair_l005_t010"
+  },
+  "sample_sd_summary": {
+    "no_racl_shared": {
+      "acc": "75.93 ± 1.15",
+      "pos_f1": "67.24 ± 1.60",
+      "macro_f1": "74.09 ± 0.93",
+      "weighted_f1": "72.48 ± 0.85",
+      "auprc": "64.70 ± 0.65",
+      "auroc": "83.87 ± 0.36",
+      "ece": "19.88 ± 2.33"
+    },
+    "shared_pair_l005_t010": {
+      "acc": "75.60 ± 2.13",
+      "pos_f1": "65.03 ± 1.82",
+      "macro_f1": "73.08 ± 1.21",
+      "weighted_f1": "71.88 ± 2.01",
+      "auprc": "65.52 ± 1.94",
+      "auroc": "83.40 ± 0.18",
+      "ece": "18.73 ± 1.96"
+    }
+  },
+  "matched_seed_delta_selected_minus_no_racl": {
+    "acc": "-0.34 ± 2.71",
+    "pos_f1": "-2.21 ± 2.15",
+    "macro_f1": "-1.01 ± 1.75",
+    "weighted_f1": "-0.61 ± 2.27",
+    "auprc": "+0.82 ± 2.58",
+    "auroc": "-0.47 ± 0.50",
+    "ece": "-1.15 ± 1.54"
+  },
+  "matched_seed_auprc_wins": 2,
+  "conclusion": "The mandatory-RACL pairwise candidate wins the preregistered validation-AUPRC rule. Its positive-F1 and several classification metrics are lower than the matched no-RACL control, so the result supports an AUPRC/calibration trade-off rather than a guaranteed across-metric gain."
+}

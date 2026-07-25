@@ -1,0 +1,13 @@
+2026-07-21 21:25:00,513 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 21:25:00,514 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 21:25:00,556 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+[dam ep0] loss=0.4375 val_mF1=0.6669
+[dam ep1] loss=0.2999 val_mF1=0.6868
+[dam ep2] loss=0.2781 val_mF1=0.6715
+[dam ep3] loss=0.2431 val_mF1=0.6875
+[dam ep4] loss=0.2084 val_mF1=0.6812
+[dam ep5] loss=0.1890 val_mF1=0.6775
+[dam ep6] loss=0.1671 val_mF1=0.6837
+[dam ep7] loss=0.1541 val_mF1=0.6790
+RESULT {"tag": "dam", "seed": 0, "thr": 0.54, "acc": 0.7544, "macro_f1": 0.7129, "pos_f1": 0.6038, "wF1": 0.6888, "auprc": 0.5635, "auroc": 0.8246, "ece": 0.115, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese"}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/dam_s0.pt

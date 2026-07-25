@@ -1,0 +1,12 @@
+2026-07-21 21:07:25,819 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 21:07:25,820 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 21:07:25,863 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+2026-07-21 21:07:26,834 - modelscope - WARNING - Model revision not specified, use revision: v1.0.0
+/root/miniconda3/envs/myconda/lib/python3.9/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+[bert_nli ep0] loss=0.4047 val_mF1=0.6835
+[bert_nli ep1] loss=0.2674 val_mF1=0.7167
+[bert_nli ep2] loss=0.1970 val_mF1=0.7178
+[bert_nli ep3] loss=0.1051 val_mF1=0.7255
+RESULT {"tag": "bert_nli", "seed": 1, "thr": 0.12, "acc": 0.8012, "macro_f1": 0.7771, "pos_f1": 0.7038, "wF1": 0.7532, "auprc": 0.6967, "auroc": 0.8795, "ece": 0.1668, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/Fengshenbang/Erlangshen-Roberta-110M-NLI", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/bert_nli_s1.pt

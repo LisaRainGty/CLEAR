@@ -15,13 +15,16 @@ import argparse
 import json
 import os
 import random
+import re
 from pathlib import Path
 
 import numpy as np
 from sklearn.metrics import f1_score, roc_auc_score, average_precision_score
 
 from common.llm import chat_json, run_many
-from models.data import load_split
+from models.data import apply_evidence_policy, load_split
+from models.baselines import evidence_text as shared_evidence_text
+from models.provenance import attach_run_provenance
 from models.train import macro_f1, best_threshold_macroF1, ece
 
 
@@ -40,15 +43,7 @@ def claim_text(r):
 
 
 def evidence_text(r):
-    parts = []
-    for label, key, field in (("参数", "evidence_params", "raw_text"),
-                              ("详情图OCR", "evidence_ocr", "raw_text"),
-                              ("主图/详情图视觉", "evidence_vlm", "raw_quote")):
-        for it in r.get(key, []) or []:
-            t = trim(str(it.get(field, "") or ""), 300)
-            if t:
-                parts.append(f"[{label}] {t}")
-    return "\n".join(parts)
+    return trim(shared_evidence_text(r), 2200)
 
 
 SYSTEM = "你是严谨的中文直播电商宣传风险核验助手，只输出 JSON。"
@@ -112,10 +107,29 @@ def clamp01(x, d=0.5):
         return d
 
 
+def cache_namespace(model, fewshot_block):
+    safe_model = re.sub(r"[^0-9A-Za-z_.-]+", "_", model).strip("_").lower()
+    return f"paper_llm_{safe_model}_{'fewshot' if fewshot_block else 'zero'}"
+
+
 def score_split(recs, model, fewshot_block, namespace, concurrency, max_tokens):
-    def fn(r):
+    # The cache key already hashes the complete model/messages/parameters
+    # payload.  Sharing one namespace prevents paying again when an identical
+    # zero-shot (or identical few-shot) prompt appears in another fold, without
+    # sharing labels, thresholds, or model outputs across non-identical prompts.
+    requested_namespace = namespace
+    namespace = cache_namespace(model, fewshot_block)
+
+    prompts = [make_prompt(r, fewshot_block) for r in recs]
+    # A few frozen pairs have byte-identical model inputs.  Resolve each exact
+    # payload once, then fan the same parsed response back to every matching
+    # pair.  This removes provider nondeterminism and concurrent cache-write
+    # races without sharing anything between non-identical examples.
+    unique_prompts = list(dict.fromkeys(prompts))
+
+    def fn(prompt):
         try:
-            obj = chat_json(make_prompt(r, fewshot_block), system=SYSTEM, model=model,
+            obj = chat_json(prompt, system=SYSTEM, model=model,
                             temperature=0.0, namespace=namespace, max_tokens=max_tokens)
             rs = clamp01(obj.get("risk_score"))
             dec = obj.get("decision")
@@ -123,14 +137,17 @@ def score_split(recs, model, fewshot_block, namespace, concurrency, max_tokens):
             return {"risk_score": rs, "decision": dec}
         except Exception as e:  # noqa: BLE001
             return {"risk_score": None, "decision": None, "__error__": repr(e)[:200]}
-    res = run_many(recs, fn, concurrency=concurrency, desc=f"{model}:{namespace}")
-    return res
+    unique_results = run_many(unique_prompts, fn, concurrency=concurrency,
+                              desc=f"{model}:{requested_namespace}")
+    by_prompt = dict(zip(unique_prompts, unique_results))
+    return [dict(by_prompt[prompt]) for prompt in prompts]
 
 
 def metrics_block(y, p, c, thr):
     pred = (p >= thr).astype(int)
     return {
         "thr": round(float(thr), 3),
+        "acc": round(float(np.mean(pred == y)), 4),
         "macro_f1": round(macro_f1(y, pred), 4),
         "pos_f1": round(f1_score(y, pred, zero_division=0), 4),
         "wF1": round(macro_f1(y, pred, w=np.clip(c, 0.05, None)), 4),
@@ -152,12 +169,15 @@ def main():
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max_tokens", type=int, default=320)
     ap.add_argument("--eval_out", default="")
+    ap.add_argument("--evidence_policy", default="sources_only")
     args = ap.parse_args()
 
     sp = load_split(args.dataset)
+    apply_evidence_policy(sp, args.evidence_policy)
     val, test, train = sp["val"], sp["test"], sp["train"]
     ns = f"llmbase_{args.tag}"
     fewshot_block = build_fewshot(train, args.shots, args.seed) if args.mode == "fewshot" else ""
+    shared_cache_namespace = cache_namespace(args.model, fewshot_block)
 
     rv = score_split(val, args.model, fewshot_block, ns + "_val", args.concurrency, args.max_tokens)
     rt = score_split(test, args.model, fewshot_block, ns + "_test", args.concurrency, args.max_tokens)
@@ -168,17 +188,43 @@ def main():
     pv = arr(val, rv, "risk_score"); yv = np.array([int(r["y"]) for r in val], float)
     pt = arr(test, rt, "risk_score"); yt = np.array([int(r["y"]) for r in test], float)
     ct = np.array([float(r.get("c", 0.05)) for r in test], float)
+    n_err_val = sum(1 for x in rv if x.get("__error__"))
     n_err = sum(1 for x in rt if x.get("__error__"))
 
     thr = best_threshold_macroF1(yv, pv)
     res = {"tag": args.tag, "model": args.model, "mode": args.mode, "shots": args.shots,
+           "n_err_val": int(n_err_val),
            "n_err_test": int(n_err), **metrics_block(yt, pt, ct, thr),
            # 同时报固定 0.5 阈值下的 decision 指标，便于核对模型自带判定
            "macro_f1_dec05": round(macro_f1(yt, arr(test, rt, "decision").astype(int)), 4)}
-    print("RESULT_LLM", json.dumps(res, ensure_ascii=False), flush=True)
+    attach_run_provenance(res, args, args.model)
+    if n_err_val or n_err:
+        raise RuntimeError(
+            f"incomplete hosted-LLM evaluation: val_errors={n_err_val}, "
+            f"test_errors={n_err}; successful payloads remain cached for an exact retry"
+        )
+    print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
     if args.eval_out:
         Path(args.eval_out).parent.mkdir(parents=True, exist_ok=True)
-        json.dump(res, open(args.eval_out, "w"), ensure_ascii=False, indent=2)
+        artifact = {
+            **res,
+            "cache_namespaces": {
+                "val": shared_cache_namespace,
+                "test": shared_cache_namespace,
+            },
+            "validation": {
+                "pair_id": [str(r.get("pair_id", "")) for r in val],
+                "y": yv.astype(int).tolist(), "p": pv.tolist(),
+                "parsed_response": rv,
+            },
+            "test": {
+                "pair_id": [str(r.get("pair_id", "")) for r in test],
+                "y": yt.astype(int).tolist(), "p": pt.tolist(),
+                "c": ct.tolist(), "parsed_response": rt,
+            },
+        }
+        with open(args.eval_out, "w", encoding="utf-8") as handle:
+            json.dump(artifact, handle, ensure_ascii=False, indent=2)
 
 
 if __name__ == "__main__":

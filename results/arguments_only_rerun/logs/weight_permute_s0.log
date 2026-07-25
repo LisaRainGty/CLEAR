@@ -1,0 +1,15 @@
+[c_transform=permute] train c: mean=0.450 std=0.183 (was mean=0.450)
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=0
+[ep0] warmup ce=0.2659 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.6968 val_ap=0.5939
+[ep1] warmup ce=0.1771 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7559 val_ap=0.6667
+[ep2] warmup ce=0.1062 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7366 val_ap=0.6490
+[ep3] CL ce=0.0498 td=0.0000 cl=0.0735 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7425 val_ap=0.6729
+[ep4] CL ce=0.0254 td=0.0000 cl=0.0198 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7274 val_ap=0.6568
+[ep5] CL ce=0.0121 td=0.0000 cl=0.0134 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7288 val_ap=0.6571
+[ep6] CL ce=0.0061 td=0.0000 cl=0.0023 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7259 val_ap=0.6669
+[ep7] CL ce=0.0006 td=0.0000 cl=0.0002 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7282 val_ap=0.6612
+[ep8] CL ce=0.0005 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7306 val_ap=0.6622
+[select] best single-val checkpoint score=1.0789
+RESULT {"tag": "weight_permute", "seed": 0, "thr": 0.1, "acc": 0.8211, "macro_f1": 0.804, "pos_f1": 0.7463, "wF1": 0.7812, "auprc": 0.7438, "auroc": 0.9025, "ece": 0.1329, "n_test": 855, "pos_test": 249, "alpha_rkc": 0.9, "auprc_rkc": 0.7416, "auroc_rkc": 0.9019, "acc_rkc": 0.8222, "pos_f1_rkc": 0.7256, "macro_f1_rkc": 0.7971, "wF1_rkc": 0.7762, "label_match@10": 0.8039, "attr_mAP@10": 0.33, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
+[save_emb] -> /root/CLEAR_run/embeddings/arguments_only_rerun/ablations/weight_permute_s0.pt

@@ -1,0 +1,122 @@
+2026-07-21 20:51:10,981 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 20:51:10,983 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 20:51:11,025 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+2026-07-21 20:51:11,773 - modelscope - WARNING - Model revision not specified, use revision: v1.0.0
+
+Downloading:   0%|          | 0.00/2.00 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 2.00/2.00 [00:00<00:00, 431B/s]
+
+Downloading:   0%|          | 0.00/689 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 689/689 [00:00<00:00, 174kB/s]
+
+Downloading:   0%|          | 0.00/158 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 158/158 [00:00<00:00, 60.7kB/s]
+
+Downloading:   0%|          | 0.00/390M [00:00<?, ?B/s]
+Downloading:   4%|▍         | 16.0M/390M [00:00<00:20, 19.5MB/s]
+Downloading:   8%|▊         | 32.0M/390M [00:01<00:20, 18.7MB/s]
+Downloading:  12%|█▏        | 48.0M/390M [00:02<00:19, 18.4MB/s]
+Downloading:  16%|█▋        | 64.0M/390M [00:03<00:19, 18.0MB/s]
+Downloading:  21%|██        | 80.0M/390M [00:04<00:20, 16.2MB/s]
+Downloading:  25%|██▍       | 96.0M/390M [00:05<00:18, 16.8MB/s]
+Downloading:  29%|██▊       | 112M/390M [00:06<00:17, 17.1MB/s] 
+Downloading:  33%|███▎      | 128M/390M [00:07<00:15, 17.5MB/s]
+Downloading:  37%|███▋      | 144M/390M [00:08<00:14, 17.5MB/s]
+Downloading:  41%|████      | 160M/390M [00:09<00:13, 17.8MB/s]
+Downloading:  45%|████▌     | 176M/390M [00:10<00:12, 18.0MB/s]
+Downloading:  49%|████▉     | 192M/390M [00:11<00:11, 18.0MB/s]
+Downloading:  53%|█████▎    | 208M/390M [00:12<00:11, 16.9MB/s]
+Downloading:  57%|█████▋    | 224M/390M [00:13<00:10, 16.6MB/s]
+Downloading:  62%|██████▏   | 240M/390M [00:14<00:09, 17.2MB/s]
+Downloading:  66%|██████▌   | 256M/390M [00:15<00:08, 17.4MB/s]
+Downloading:  70%|██████▉   | 272M/390M [00:16<00:07, 17.3MB/s]
+Downloading:  74%|███████▍  | 288M/390M [00:17<00:06, 17.8MB/s]
+Downloading:  78%|███████▊  | 304M/390M [00:18<00:05, 17.9MB/s]
+Downloading:  82%|████████▏ | 320M/390M [00:19<00:04, 17.9MB/s]
+Downloading:  86%|████████▌ | 336M/390M [00:20<00:03, 18.0MB/s]
+Downloading:  90%|█████████ | 352M/390M [00:20<00:02, 18.0MB/s]
+Downloading:  94%|█████████▍| 368M/390M [00:21<00:01, 18.2MB/s]
+Downloading:  98%|█████████▊| 384M/390M [00:22<00:00, 18.2MB/s]
+Downloading: 100%|██████████| 390M/390M [00:23<00:00, 17.4MB/s]
+Downloading: 100%|██████████| 390M/390M [00:23<00:00, 17.6MB/s]
+
+Downloading:   0%|          | 0.00/393M [00:00<?, ?B/s]
+Downloading:   4%|▍         | 16.0M/393M [00:00<00:20, 19.1MB/s]
+Downloading:   8%|▊         | 32.0M/393M [00:01<00:20, 18.6MB/s]
+Downloading:  12%|█▏        | 48.0M/393M [00:02<00:19, 18.3MB/s]
+Downloading:  16%|█▋        | 64.0M/393M [00:03<00:19, 18.0MB/s]
+Downloading:  20%|██        | 80.0M/393M [00:04<00:18, 18.1MB/s]
+Downloading:  24%|██▍       | 96.0M/393M [00:05<00:17, 18.0MB/s]
+Downloading:  29%|██▊       | 112M/393M [00:06<00:16, 18.0MB/s] 
+Downloading:  33%|███▎      | 128M/393M [00:07<00:15, 18.0MB/s]
+Downloading:  37%|███▋      | 144M/393M [00:08<00:14, 18.0MB/s]
+Downloading:  41%|████      | 160M/393M [00:09<00:13, 18.0MB/s]
+Downloading:  45%|████▍     | 176M/393M [00:10<00:12, 18.0MB/s]
+Downloading:  49%|████▉     | 192M/393M [00:11<00:11, 17.9MB/s]
+Downloading:  53%|█████▎    | 208M/393M [00:12<00:10, 17.9MB/s]
+Downloading:  57%|█████▋    | 224M/393M [00:13<00:09, 17.8MB/s]
+Downloading:  61%|██████    | 240M/393M [00:13<00:08, 17.8MB/s]
+Downloading:  65%|██████▌   | 256M/393M [00:14<00:08, 17.8MB/s]
+Downloading:  69%|██████▉   | 272M/393M [00:15<00:07, 17.9MB/s]
+Downloading:  73%|███████▎  | 288M/393M [00:16<00:06, 17.9MB/s]
+Downloading:  77%|███████▋  | 304M/393M [00:17<00:05, 17.8MB/s]
+Downloading:  82%|████████▏ | 320M/393M [00:18<00:04, 17.7MB/s]
+Downloading:  86%|████████▌ | 336M/393M [00:19<00:03, 17.8MB/s]
+Downloading:  90%|████████▉ | 352M/393M [00:20<00:02, 17.7MB/s]
+Downloading:  94%|█████████▍| 368M/393M [00:21<00:01, 17.4MB/s]
+Downloading:  98%|█████████▊| 384M/393M [00:22<00:00, 17.8MB/s]
+Downloading: 100%|██████████| 393M/393M [00:22<00:00, 17.8MB/s]
+Downloading: 100%|██████████| 393M/393M [00:23<00:00, 17.9MB/s]
+
+Downloading:   0%|          | 0.00/2.02k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 2.02k/2.02k [00:00<00:00, 490kB/s]
+
+Downloading:   0%|          | 0.00/112 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 112/112 [00:00<00:00, 44.4kB/s]
+
+Downloading:   0%|          | 0.00/390M [00:00<?, ?B/s]
+Downloading:   4%|▍         | 16.0M/390M [00:00<00:20, 19.4MB/s]
+Downloading:   8%|▊         | 32.0M/390M [00:01<00:20, 18.4MB/s]
+Downloading:  12%|█▏        | 48.0M/390M [00:02<00:19, 18.3MB/s]
+Downloading:  16%|█▋        | 64.0M/390M [00:03<00:18, 18.4MB/s]
+Downloading:  20%|██        | 80.0M/390M [00:04<00:17, 18.2MB/s]
+Downloading:  25%|██▍       | 96.0M/390M [00:05<00:16, 18.3MB/s]
+Downloading:  29%|██▊       | 112M/390M [00:06<00:16, 18.2MB/s] 
+Downloading:  33%|███▎      | 128M/390M [00:07<00:15, 18.3MB/s]
+Downloading:  37%|███▋      | 144M/390M [00:08<00:14, 18.1MB/s]
+Downloading:  41%|████      | 160M/390M [00:09<00:13, 18.3MB/s]
+Downloading:  45%|████▌     | 176M/390M [00:10<00:12, 18.2MB/s]
+Downloading:  49%|████▉     | 192M/390M [00:11<00:11, 18.3MB/s]
+Downloading:  53%|█████▎    | 208M/390M [00:11<00:10, 18.3MB/s]
+Downloading:  57%|█████▋    | 224M/390M [00:12<00:09, 18.2MB/s]
+Downloading:  61%|██████▏   | 240M/390M [00:13<00:08, 18.2MB/s]
+Downloading:  66%|██████▌   | 256M/390M [00:14<00:07, 18.2MB/s]
+Downloading:  70%|██████▉   | 272M/390M [00:15<00:06, 18.2MB/s]
+Downloading:  74%|███████▍  | 288M/390M [00:16<00:05, 18.2MB/s]
+Downloading:  78%|███████▊  | 304M/390M [00:17<00:04, 18.2MB/s]
+Downloading:  82%|████████▏ | 320M/390M [00:18<00:04, 18.1MB/s]
+Downloading:  86%|████████▌ | 336M/390M [00:19<00:03, 18.1MB/s]
+Downloading:  90%|█████████ | 352M/390M [00:20<00:02, 18.1MB/s]
+Downloading:  94%|█████████▍| 368M/390M [00:21<00:01, 18.0MB/s]
+Downloading:  98%|█████████▊| 384M/390M [00:22<00:00, 18.0MB/s]
+Downloading: 100%|██████████| 390M/390M [00:22<00:00, 18.1MB/s]
+Downloading: 100%|██████████| 390M/390M [00:22<00:00, 18.2MB/s]
+
+Downloading:   0%|          | 0.00/263k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 263k/263k [00:00<00:00, 1.83MB/s]
+Downloading: 100%|██████████| 263k/263k [00:00<00:00, 1.82MB/s]
+
+Downloading:   0%|          | 0.00/19.0 [00:00<?, ?B/s]
+Downloading: 100%|██████████| 19.0/19.0 [00:00<00:00, 7.44kB/s]
+
+Downloading:   0%|          | 0.00/107k [00:00<?, ?B/s]
+Downloading: 100%|██████████| 107k/107k [00:00<00:00, 1.02MB/s]
+Downloading: 100%|██████████| 107k/107k [00:00<00:00, 1.01MB/s]
+/root/miniconda3/envs/myconda/lib/python3.9/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+[roberta_cls ep0] loss=0.3998 val_mF1=0.7222
+[roberta_cls ep1] loss=0.2681 val_mF1=0.7259
+[roberta_cls ep2] loss=0.1749 val_mF1=0.7322
+[roberta_cls ep3] loss=0.0927 val_mF1=0.7302
+RESULT {"tag": "roberta_cls", "seed": 0, "thr": 0.66, "acc": 0.8035, "macro_f1": 0.7689, "pos_f1": 0.6794, "wF1": 0.743, "auprc": 0.715, "auroc": 0.8881, "ece": 0.1234, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/dienstag/chinese-roberta-wwm-ext", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/roberta_cls_s0.pt

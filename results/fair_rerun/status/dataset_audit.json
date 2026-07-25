@@ -1,0 +1,20 @@
+{
+  "job": "dataset_audit",
+  "stage": "audit",
+  "signature": "89402144f90d987727066dc67e4c3a5184a553ca8aebab5b64aa2933e82c4eaf",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "/root/CLEAR_run/scripts/audit_reproducibility.py"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python /root/CLEAR_run/scripts/audit_reproducibility.py",
+  "started_utc": "2026-07-21T11:21:15.686751+00:00",
+  "finished_utc": "2026-07-21T11:21:16.122386+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/dataset_audit.log",
+  "result_file": "results/fair_rerun/jobs/dataset_audit.jsonl",
+  "outputs": [
+    "results/audit/reproducibility_report.json"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

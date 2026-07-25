@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "archived_local_date": "2026-07-24",
+  "reason": "User-authorized retirement after canonical seed 2 completed, before preregistered dual-space boundary RACL tuning.",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "retired_remote_runner_pid": 98295,
+  "retired_remote_runner_state": "terminated",
+  "stale_runner_pid_61573": "must_never_resume",
+  "completed_canonical_seeds": [0, 1, 2],
+  "canonical_status_sha256": {
+    "seed_0": "6c8731b64f20005e96f6ec9340f5ff5a5bb3ae2c61f0245a28ddc64c26859312",
+    "seed_1": "0d36edda47fd04244ad4e2145e0ad50666716fad4744275be40f2130cfc73377",
+    "seed_2": "edd0bb617e69a6a28ee66e4565c4d7197e7961d168c0b98f8f686e21ac05d03d"
+  },
+  "interrupted_job": {
+    "name": "no_racl_s0",
+    "reason": "The old runner dispatched it immediately after canonical seed 2. It was terminated before producing a valid status/result and is incomplete provenance only."
+  },
+  "archived_artifacts": [
+    "results/arguments_only_racl_v2_final",
+    "embeddings/arguments_only_racl_v2_final"
+  ],
+  "selection_provenance": {
+    "manifest": "results/arguments_only_racl_v2_tune/racl_v2_selection.json",
+    "sha256": "fe1f336885a046438b548a3f2b989be55d773a93da69a05df13a9054c867115d",
+    "test_metrics_accessed": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "format": "tar+zstandard",
+  "metadata_normalisation": {
+    "uid": 0,
+    "gid": 0,
+    "mtime": 0,
+    "directory_mode": "0755",
+    "file_mode": "0644"
+  },
+  "layers": {
+    "raw": {
+      "archive": "data/archives/raw.tar.zst",
+      "archive_sha256": "53eecb89b887d4d6c4d5de849b77109e3751443006183f132576ae485ee88774",
+      "compressed_bytes": 1086150814,
+      "file_count": 15952,
+      "logical_bytes": 1365590794,
+      "tree_sha256": "f6614c281f79b4772f1fba382c30cb9c0124b972388ffdef1e4ad73b4e911ab1"
+    },
+    "processed": {
+      "archive": "data/archives/processed.tar.zst",
+      "archive_sha256": "d8e4025c340b23830eb8fc9a8c5d94dd8844c071933d71fd0fdb881f3e347e4b",
+      "compressed_bytes": 39743238,
+      "file_count": 2178,
+      "logical_bytes": 892901382,
+      "tree_sha256": "4aa38a7de4f9984f12c32cca3a50e57d631a91138cbe7f8bd889211d6e791390"
+    }
+  }
+}

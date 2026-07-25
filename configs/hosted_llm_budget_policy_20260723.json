@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "revision": "hosted_llm_budget_stop_20260723",
+  "reason": "User requested that weak zero/few-shot hosted baselines stop expanding and that budget shift to supervised LLM fine-tuning.",
+  "new_hosted_api_calls_authorized": false,
+  "paper_representative": {
+    "model": "Qwen-Flash",
+    "settings": ["zero-shot", "5-shot"],
+    "status": "complete",
+    "scope": "main in-domain test only"
+  },
+  "completed_supplementary_provenance": [
+    "GPT-5.4 zero-shot",
+    "GPT-5.4 5-shot",
+    "Kimi-K2.6 zero-shot"
+  ],
+  "cancelled_or_not_retried": [
+    "Gemini-3.5-Flash zero-shot",
+    "Gemini-3.5-Flash 5-shot",
+    "Kimi-K2.6 5-shot",
+    "hosted-LLM cross-domain category folds",
+    "hosted-LLM cross-domain room seeds"
+  ],
+  "cache_policy": "Preserve all completed and partial append-only caches as provenance; do not include incomplete results in paper tables.",
+  "replacement_focus": "arguments_only_llm_sft_v2 validation-only QLoRA tuning and locked three-seed supervised evaluation"
+}

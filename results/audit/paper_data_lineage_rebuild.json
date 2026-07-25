@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "artifacts": {
+    "stateful_all": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/stateful_all.jsonl",
+      "rows": 8908,
+      "sha256": "06943103e87d6ccce83f86db3392bca1fb3646e0aa01a91d38700a19736c471e",
+      "expected_rows": 8908,
+      "expected_sha256": "06943103e87d6ccce83f86db3392bca1fb3646e0aa01a91d38700a19736c471e",
+      "match": true
+    },
+    "stateful_supervised": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/stateful_supervised.jsonl",
+      "rows": 2278,
+      "sha256": "92f04c2e50f64f28b13d4a59ffeb5b248a8fcd698f070c587154460a29f728c2",
+      "expected_rows": 2278,
+      "expected_sha256": "92f04c2e50f64f28b13d4a59ffeb5b248a8fcd698f070c587154460a29f728c2",
+      "match": true
+    },
+    "stateful_contrastive": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/stateful_contrastive.jsonl",
+      "rows": 1046,
+      "sha256": "b87e439fb60044e45a954333628446d5e06c0208b4389705b833a1676d95a93f",
+      "expected_rows": 1046,
+      "expected_sha256": "b87e439fb60044e45a954333628446d5e06c0208b4389705b833a1676d95a93f",
+      "match": true
+    },
+    "stateful_repair": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/stateful_repair.jsonl",
+      "rows": 6630,
+      "sha256": "adcd05f8a5ed65d0cabb09d537a36691b10043fa65247c3622d875b4c40eeaf9",
+      "expected_rows": 6630,
+      "expected_sha256": "adcd05f8a5ed65d0cabb09d537a36691b10043fa65247c3622d875b4c40eeaf9",
+      "match": true
+    },
+    "plan_all": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/plan_all.jsonl",
+      "rows": 8908,
+      "sha256": "5d64148eaa207efd8c7518eecd602b6e6488198219e5efa53832922b9998044a",
+      "expected_rows": 8908,
+      "expected_sha256": "5d64148eaa207efd8c7518eecd602b6e6488198219e5efa53832922b9998044a",
+      "match": true
+    },
+    "plan_supervised": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/plan_supervised.jsonl",
+      "rows": 2278,
+      "sha256": "5bdd16a2c784f412a8e5a84228659580cc77b739f4c1c7bb13324badc5f6dfd5",
+      "expected_rows": 2278,
+      "expected_sha256": "5bdd16a2c784f412a8e5a84228659580cc77b739f4c1c7bb13324badc5f6dfd5",
+      "match": true
+    },
+    "plan_all_stagec": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/plan_all_stagec.jsonl",
+      "rows": 8908,
+      "sha256": "3edc9c98c043bf88b120c4f1084ed9883eebf399f3080853b14befa94707b4cd",
+      "expected_rows": 8908,
+      "expected_sha256": "3edc9c98c043bf88b120c4f1084ed9883eebf399f3080853b14befa94707b4cd",
+      "match": true
+    },
+    "plan_supervised_stagec": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/plan_supervised_stagec.jsonl",
+      "rows": 2278,
+      "sha256": "0cb580f5df791aebfa963c9e84a701c96f7aa4c3d85d337dfb65839f11b60492",
+      "expected_rows": 2278,
+      "expected_sha256": "0cb580f5df791aebfa963c9e84a701c96f7aa4c3d85d337dfb65839f11b60492",
+      "match": true
+    },
+    "objective_negative": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/objective_negative.jsonl",
+      "rows": 2605,
+      "sha256": "7df3f9ac18c6691410489322c129600d3ba528190c0f3c9757351a57b6b151c9",
+      "expected_rows": 2605,
+      "expected_sha256": "7df3f9ac18c6691410489322c129600d3ba528190c0f3c9757351a57b6b151c9",
+      "match": true
+    },
+    "paper_training": {
+      "path": "/var/folders/1r/92ptcm_n5z79y1qww75jy0pr0000gn/T/claimarc-paper-data-j1irmm8u/paper_training.jsonl",
+      "rows": 4883,
+      "sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+      "expected_rows": 4883,
+      "expected_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+      "match": true
+    }
+  },
+  "mode": "temporary_verification",
+  "frozen_review_inputs": 44,
+  "arguments_used": false
+}

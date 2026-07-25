@@ -1,0 +1,13 @@
+2026-07-21 21:21:47,842 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 21:21:47,844 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 21:21:47,886 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+[textcnn ep0] loss=0.4275 val_mF1=0.7004
+[textcnn ep1] loss=0.2657 val_mF1=0.7109
+[textcnn ep2] loss=0.1960 val_mF1=0.7100
+[textcnn ep3] loss=0.1510 val_mF1=0.7078
+[textcnn ep4] loss=0.1143 val_mF1=0.7357
+[textcnn ep5] loss=0.0845 val_mF1=0.7237
+[textcnn ep6] loss=0.0693 val_mF1=0.7302
+[textcnn ep7] loss=0.0677 val_mF1=0.7192
+RESULT {"tag": "textcnn", "seed": 2, "thr": 0.46, "acc": 0.7836, "macro_f1": 0.7435, "pos_f1": 0.6422, "wF1": 0.7167, "auprc": 0.621, "auroc": 0.8519, "ece": 0.1043, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese"}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/textcnn_s2.pt

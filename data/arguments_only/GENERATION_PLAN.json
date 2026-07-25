@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-07-22T05:01:21Z",
+  "protocol": "arguments_only",
+  "updated_utc": "2026-07-22T05:18:25Z",
+  "status": "pilot_passed_full_generation_pending",
+  "frozen_source": {
+    "path": "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+    "rows": 4883,
+    "source_bearing_rows": 3400,
+    "deterministic_no_source_rows": 1483
+  },
+  "generation": {
+    "backend": "matpool",
+    "base_url": "https://token.matpool.com/v1",
+    "model_id": "Qwen3.7-Max",
+    "revision_label": "matpool_live_20260722",
+    "temperature": 0.0,
+    "max_input_tokens": 1536,
+    "max_new_tokens": 256,
+    "api_concurrency_pilot": 2,
+    "api_concurrency_full": 4,
+    "api_key_persisted": false,
+    "provider_determinism_assumed": false
+  },
+  "generator_script_sha256": "cdeb43e75bf1f5437412fba7be00357da32422d3aa6c2b547f38cab7df217215",
+  "catalog_verification": {
+    "checked_utc": "2026-07-22T05:01:21Z",
+    "models_endpoint_authenticated": true,
+    "model_present": true,
+    "pricing_source": "https://www.matpool.com/models",
+    "pricing_yuan_per_million_tokens": {
+      "input": 9.6,
+      "output": 28.8
+    }
+  },
+  "token_and_cost_estimate": {
+    "tokenizer_proxy": "Qwen/Qwen2.5-32B-Instruct tokenizer",
+    "source_bearing_prompt_tokens": 1515980,
+    "prompt_tokens_mean": 445.88,
+    "prompt_tokens_median": 422,
+    "prompt_tokens_p95": 588,
+    "prompt_tokens_max": 1338,
+    "pilot_local_accepted_output_tokens_mean": 51.25,
+    "pre_pilot_visible_output_estimate_tokens": 174250,
+    "pre_pilot_visible_output_estimate_cost_yuan": 19.57,
+    "final_pilot_prompt_tokens_per_model_row": 589.0625,
+    "final_pilot_completion_tokens_per_model_row": 850.375,
+    "projected_full_prompt_tokens": 2002813,
+    "projected_full_completion_tokens": 2891275,
+    "projected_full_cost_yuan_before_validation_retries": 102.5,
+    "operational_budget_estimate_yuan_including_retries": 115.0,
+    "note": "Actual provider usage and a price-derived estimate are accumulated in MANIFEST.json; MatPool billing remains authoritative."
+  },
+  "pilot_gate": {
+    "sample_size": 24,
+    "sample_seed": 20260722,
+    "expected_model_calls": 16,
+    "result": "PASS",
+    "qwen37max_final_pilot": {
+      "resolved_rows": 24,
+      "model_rows": 16,
+      "first_attempt_model_rows": 16,
+      "api_errors": 0,
+      "prompt_tokens": 9425,
+      "completion_tokens": 13606,
+      "estimated_cost_yuan": 0.482333
+    },
+    "candidate_comparison": {
+      "Qwen3.7-Max_max_tokens_256": "24/24 complete; 16/16 model rows passed on first attempt after final semantic prompt; selected",
+      "DeepSeek-V4-Pro_max_tokens_256": "15/24 complete after three attempts; rejected due widespread truncation",
+      "DeepSeek-V4-Pro_max_tokens_1024": "23/24 complete after three attempts; rejected due lower structural reliability"
+    },
+    "requirements": [
+      "all 24 rows resolve within the frozen validation policy",
+      "no label, split, reliability, comment, or historical-argument input",
+      "manual claim-source-argument review passes",
+      "exact request prompts, raw responses, response hashes, and usage are retained"
+    ]
+  }
+}

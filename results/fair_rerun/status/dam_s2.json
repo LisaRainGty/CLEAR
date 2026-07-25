@@ -1,0 +1,33 @@
+{
+  "job": "dam_s2",
+  "stage": "table3",
+  "signature": "ec3682cb97e167b4b4eb6377e60e76f2e5d97a70f73d57133fbf00840c3a9d01",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_neural",
+    "--dataset",
+    "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "--kind",
+    "dam",
+    "--seed",
+    "2",
+    "--loss",
+    "bce",
+    "--evidence_policy",
+    "sources_only",
+    "--save_pred",
+    "/root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/dam_s2.pt"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_neural --dataset /root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl --kind dam --seed 2 --loss bce --evidence_policy sources_only --save_pred /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/dam_s2.pt",
+  "started_utc": "2026-07-21T13:25:59.057220+00:00",
+  "finished_utc": "2026-07-21T13:26:29.821271+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/dam_s2.log",
+  "result_file": "results/fair_rerun/jobs/dam_s2.jsonl",
+  "outputs": [
+    "embeddings/fair_rerun/baseline_predictions/dam_s2.pt"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

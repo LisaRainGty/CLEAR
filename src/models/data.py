@@ -26,6 +26,39 @@ SPECIAL_TOKENS = [
 L_C = 384
 L_E = 384
 
+EVIDENCE_POLICIES = (
+    "record", "args_first", "source_first", "no_args", "source_only",
+    "sources_only", "args_only", "params_only", "ocr_only", "vlm_only",
+    "params_args", "ocr_args", "vlm_args",
+)
+
+
+def apply_evidence_policy(splits: dict[str, list[dict]], policy: str | None) -> None:
+    """Attach one explicit evidence view to every split without changing source files."""
+    if not policy or policy == "record":
+        return
+    if policy not in EVIDENCE_POLICIES:
+        raise ValueError(f"unknown evidence_policy: {policy}")
+    for rows in splits.values():
+        for rec in rows:
+            rec["_evidence_policy"] = policy
+
+
+def argument_coverage(splits: dict[str, list[dict]]) -> dict[str, dict[str, int | float]]:
+    """Count records containing at least one non-empty generated argument field."""
+    out = {}
+    for split, rows in splits.items():
+        populated = sum(1 for rec in rows if any(
+            str((rec.get("arguments", {}) or {}).get(key, "") or "").strip()
+            for key in ("supporting_argument", "refuting_argument", "evidence_gap")
+        ))
+        out[split] = {
+            "total": len(rows),
+            "with_arguments": populated,
+            "coverage": populated / len(rows) if rows else 0.0,
+        }
+    return out
+
 
 def resolve_bge_path(name: str = "BAAI/bge-large-zh-v1.5") -> str:
     """优先本地目录 / 环境变量，其次 ModelScope 缓存，否则 HF 名。"""
@@ -103,19 +136,16 @@ def build_evidence_ids(tok, rec: dict, policy_override: str | None = None) -> li
     if policy_override and policy_override != "record":
         policy = policy_override
     else:
-        # Paper-fair default: three product sources only (params/OCR/VLM).
-        policy = rec.get("_evidence_policy") or rec.get("evidence_policy") or "sources_only"
+        policy = rec.get("_evidence_policy", rec.get("evidence_policy", "args_first"))
     source_blocks = list(_source_blocks(rec))
     argument_blocks = list(_argument_blocks(rec))
     blocks = []
     if policy == "source_first":
-        # Retired for paper runs; keep path but prefer sources for fairness.
-        blocks = source_blocks
-    elif policy in ("no_args", "source_only", "sources_only", "args_first", "", None):
+        blocks = source_blocks + argument_blocks
+    elif policy in ("no_args", "source_only", "sources_only"):
         blocks = source_blocks
     elif policy == "args_only":
-        # Kept for legacy; paper campaign no longer schedules this.
-        blocks = argument_blocks if argument_blocks else source_blocks
+        blocks = argument_blocks
     elif policy == "params_only":
         blocks = list(_source_blocks(rec, {"params"}))
     elif policy == "ocr_only":
@@ -123,11 +153,13 @@ def build_evidence_ids(tok, rec: dict, policy_override: str | None = None) -> li
     elif policy == "vlm_only":
         blocks = list(_source_blocks(rec, {"vlm"}))
     elif policy == "params_args":
-        blocks = list(_source_blocks(rec, {"params"}))
+        blocks = list(_source_blocks(rec, {"params"})) + argument_blocks
     elif policy == "ocr_args":
-        blocks = list(_source_blocks(rec, {"ocr"}))
+        blocks = list(_source_blocks(rec, {"ocr"})) + argument_blocks
     elif policy == "vlm_args":
-        blocks = list(_source_blocks(rec, {"vlm"}))
+        blocks = list(_source_blocks(rec, {"vlm"})) + argument_blocks
+    elif policy in ("args_first", "", None):
+        blocks = argument_blocks + source_blocks
     else:
         raise ValueError(f"unknown evidence_policy: {policy}")
 
@@ -162,6 +194,7 @@ class Batch:
     confidence: list
     attr: list
     pair_id: list
+    racl_memory: torch.Tensor
 
 
 def source_count(rec: dict) -> int:
@@ -261,6 +294,7 @@ class ClaimDataset(Dataset):
             "confidence": confidence_bin(r),
             "attr": r.get("attribute_id", ""),
             "pair_id": r.get("pair_id", ""),
+            "racl_memory": list(r.get("_racl_memory", [0.0, 0.0, 0.0])),
         }
         if self.evidence_consistency_mix:
             base_policy = policy or r.get("_evidence_policy", r.get("evidence_policy", "args_first"))
@@ -275,7 +309,8 @@ def make_collate(pad_id: int, stream_mode: str = "dual"):
       dual     → 默认双流（claim 流 + evidence 流）。
       claim    → 单流消融：evidence 流镜像为 claim 流（仅主播话术进入两个编码器槽）。
       evidence → 单流消融：claim 流镜像为 evidence 流（仅证据进入两个编码器槽）。
-    单流变体需配合 --no_fusion 使用，使两次编码完全等价、不存在跨流交互。"""
+    单流变体需配合 --no_fusion 使用；模型仅编码所选流一次并复用表示，
+    不产生第二个随机编码视图。"""
     def collate(items) -> Batch:
         def pad(key):
             seqs = [it[key] for it in items]
@@ -313,6 +348,9 @@ def make_collate(pad_id: int, stream_mode: str = "dual"):
             confidence=[it["confidence"] for it in items],
             attr=[it["attr"] for it in items],
             pair_id=[it["pair_id"] for it in items],
+            racl_memory=torch.tensor(
+                [it["racl_memory"] for it in items], dtype=torch.float
+            ),
         )
     return collate
 

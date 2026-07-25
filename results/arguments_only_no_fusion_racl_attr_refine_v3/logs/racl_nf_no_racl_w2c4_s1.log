@@ -1,0 +1,10 @@
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=1
+[ep0] warmup ce=0.3174 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7356 val_ap=0.6043
+[ep1] warmup ce=0.2106 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7484 val_ap=0.6282
+[ep2] warmup ce=0.1363 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7336 val_ap=0.6619
+[ep3] warmup ce=0.0731 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7397 val_ap=0.6696
+[ep4] warmup ce=0.0342 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7236 val_ap=0.6646
+[ep5] warmup ce=0.0133 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7226 val_ap=0.6667
+[select] best single-val checkpoint score=1.0745
+RESULT {"tag": "racl_nf_no_racl_w2c4", "seed": 1, "evaluation_split": "validation", "validation_only": true, "thr": 0.06, "acc": 0.75, "macro_f1": 0.7397, "pos_f1": 0.6879, "wF1": 0.718, "auprc": 0.6696, "auroc": 0.8422, "ece": 0.1652, "n_val": 392, "pos_val": 122, "no_fusion": true, "n_fusion": 2, "heads": 8, "fusion_dropout": 0.2, "lr_fusion": 0.0001, "no_cl": true, "cl_mode": "racl", "lambda_cl": 0.0, "tau": 0.1, "Kp": 3, "Kn": 5, "warmup_epochs": 2, "contrastive_epochs": 4, "cl_exclude_self": false, "cl_c_min": 0.0, "cl_neg_c_min": 0.0, "cl_hard_pos": false, "cl_attribute_blocked": false, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}

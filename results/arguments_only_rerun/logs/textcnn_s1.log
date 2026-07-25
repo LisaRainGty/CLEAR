@@ -1,0 +1,10 @@
+[textcnn ep0] loss=0.4462 val_mF1=0.6895
+[textcnn ep1] loss=0.2943 val_mF1=0.7005
+[textcnn ep2] loss=0.2160 val_mF1=0.7114
+[textcnn ep3] loss=0.1523 val_mF1=0.7131
+[textcnn ep4] loss=0.1354 val_mF1=0.6984
+[textcnn ep5] loss=0.0969 val_mF1=0.7084
+[textcnn ep6] loss=0.0791 val_mF1=0.7012
+[textcnn ep7] loss=0.0572 val_mF1=0.7053
+RESULT {"tag": "textcnn", "seed": 1, "thr": 0.32, "acc": 0.7801, "macro_f1": 0.7531, "pos_f1": 0.6713, "wF1": 0.7292, "auprc": 0.6555, "auroc": 0.8547, "ece": 0.0798, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese"}
+[save_pred] -> /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/textcnn_s1.pt

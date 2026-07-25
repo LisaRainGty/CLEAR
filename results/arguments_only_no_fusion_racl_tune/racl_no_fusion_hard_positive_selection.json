@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-07-24T02:44:45.886692+00:00",
+  "config": "/root/CLEAR_run/configs/racl_no_fusion_hard_positive_confirmation.json",
+  "config_sha256": "243ebd0c2a475615b033060ad8ec18a850207acb50af1043ca88d50ba45bec00",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only",
+  "architecture": "no_fusion",
+  "test_metrics_accessed": false,
+  "selection": {
+    "primary_metric": "auprc",
+    "tie_breaker": "pos_f1",
+    "aggregation": "mean over seeds 0,1,2",
+    "standard_deviation": "population ddof=0 for validation selection",
+    "diagnostic_control": "no_racl",
+    "eligible_main_models": "The single fixed hard-positive RACL candidate; no_racl is diagnostic only.",
+    "selection_rule": "The user-fixed RACL candidate is locked after three validation-only seeds; no test or RKC metrics are accessed."
+  },
+  "decision_provenance": {
+    "decision_source": "user_authorized_architecture_override_20260724",
+    "prior_test_metrics_informed_high_level_decision": true,
+    "confirmation_scope": "The fixed hard-positive candidate is evaluated on validation only; this is a protocol confirmation, not an independent architecture search.",
+    "clean_confirmatory_claim_requires_new_untouched_holdout": true
+  },
+  "racl_mandatory": true,
+  "phase_selected_candidate": "racl_hardpos_l050_t007",
+  "selected_candidate": "racl_hardpos_l050_t007",
+  "selected_source": "current_phase",
+  "ranked_racl_candidates": [
+    "racl_hardpos_l050_t007"
+  ],
+  "cross_phase_ranked_candidates": [
+    "current_phase:racl_hardpos_l050_t007"
+  ],
+  "parent_phase_summary": null,
+  "diagnostics_vs_no_racl": {
+    "no_racl": {
+      "selectable": false,
+      "role": "diagnostic_control",
+      "matched_seed_ap_wins": 0,
+      "mean_ap_delta": 0.0,
+      "mean_pos_f1_delta": 0.0
+    },
+    "racl_hardpos_l050_t007": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 2,
+      "mean_ap_delta": 0.005900000000000127,
+      "mean_pos_f1_delta": -0.031166666666666676
+    }
+  },
+  "aggregates": {
+    "no_racl": {
+      "spec": {
+        "name": "no_racl",
+        "racl_enabled": false,
+        "lambda_cl": 0.0,
+        "tau": 0.07,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": false,
+        "hard_positive": false,
+        "attribute_blocked": false,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_no_racl",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.42,
+          "acc": 0.7526,
+          "macro_f1": 0.7397,
+          "pos_f1": 0.682,
+          "wF1": 0.7194,
+          "auprc": 0.6324,
+          "auroc": 0.8329,
+          "ece": 0.1551,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.07,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_no_racl_s0"
+        },
+        {
+          "tag": "racl_nf_no_racl",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.08,
+          "acc": 0.7423,
+          "macro_f1": 0.7351,
+          "pos_f1": 0.6911,
+          "wF1": 0.7137,
+          "auprc": 0.6434,
+          "auroc": 0.8339,
+          "ece": 0.1687,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.07,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_no_racl_s1"
+        },
+        {
+          "tag": "racl_nf_no_racl",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.1,
+          "acc": 0.7755,
+          "macro_f1": 0.7636,
+          "pos_f1": 0.7105,
+          "wF1": 0.7424,
+          "auprc": 0.6494,
+          "auroc": 0.8448,
+          "ece": 0.1647,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.07,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_no_racl_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7568,
+        "std": 0.013875397892192732,
+        "values": [
+          0.7526,
+          0.7423,
+          0.7755
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6945333333333333,
+        "std": 0.011885658958967676,
+        "values": [
+          0.682,
+          0.6911,
+          0.7105
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7461333333333333,
+        "std": 0.012492753455058991,
+        "values": [
+          0.7397,
+          0.7351,
+          0.7636
+        ]
+      },
+      "auprc": {
+        "mean": 0.6417333333333333,
+        "std": 0.007039570693980965,
+        "values": [
+          0.6324,
+          0.6434,
+          0.6494
+        ]
+      },
+      "auroc": {
+        "mean": 0.8371999999999998,
+        "std": 0.005389495956642585,
+        "values": [
+          0.8329,
+          0.8339,
+          0.8448
+        ]
+      },
+      "wF1": {
+        "mean": 0.7251666666666666,
+        "std": 0.012406002131584862,
+        "values": [
+          0.7194,
+          0.7137,
+          0.7424
+        ]
+      },
+      "ece": {
+        "mean": 0.16283333333333333,
+        "std": 0.005706915882408722,
+        "values": [
+          0.1551,
+          0.1687,
+          0.1647
+        ]
+      }
+    },
+    "racl_hardpos_l050_t007": {
+      "spec": {
+        "name": "racl_hardpos_l050_t007",
+        "racl_enabled": true,
+        "lambda_cl": 0.5,
+        "tau": 0.07,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": false,
+        "hard_positive": true,
+        "attribute_blocked": false,
+        "cl_c_min": 0.0,
+        "cl_neg_c_min": 0.0
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_nf_racl_hardpos_l050_t007",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.16,
+          "acc": 0.7526,
+          "macro_f1": 0.7342,
+          "pos_f1": 0.6644,
+          "wF1": 0.7168,
+          "auprc": 0.6436,
+          "auroc": 0.8296,
+          "ece": 0.1979,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.5,
+          "tau": 0.07,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": true,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_hardpos_l050_t007_s0"
+        },
+        {
+          "tag": "racl_nf_racl_hardpos_l050_t007",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.18,
+          "acc": 0.7526,
+          "macro_f1": 0.7225,
+          "pos_f1": 0.6312,
+          "wF1": 0.7081,
+          "auprc": 0.6666,
+          "auroc": 0.8327,
+          "ece": 0.194,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.5,
+          "tau": 0.07,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": true,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_hardpos_l050_t007_s1"
+        },
+        {
+          "tag": "racl_nf_racl_hardpos_l050_t007",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.06,
+          "acc": 0.7577,
+          "macro_f1": 0.7468,
+          "pos_f1": 0.6945,
+          "wF1": 0.7236,
+          "auprc": 0.6327,
+          "auroc": 0.8379,
+          "ece": 0.2137,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": true,
+          "n_fusion": 2,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 0.0001,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.5,
+          "tau": 0.07,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": true,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_nf_racl_hardpos_l050_t007_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7543000000000001,
+        "std": 0.0024041630560342584,
+        "values": [
+          0.7526,
+          0.7526,
+          0.7577
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6633666666666667,
+        "std": 0.025852444543773598,
+        "values": [
+          0.6644,
+          0.6312,
+          0.6945
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7345,
+        "std": 0.009922701245124732,
+        "values": [
+          0.7342,
+          0.7225,
+          0.7468
+        ]
+      },
+      "auprc": {
+        "mean": 0.6476333333333334,
+        "std": 0.014130424228907222,
+        "values": [
+          0.6436,
+          0.6666,
+          0.6327
+        ]
+      },
+      "auroc": {
+        "mean": 0.8334,
+        "std": 0.0034244220923634098,
+        "values": [
+          0.8296,
+          0.8327,
+          0.8379
+        ]
+      },
+      "wF1": {
+        "mean": 0.7161666666666667,
+        "std": 0.006343675765849211,
+        "values": [
+          0.7168,
+          0.7081,
+          0.7236
+        ]
+      },
+      "ece": {
+        "mean": 0.20186666666666667,
+        "std": 0.008517563553557372,
+        "values": [
+          0.1979,
+          0.194,
+          0.2137
+        ]
+      }
+    }
+  }
+}

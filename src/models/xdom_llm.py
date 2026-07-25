@@ -18,8 +18,11 @@ import random
 import numpy as np
 import torch
 
-from models.run_llm_baselines import build_fewshot, score_split
+from models.run_llm_baselines import build_fewshot, cache_namespace, score_split
+from models.data import apply_evidence_policy
+from models.provenance import sha256_file
 from models.xdom_common import build_splits, holdout_rooms
+from models.xdom_fold import fold_provenance
 
 
 def _arr(res, key):
@@ -28,7 +31,7 @@ def _arr(res, key):
 
 
 def cap_val(val, cap, seed):
-    if len(val) <= cap:
+    if cap <= 0 or len(val) <= cap:
         return val
     rng = random.Random(seed)
     pos = [r for r in val if int(r.get("y", 0)) == 1]
@@ -42,15 +45,23 @@ def cap_val(val, cap, seed):
 
 def run_mode(model, mode, shots, seed, train, val, test, conc, max_tokens, ns_pre):
     fewshot = build_fewshot(train, shots, seed) if mode == "fewshot" else ""
+    shared_cache_namespace = cache_namespace(model, fewshot)
     rv = score_split(val, model, fewshot, f"{ns_pre}_{mode}_val", conc, max_tokens)
     rt = score_split(test, model, fewshot, f"{ns_pre}_{mode}_test", conc, max_tokens)
     return {
         "p_val": _arr(rv, "risk_score").tolist(),
         "y_val": [int(r["y"]) for r in val],
+        "pair_id_val": [str(r.get("pair_id", "")) for r in val],
         "p": _arr(rt, "risk_score").tolist(),
         "y": [int(r["y"]) for r in test],
+        "pair_id": [str(r.get("pair_id", "")) for r in test],
         "c": [float(r.get("c", 0.05)) for r in test],
         "attr": [r.get("attribute_id", "") for r in test],
+        "parsed_response_val": rv,
+        "parsed_response_test": rt,
+        "cache_namespaces": {"val": shared_cache_namespace,
+                             "test": shared_cache_namespace},
+        "n_err_val": int(sum(1 for x in rv if x.get("__error__"))),
         "n_err": int(sum(1 for x in rt if x.get("__error__"))),
     }
 
@@ -64,10 +75,12 @@ def main():
     ap.add_argument("--outdir", required=True)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--shots", type=int, default=5)
-    ap.add_argument("--val_cap", type=int, default=200)
+    ap.add_argument("--val_cap", type=int, default=0,
+                    help="0 uses the full shared validation fold (required for fair paper results)")
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max_tokens", type=int, default=320)
     ap.add_argument("--modes", default="zero,fewshot")
+    ap.add_argument("--evidence_policy", default="sources_only")
     args = ap.parse_args()
 
     os.makedirs(args.outdir, exist_ok=True)
@@ -75,6 +88,14 @@ def main():
         args.holdout = ",".join(holdout_rooms(args.dataset, 20))
     label = (args.holdout[:24] if args.mode == "category" else args.mode)
     splits = build_splits(args.dataset, args.mode, args.holdout, seed=args.seed)
+    fold_meta = fold_provenance(splits, args.mode, args.holdout, args.seed,
+                                args.evidence_policy)
+    if any(fold_meta["pair_id_overlap"].values()) or fold_meta["room_overlap"]["train_val"]:
+        raise ValueError("cross-domain split leakage detected")
+    if args.mode == "rooms" and (fold_meta["room_overlap"]["train_test"]
+                                 or fold_meta["room_overlap"]["val_test"]):
+        raise ValueError("leave-room target leakage detected")
+    apply_evidence_policy(splits, args.evidence_policy)
     train, val, test = splits["train"], cap_val(splits["val"], args.val_cap, args.seed), splits["test"]
     n_pos = sum(int(r["y"]) for r in test)
     print("FOLD_META", json.dumps({"mode": args.mode, "holdout": label,
@@ -85,11 +106,24 @@ def main():
         return
 
     ns_pre = f"xdomllm_{args.model}_{args.mode}_{label}_s{args.seed}"
-    out = {"model": args.model, "mode": args.mode, "holdout": label}
+    out = {"model": args.model, "mode": args.mode, "holdout": label,
+           "dataset": args.dataset, "dataset_sha256": sha256_file(args.dataset),
+           "evidence_policy": args.evidence_policy, "seed": args.seed,
+           "fold_provenance": fold_meta}
     for mode in [m.strip() for m in args.modes.split(",") if m.strip()]:
         out[mode] = run_mode(args.model, mode, args.shots, args.seed,
                              train, val, test, args.concurrency, args.max_tokens, ns_pre)
         print(f"LLM_{mode.upper()}_DONE", label, "n_err=", out[mode]["n_err"], flush=True)
+    incomplete = {
+        mode: {"val": out[mode]["n_err_val"], "test": out[mode]["n_err"]}
+        for mode in [m.strip() for m in args.modes.split(",") if m.strip()]
+        if out[mode]["n_err_val"] or out[mode]["n_err"]
+    }
+    if incomplete:
+        raise RuntimeError(
+            "incomplete hosted-LLM cross-domain evaluation; exact retry required: "
+            + json.dumps(incomplete, ensure_ascii=False)
+        )
     path = os.path.join(args.outdir, f"llm_{args.model}_{args.mode}_{label}_s{args.seed}.pt")
     torch.save(out, path)
     print("LLM_SAVED", path, flush=True)

@@ -1,0 +1,1077 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-07-23T19:43:00.384082+00:00",
+  "config": "/root/CLEAR_run/configs/racl_locked_fusion_tuning.json",
+  "config_sha256": "c709614dfb6e121fc51d22389b50fccee6ee043cdad9bfa1d7d72e1d7f45ce8a",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only",
+  "architecture": "locked_fusion_global",
+  "test_metrics_accessed": false,
+  "selection": {
+    "primary_metric": "auprc",
+    "tie_breaker": "pos_f1",
+    "aggregation": "mean over seeds 0,1,2",
+    "standard_deviation": "population ddof=0",
+    "diagnostic_control": "no_racl_w3c6"
+  },
+  "racl_mandatory": true,
+  "phase_selected_candidate": "global_selfx_l005_t010_k1_5_w2c4",
+  "selected_candidate": "global_l050_t007_k3_5_w3c6_reused",
+  "selected_source": "fusion_v2_reused_anchor",
+  "ranked_racl_candidates": [
+    "global_selfx_l005_t010_k1_5_w2c4",
+    "global_selfx_l010_t010_k3_5_w2c4",
+    "global_selfx_l010_t010_k3_5_w3c6"
+  ],
+  "cross_phase_ranked_candidates": [
+    "fusion_v2_reused_anchor:global_l050_t007_k3_5_w3c6_reused",
+    "current_phase:global_selfx_l005_t010_k1_5_w2c4",
+    "current_phase:global_selfx_l010_t010_k3_5_w2c4",
+    "current_phase:global_selfx_l010_t010_k3_5_w3c6"
+  ],
+  "parent_phase_summary": {
+    "phase": "fusion_v2_reused_anchor",
+    "candidate": "global_l050_t007_k3_5_w3c6_reused",
+    "source_candidate": "n1_d020_lr5e5",
+    "spec": {
+      "racl_enabled": true,
+      "warmup_epochs": 3,
+      "contrastive_epochs": 6,
+      "lambda_cl": 0.5,
+      "tau": 0.07,
+      "kp": 3,
+      "kn": 5,
+      "exclude_self": false,
+      "attribute_blocked": false
+    },
+    "selection_manifest": "/root/CLEAR_run/results/arguments_only_fusion_v2/fusion_v2_selection.json",
+    "selection_manifest_sha256": "a27beb2702f09409100563b76fab597568efeee2f6df8fb5ac070c73b6f73dd3",
+    "aggregate": {
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "fusion_v2_n1_d020_lr5e5",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.22,
+          "acc": 0.7755,
+          "macro_f1": 0.7358,
+          "pos_f1": 0.6333,
+          "wF1": 0.732,
+          "auprc": 0.684,
+          "auroc": 0.8419,
+          "ece": 0.187,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d020_lr5e5_s0"
+        },
+        {
+          "tag": "fusion_v2_n1_d020_lr5e5",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.56,
+          "acc": 0.75,
+          "macro_f1": 0.7326,
+          "pos_f1": 0.6644,
+          "wF1": 0.7243,
+          "auprc": 0.6458,
+          "auroc": 0.8347,
+          "ece": 0.1848,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d020_lr5e5_s1"
+        },
+        {
+          "tag": "fusion_v2_n1_d020_lr5e5",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.44,
+          "acc": 0.7551,
+          "macro_f1": 0.7333,
+          "pos_f1": 0.6571,
+          "wF1": 0.7261,
+          "auprc": 0.6818,
+          "auroc": 0.8414,
+          "ece": 0.1783,
+          "n_val": 392,
+          "pos_val": 122,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "fusion_v2_n1_d020_lr5e5_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7602000000000001,
+        "std": 0.011017259187293349
+      },
+      "pos_f1": {
+        "mean": 0.6516,
+        "std": 0.013278805167132582
+      },
+      "macro_f1": {
+        "mean": 0.7338999999999999,
+        "std": 0.0013735598518691031
+      },
+      "auprc": {
+        "mean": 0.6705333333333333,
+        "std": 0.017512154509241717
+      },
+      "auroc": {
+        "mean": 0.8393333333333334,
+        "std": 0.0032826141344293853
+      },
+      "wF1": {
+        "mean": 0.7274666666666668,
+        "std": 0.0032887011958454694
+      },
+      "ece": {
+        "mean": 0.18336666666666668,
+        "std": 0.0036935379004718848
+      }
+    }
+  },
+  "diagnostics_vs_no_racl": {
+    "no_racl_w3c6": {
+      "selectable": false,
+      "role": "diagnostic_control",
+      "matched_seed_ap_wins": 0,
+      "mean_ap_delta": 0.0,
+      "mean_pos_f1_delta": 0.0
+    },
+    "global_selfx_l010_t010_k3_5_w3c6": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 1,
+      "mean_ap_delta": -0.009166666666666656,
+      "mean_pos_f1_delta": 0.0031000000000001027
+    },
+    "global_selfx_l010_t010_k3_5_w2c4": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 1,
+      "mean_ap_delta": -0.007933333333333348,
+      "mean_pos_f1_delta": 0.005800000000000027
+    },
+    "global_selfx_l005_t010_k1_5_w2c4": {
+      "selectable": true,
+      "role": "racl_candidate",
+      "matched_seed_ap_wins": 1,
+      "mean_ap_delta": -0.006233333333333313,
+      "mean_pos_f1_delta": 0.00880000000000003
+    }
+  },
+  "aggregates": {
+    "no_racl_w3c6": {
+      "spec": {
+        "name": "no_racl_w3c6",
+        "racl_enabled": false,
+        "warmup_epochs": 3,
+        "contrastive_epochs": 6,
+        "lambda_cl": 0.0,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": false,
+        "hard_positive": false,
+        "attribute_blocked": false
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_fg_no_racl_w3c6",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.06,
+          "acc": 0.7679,
+          "macro_f1": 0.7425,
+          "pos_f1": 0.6617,
+          "wF1": 0.7335,
+          "auprc": 0.6839,
+          "auroc": 0.8446,
+          "ece": 0.1761,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_no_racl_w3c6_s0"
+        },
+        {
+          "tag": "racl_fg_no_racl_w3c6",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.56,
+          "acc": 0.75,
+          "macro_f1": 0.7326,
+          "pos_f1": 0.6644,
+          "wF1": 0.7243,
+          "auprc": 0.6458,
+          "auroc": 0.8347,
+          "ece": 0.1848,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_no_racl_w3c6_s1"
+        },
+        {
+          "tag": "racl_fg_no_racl_w3c6",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.22,
+          "acc": 0.7679,
+          "macro_f1": 0.7356,
+          "pos_f1": 0.6431,
+          "wF1": 0.7306,
+          "auprc": 0.6954,
+          "auroc": 0.8433,
+          "ece": 0.215,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": true,
+          "cl_mode": "racl",
+          "lambda_cl": 0.0,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": false,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_no_racl_w3c6_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7619333333333334,
+        "std": 0.00843814092215948,
+        "values": [
+          0.7679,
+          0.75,
+          0.7679
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6564,
+        "std": 0.00946889645101264,
+        "values": [
+          0.6617,
+          0.6644,
+          0.6431
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7369,
+        "std": 0.00414487635521255,
+        "values": [
+          0.7425,
+          0.7326,
+          0.7356
+        ]
+      },
+      "auprc": {
+        "mean": 0.6750333333333334,
+        "std": 0.021197536544503345,
+        "values": [
+          0.6839,
+          0.6458,
+          0.6954
+        ]
+      },
+      "auroc": {
+        "mean": 0.8408666666666668,
+        "std": 0.004392670663224787,
+        "values": [
+          0.8446,
+          0.8347,
+          0.8433
+        ]
+      },
+      "wF1": {
+        "mean": 0.7294666666666667,
+        "std": 0.003840428216864472,
+        "values": [
+          0.7335,
+          0.7243,
+          0.7306
+        ]
+      },
+      "ece": {
+        "mean": 0.19196666666666665,
+        "std": 0.016669799705522025,
+        "values": [
+          0.1761,
+          0.1848,
+          0.215
+        ]
+      }
+    },
+    "global_selfx_l010_t010_k3_5_w3c6": {
+      "spec": {
+        "name": "global_selfx_l010_t010_k3_5_w3c6",
+        "racl_enabled": true,
+        "warmup_epochs": 3,
+        "contrastive_epochs": 6,
+        "lambda_cl": 0.1,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "attribute_blocked": false
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_fg_global_selfx_l010_t010_k3_5_w3c6",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.22,
+          "acc": 0.7653,
+          "macro_f1": 0.7475,
+          "pos_f1": 0.6806,
+          "wF1": 0.7345,
+          "auprc": 0.6519,
+          "auroc": 0.842,
+          "ece": 0.1613,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l010_t010_k3_5_w3c6_s0"
+        },
+        {
+          "tag": "racl_fg_global_selfx_l010_t010_k3_5_w3c6",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.12,
+          "acc": 0.7551,
+          "macro_f1": 0.7298,
+          "pos_f1": 0.6471,
+          "wF1": 0.7176,
+          "auprc": 0.6556,
+          "auroc": 0.8326,
+          "ece": 0.2351,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l010_t010_k3_5_w3c6_s1"
+        },
+        {
+          "tag": "racl_fg_global_selfx_l010_t010_k3_5_w3c6",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.2,
+          "acc": 0.7372,
+          "macro_f1": 0.7201,
+          "pos_f1": 0.6508,
+          "wF1": 0.708,
+          "auprc": 0.6901,
+          "auroc": 0.8359,
+          "ece": 0.2142,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 3,
+          "contrastive_epochs": 6,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l010_t010_k3_5_w3c6_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7525333333333334,
+        "std": 0.01161445459569909,
+        "values": [
+          0.7653,
+          0.7551,
+          0.7372
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6595000000000001,
+        "std": 0.01499622174638219,
+        "values": [
+          0.6806,
+          0.6471,
+          0.6508
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7324666666666667,
+        "std": 0.011343818679008539,
+        "values": [
+          0.7475,
+          0.7298,
+          0.7201
+        ]
+      },
+      "auprc": {
+        "mean": 0.6658666666666667,
+        "std": 0.017202002467413192,
+        "values": [
+          0.6519,
+          0.6556,
+          0.6901
+        ]
+      },
+      "auroc": {
+        "mean": 0.8368333333333333,
+        "std": 0.0038938698260499306,
+        "values": [
+          0.842,
+          0.8326,
+          0.8359
+        ]
+      },
+      "wF1": {
+        "mean": 0.7200333333333333,
+        "std": 0.010954552579737016,
+        "values": [
+          0.7345,
+          0.7176,
+          0.708
+        ]
+      },
+      "ece": {
+        "mean": 0.20353333333333334,
+        "std": 0.031058475314942442,
+        "values": [
+          0.1613,
+          0.2351,
+          0.2142
+        ]
+      }
+    },
+    "global_selfx_l010_t010_k3_5_w2c4": {
+      "spec": {
+        "name": "global_selfx_l010_t010_k3_5_w2c4",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.1,
+        "tau": 0.1,
+        "kp": 3,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "attribute_blocked": false
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_fg_global_selfx_l010_t010_k3_5_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.54,
+          "acc": 0.7806,
+          "macro_f1": 0.7571,
+          "pos_f1": 0.6815,
+          "wF1": 0.7497,
+          "auprc": 0.6739,
+          "auroc": 0.8519,
+          "ece": 0.1053,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l010_t010_k3_5_w2c4_s0"
+        },
+        {
+          "tag": "racl_fg_global_selfx_l010_t010_k3_5_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.44,
+          "acc": 0.7474,
+          "macro_f1": 0.735,
+          "pos_f1": 0.6775,
+          "wF1": 0.7193,
+          "auprc": 0.6661,
+          "auroc": 0.8349,
+          "ece": 0.1771,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l010_t010_k3_5_w2c4_s1"
+        },
+        {
+          "tag": "racl_fg_global_selfx_l010_t010_k3_5_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.54,
+          "acc": 0.773,
+          "macro_f1": 0.7322,
+          "pos_f1": 0.6276,
+          "wF1": 0.7276,
+          "auprc": 0.6613,
+          "auroc": 0.8323,
+          "ece": 0.2055,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.1,
+          "tau": 0.1,
+          "Kp": 3,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l010_t010_k3_5_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.767,
+        "std": 0.014202347223845327,
+        "values": [
+          0.7806,
+          0.7474,
+          0.773
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6622,
+        "std": 0.024520331699768364,
+        "values": [
+          0.6815,
+          0.6775,
+          0.6276
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7414333333333333,
+        "std": 0.011136825799521565,
+        "values": [
+          0.7571,
+          0.735,
+          0.7322
+        ]
+      },
+      "auprc": {
+        "mean": 0.6671,
+        "std": 0.0051923019942988905,
+        "values": [
+          0.6739,
+          0.6661,
+          0.6613
+        ]
+      },
+      "auroc": {
+        "mean": 0.8397,
+        "std": 0.008691758548571541,
+        "values": [
+          0.8519,
+          0.8349,
+          0.8323
+        ]
+      },
+      "wF1": {
+        "mean": 0.7322000000000001,
+        "std": 0.012829912964111118,
+        "values": [
+          0.7497,
+          0.7193,
+          0.7276
+        ]
+      },
+      "ece": {
+        "mean": 0.16263333333333332,
+        "std": 0.04216612647875332,
+        "values": [
+          0.1053,
+          0.1771,
+          0.2055
+        ]
+      }
+    },
+    "global_selfx_l005_t010_k1_5_w2c4": {
+      "spec": {
+        "name": "global_selfx_l005_t010_k1_5_w2c4",
+        "racl_enabled": true,
+        "warmup_epochs": 2,
+        "contrastive_epochs": 4,
+        "lambda_cl": 0.05,
+        "tau": 0.1,
+        "kp": 1,
+        "kn": 5,
+        "exclude_self": true,
+        "hard_positive": false,
+        "attribute_blocked": false
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "runs": [
+        {
+          "tag": "racl_fg_global_selfx_l005_t010_k1_5_w2c4",
+          "seed": 0,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.54,
+          "acc": 0.7806,
+          "macro_f1": 0.7571,
+          "pos_f1": 0.6815,
+          "wF1": 0.7497,
+          "auprc": 0.6739,
+          "auroc": 0.8519,
+          "ece": 0.1053,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l005_t010_k1_5_w2c4_s0"
+        },
+        {
+          "tag": "racl_fg_global_selfx_l005_t010_k1_5_w2c4",
+          "seed": 1,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.48,
+          "acc": 0.7474,
+          "macro_f1": 0.7356,
+          "pos_f1": 0.6796,
+          "wF1": 0.7184,
+          "auprc": 0.664,
+          "auroc": 0.8341,
+          "ece": 0.1811,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l005_t010_k1_5_w2c4_s1"
+        },
+        {
+          "tag": "racl_fg_global_selfx_l005_t010_k1_5_w2c4",
+          "seed": 2,
+          "evaluation_split": "validation",
+          "validation_only": true,
+          "thr": 0.3,
+          "acc": 0.7679,
+          "macro_f1": 0.7322,
+          "pos_f1": 0.6345,
+          "wF1": 0.7267,
+          "auprc": 0.6685,
+          "auroc": 0.8338,
+          "ece": 0.2029,
+          "n_val": 392,
+          "pos_val": 122,
+          "no_fusion": false,
+          "n_fusion": 1,
+          "heads": 8,
+          "fusion_dropout": 0.2,
+          "lr_fusion": 5e-05,
+          "no_cl": false,
+          "cl_mode": "racl",
+          "lambda_cl": 0.05,
+          "tau": 0.1,
+          "Kp": 1,
+          "Kn": 5,
+          "warmup_epochs": 2,
+          "contrastive_epochs": 4,
+          "cl_exclude_self": true,
+          "cl_c_min": 0.0,
+          "cl_neg_c_min": 0.0,
+          "cl_hard_pos": false,
+          "cl_attribute_blocked": false,
+          "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl",
+          "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+          "label_field": "y",
+          "split_field": "split",
+          "split_group": "room_id",
+          "evidence_policy": "args_only",
+          "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5",
+          "encoder_train_mode": "full",
+          "loss": "bce",
+          "_suite_job": "racl_fg_global_selfx_l005_t010_k1_5_w2c4_s2"
+        }
+      ],
+      "acc": {
+        "mean": 0.7653,
+        "std": 0.013677962811276643,
+        "values": [
+          0.7806,
+          0.7474,
+          0.7679
+        ]
+      },
+      "pos_f1": {
+        "mean": 0.6652,
+        "std": 0.021722031826389248,
+        "values": [
+          0.6815,
+          0.6796,
+          0.6345
+        ]
+      },
+      "macro_f1": {
+        "mean": 0.7416333333333333,
+        "std": 0.01102431655729985,
+        "values": [
+          0.7571,
+          0.7356,
+          0.7322
+        ]
+      },
+      "auprc": {
+        "mean": 0.6688000000000001,
+        "std": 0.004047221268969623,
+        "values": [
+          0.6739,
+          0.664,
+          0.6685
+        ]
+      },
+      "auroc": {
+        "mean": 0.8399333333333333,
+        "std": 0.00846259744732997,
+        "values": [
+          0.8519,
+          0.8341,
+          0.8338
+        ]
+      },
+      "wF1": {
+        "mean": 0.7316000000000001,
+        "std": 0.013239587103330175,
+        "values": [
+          0.7497,
+          0.7184,
+          0.7267
+        ]
+      },
+      "ece": {
+        "mean": 0.1631,
+        "std": 0.041828538901886904,
+        "values": [
+          0.1053,
+          0.1811,
+          0.2029
+        ]
+      }
+    }
+  }
+}

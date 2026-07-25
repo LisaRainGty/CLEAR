@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "source": "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+  "dataset": "data/arguments_only/dataset_arguments_only_20260722.jsonl",
+  "source_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "rows": 4883,
+  "cache_records": 5714,
+  "cache_status": {
+    "ok": 4883,
+    "invalid": 831
+  },
+  "generation_modes": {
+    "model": 3400,
+    "deterministic_no_source": 1483
+  },
+  "argument_field_coverage": {
+    "supporting_argument": 1420,
+    "refuting_argument": 518,
+    "evidence_gap": 4477
+  },
+  "checks": {
+    "labels_and_all_frozen_fields_unchanged": true,
+    "raw_cache_payload_is_label_blind": true,
+    "every_final_argument_has_raw_lineage": true,
+    "source_free_rows_use_fixed_gap": true
+  },
+  "errors": [],
+  "warnings": [
+    "append-only cache retains 831 rejected attempts; these are provenance only and never enter the final dataset"
+  ]
+}

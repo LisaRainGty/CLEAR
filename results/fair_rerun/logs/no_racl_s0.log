@@ -1,0 +1,14 @@
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=0
+[ep0] warmup ce=0.2995 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7088 val_ap=0.6312
+[ep1] warmup ce=0.2288 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7136 val_ap=0.6383
+[ep2] warmup ce=0.1572 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7324 val_ap=0.6805
+[ep3] warmup ce=0.0993 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7611 val_ap=0.6867
+[ep4] warmup ce=0.0508 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7205 val_ap=0.6381
+[ep5] warmup ce=0.0246 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7285 val_ap=0.6496
+[ep6] warmup ce=0.0083 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7076 val_ap=0.6293
+[ep7] warmup ce=0.0011 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7088 val_ap=0.6389
+[ep8] warmup ce=0.0005 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7088 val_ap=0.6366
+[select] best single-val checkpoint score=1.1045
+RESULT {"tag": "no_racl", "seed": 0, "thr": 0.34, "acc": 0.8246, "macro_f1": 0.804, "pos_f1": 0.7405, "wF1": 0.7846, "auprc": 0.7222, "auroc": 0.8985, "ece": 0.1441, "n_test": 855, "pos_test": 249, "alpha_rkc": 1.0, "auprc_rkc": 0.7222, "auroc_rkc": 0.8985, "acc_rkc": 0.8246, "pos_f1_rkc": 0.7405, "macro_f1_rkc": 0.804, "wF1_rkc": 0.7846, "label_match@10": 0.7926, "attr_mAP@10": 0.3093, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/AI-ModelScope/bge-large-zh-v1___5", "encoder_train_mode": "full", "loss": "bce"}
+[save_emb] -> /root/CLEAR_run/embeddings/fair_rerun/emb_geom/emb_geom_none_s0.pt

@@ -1,0 +1,6 @@
+[bert_cls ep0] loss=0.3612 val_mF1=0.7218
+[bert_cls ep1] loss=0.2603 val_mF1=0.7084
+[bert_cls ep2] loss=0.1734 val_mF1=0.7298
+[bert_cls ep3] loss=0.0968 val_mF1=0.7335
+RESULT {"tag": "bert_cls", "seed": 0, "thr": 0.26, "acc": 0.8094, "macro_f1": 0.7801, "pos_f1": 0.6998, "wF1": 0.7547, "auprc": 0.702, "auroc": 0.8861, "ece": 0.1493, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese", "backbone_fallback_allowed": false}
+[save_pred] -> /root/CLEAR_run/embeddings/arguments_only_rerun/baseline_predictions/bert_cls_s0.pt

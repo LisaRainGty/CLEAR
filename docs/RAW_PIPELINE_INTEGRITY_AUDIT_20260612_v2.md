@@ -1,0 +1,103 @@
+# CLAIMARC Raw Pipeline Integrity Audit
+
+## stage_a
+- `resolved_aspects`: `167398`
+- `products`: `550`
+- `unique_product_attribute_pairs`: `17485`
+- `polarity`: `{'neg': 32918, 'neu': 8739, 'pos': 125741}`
+- `type`: `{'attribute': 149438, 'service': 17960}`
+- `free_remaining`: `0`
+- `attribute_id_empty`: `0`
+- `top_attributes`: `30 items`
+  - `('FOOD_风味', 10634)`
+  - `('BEAUTY_功效', 8032)`
+  - `('BEAUTY_质地', 6320)`
+  - `('BEAUTY_使用方法', 2664)`
+  - `('BEAUTY_适合肤质', 2557)`
+  - `('FOOD_包装类型', 2300)`
+  - `('BEAUTY_香味', 1886)`
+  - `('GEN_价格', 1824)`
+  - `('FOOD_食用方式', 1818)`
+  - `('BEAUTY_包装类型', 1589)`
+- `cas_categories`: `10`
+- `cas_duplicate_ids`: `{}`
+- `eval_leakage_attrs_in_cas_plus`: `55 items`
+  - `{'category': 'food_and_beverages', 'attribute_id': 'FOOD_性价比', 'canonical_name': '<性价比>'}`
+  - `{'category': 'food_and_beverages', 'attribute_id': 'FOOD_产品满意度', 'canonical_name': '产品满意度'}`
+  - `{'category': 'food_and_beverages', 'attribute_id': 'FOOD_回购次数', 'canonical_name': '回购次数'}`
+  - `{'category': 'food_and_beverages', 'attribute_id': 'FOOD_推荐度', 'canonical_name': '推荐度'}`
+  - `{'category': 'food_and_beverages', 'attribute_id': 'FOOD_评价满意度', 'canonical_name': '评价满意度'}`
+  - `{'category': 'apparel_and_underwear', 'attribute_id': 'APPAREL_回购意愿', 'canonical_name': '<回购意愿>'}`
+  - `{'category': 'apparel_and_underwear', 'attribute_id': 'APPAREL_总体评价', 'canonical_name': '<总体评价>'}`
+  - `{'category': 'apparel_and_underwear', 'attribute_id': 'APPAREL_回购意愿_2', 'canonical_name': '回购意愿'}`
+  - `{'category': 'apparel_and_underwear', 'attribute_id': 'APPAREL_回购次数', 'canonical_name': '回购次数'}`
+  - `{'category': 'beauty_and_personal_care', 'attribute_id': 'BEAUTY_回购意愿', 'canonical_name': '<回购意愿>'}`
+- `eval_leakage_attr_count`: `55`
+
+## stage_b
+- `acmt_products`: `550`
+- `acmt_candidate_pairs`: `16679`
+- `claim_files`: `550`
+- `claim_files_empty`: `68`
+- `claim_rows`: `11696`
+- `products_with_claim_rows`: `482`
+- `claim_attr_violations`: `10`
+- `claim_attr_violation_examples`: `10 items`
+  - `{'product_id': '3483616667710416469', 'attribute_id': 'FOOD_性价比', 'claim_id': '3483616667710416469_10', 'claim_text': '营养搭配更加均衡一点,更加干净更加的划算一点'}`
+  - `{'product_id': '3483616667710416469', 'attribute_id': 'FOOD_性价比', 'claim_id': '3483616667710416469_24', 'claim_text': '但是话低了十块钱'}`
+  - `{'product_id': '3483616667710416469', 'attribute_id': 'FOOD_性价比', 'claim_id': '3483616667710416469_30', 'claim_text': '十盒装单算下来是18块9更加便宜丢丢'}`
+  - `{'product_id': '3483616667710416469', 'attribute_id': 'FOOD_推荐度', 'claim_id': '3483616667710416469_33', 'claim_text': '因为本身就是我们家的爆款'}`
+  - `{'product_id': '3490652681037608601', 'attribute_id': 'FOOD_性价比', 'claim_id': '3490652681037608601_14', 'claim_text': '单桶滑下来,才不到5米价格,相当划算了,姐妹。'}`
+  - `{'product_id': '3490652681037608601', 'attribute_id': 'FOOD_性价比', 'claim_id': '3490652681037608601_42', 'claim_text': '一人下单,全家享受,吃的放心,买的安心,价格给您开好的'}`
+  - `{'product_id': '3490848458481503952', 'attribute_id': 'FOOD_性价比', 'claim_id': '3490848458481503952_30', 'claim_text': '一人下单,全家享受,吃的放心,买的安心,价格给您开好的'}`
+  - `{'product_id': '3490848458481503952', 'attribute_id': 'FOOD_性价比', 'claim_id': '3490848458481503952_31', 'claim_text': '你想想你平时去外面,吃顿饭怎么点个外卖。二、三时你就只够吃一顿啊,你还不一定能够吃好吃饱的。但是今天你在我直播间,直接是能够带走6顿广播人才,那是6顿相当划算了'}`
+  - `{'product_id': '3736181201837359332', 'attribute_id': 'FOOD_推荐度', 'claim_id': '3736181201837359332_10', 'claim_text': '苹果中的贵族'}`
+  - `{'product_id': '3736181201837359332', 'attribute_id': 'FOOD_性价比', 'claim_id': '3736181201837359332_14', 'claim_text': '我保证你同品质的，不带买贵的'}`
+- `srt_path_missing`: `0`
+- `claim_text_not_found_in_srt`: `2102`
+- `claim_text_miss_examples`: `30 items`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_11', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '它是免煮工艺给您做出来的,只要有开水,您就能炒它。'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_75', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '这款既方便又快捷,省时,省心又省力的一款高品质'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_78', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '它只需要您开水冲泡就能吃，简简单单嘛，3-5分钟'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_79', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '酸辣口味，重庆地道酸辣口味的'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_80', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '油粉有菜，营养搭配'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_82', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '一人下单，全家享受，吃的放心，买的安心'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_83', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '价格呢，都是给您开好的'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_84', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '现在还是现货扣增给到您，不用等了'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_85', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '126克，够您一顿，吃好'}`
+  - `{'product_id': '3490652681037608601', 'claim_id': '3490652681037608601_86', 'srt_path': '/root/claimarc/data/raw/srt_cut/food_and_beverages/snacks/陈薯官方旗舰店/陈薯官方旗舰店_241206_140840/1_【轻食季】贵州特产绿色纯红薯粉条500g自选粉丝、粉条、粉皮_000030360-002955440.txt', 'claim_text': '一整箱，麻将半份，六桶呢，不是一桶，是一整箱'}`
+- `pair_records`: `16679`
+- `pair_claimful`: `3514`
+- `pairs_with_aligned_negative`: `643`
+- `pair_claim_true_no_claimlist`: `0`
+- `pair_claim_true_no_claimlist_examples`: `0 items`
+- `pair_claimlist_not_true`: `0`
+- `pair_claimlist_not_true_examples`: `0 items`
+- `products_in_acmt_without_index_product`: `0`
+- `products_in_acmt_without_srt_clip`: `0`
+
+## stage_c
+- `fact_records`: `16679`
+- `coverage`: `{0: 9296, 1: 5060, 2: 2174, 3: 149}`
+- `confidence`: `{'absent': 9296, 'low': 5060, 'medium': 2174, 'high': 149}`
+- `source0`: `9296`
+- `source0_with_nonempty_product_params`: `9200`
+- `params_obvious_alias_miss`: `0`
+- `params_obvious_alias_miss_examples`: `0 items`
+- `evidence_param_key_not_in_product_params`: `0`
+- `evidence_param_key_not_in_product_params_examples`: `0 items`
+- `by_category`: `{'apparel_and_underwear': {'n': 2921, 'source0': 1399, 'params_miss_examples': 0}, 'baby_kids_and_pets': {'n': 2796, 'source0': 1584, 'params_miss_examples': 0}, 'beauty_and_personal_care': {'n': 1500, 'source0': 832, 'params_miss_examples': 0}, 'digital_and_electronics': {'n': 908, 'source0': 278, 'params_miss_examples': 0}, 'food_and_beverages': {'n': 1673, 'source0': 844, 'params_miss_examples': 0}, 'general': {'n': 2904, 'source0': 1613, 'params_miss_examples': 0}, 'jewelry_and_collectibles': {'n': 218, 'source0': 93, 'params_miss_examples': 0}, 'shoes_and_bags': {'n': 1540, 'source0': 863, 'params_miss_examples': 0}, 'smart_home': {'n': 1338, 'source0': 1101, 'params_miss_examples': 0}, 'sports_and_outdoor': {'n': 881, 'source0': 689, 'params_miss_examples': 0}}`
+
+## final_dataset
+- `records`: `16679`
+- `labels`: `{0: 16036, 1: 643}`
+- `claimful`: `3514`
+- `claimful_labels`: `{0: 2871, 1: 643}`
+- `source0`: `9296`
+- `claimful_source0`: `1469`
+- `no_claim_y1`: `0`
+- `split`: `{'train': 11675, 'test': 3336, 'val': 1668}`
+- `adjudicated_records`: `2182`
+- `adjudicated_labels`: `{1: 1325, 0: 857}`
+- `adjudicated_decisions`: `{'pos_relabel_evidence_risk': 1075, 'pos_confirmed_or_unverifiable': 250, 'neg_supported_clean': 857}`
+- `adjudicated_source0`: `0`

@@ -12,26 +12,28 @@
 
 ```
 data/
-├── raw/                      # 原始数据(本地;不入库)
+├── archives/raw.tar.zst     # 原始数据完整归档，解包后为 raw/
 │   ├── comment/              #   评论(≈28,556 条)
 │   ├── srt_cut/              #   直播切片字幕(主播话术来源)
 │   └── product_images/       #   商品详情图(Stage C 视觉证据)
-├── processed/                # 各阶段中间产物(本地;不入库)
+├── archives/processed.tar.zst # 各阶段中间产物，解包后为 processed/
 │   ├── stageA/  stageB/  stageC/  ...
 │   └── labels.jsonl
-├── index/                    # 检索/商品索引(本地;不入库)
-└── final/                    # 数据集与其变体(本地;不入库)
+├── index/                    # 检索/商品索引
+└── final/                    # 冻结评审输入与最终数据链
     └── repaired_v1/          #   重建/修复链路产物 + 最终训练集
 ```
 
-所有命令从 `src/` 运行(`PYTHONPATH=src`,见根 `README.md`/`env.sh`):
+若要从原始层运行 Stage A/B/C，先从仓库根目录执行
+`python scripts/unpack_data_archives.py`。所有流水线命令从仓库根目录运行：
 ```bash
-source env.sh && cd src
+source env.sh
+PYTHONPATH=src python -m run_pipeline --all
 ```
-全量编排入口:`python -m run_pipeline --all`(也支持 `--pilot` 小样、`--stage A0 A1 --category food_and_beverages` 局部跑)。
+全量编排入口也支持 `--pilot` 小样、`--stage A0 A1 --category food_and_beverages` 局部跑。
 阶段顺序见 `run_pipeline.py`:`A0→A1→A2→A3→B0→B1→B2B3→B4B5→C1→C2→C3→C4→C5→labels→final`。
 
-> ⚠️ 真实从零复现需要:原始数据(≈34GB)、可用的 LLM/VLM 网关(`common/llm.py`,经
+> ⚠️ 真实从零复现需要:解包后 1,365,590,794 逻辑字节的原始数据、可用的 LLM/VLM 网关(`common/llm.py`,经
 > `MATPOOL_API_KEY` 等环境变量配置)与 GPU。A1/B1/C4 等阶段含大量 LLM/VLM 调用,
 > 因此该链路的"完全重跑"成本很高;`docs/dataset_provenance/` 完整记录了每个数据集
 > 变体的输入清单与统计,作为不可逐字节重放环节的**溯源证据**。
@@ -90,7 +92,8 @@ source env.sh && cd src
 ## 5. 重建/修复与最终训练集  (`src/data_quality/`)
 
 在基础数据集之上,经"全对重建 + 多轮 LLM/VLM 评审"得到 proposal-faithful 的
-双标签数据集,再拼接客观负例,形成论文最终训练集。链路(产物落 `data/final/repaired_v1/`):
+双标签数据集,再合并最终 Stage-C 的 PARAM/OCR/VLM 证据并拼接客观负例,
+形成论文最终训练集。链路(产物落 `data/final/repaired_v1/`):
 
 ```
 full_pair_reconstruction_queue_v1            (重建队列)
@@ -103,6 +106,8 @@ build_stateful_proposal_dataset_v2           →  stateful_proposal_dataset_v2_F
         ▼
 build_plan_label_weights_v1                  →  dataset_planbaseline_duallabel_FULLPOOL_{supervised,all}
         │     (§2 y/c 标签引擎,纯离线聚合,无 LLM)
+三源 Stage-C 合并                           →  ...FULLPOOL_{supervised,all}_stagec
+        │     (依次保留 PARAM/OCR/VLM,某源缺失时留空,不删除样本)
         │
 build_objective_negative_dataset_v1          →  dataset_objective_negatives_v1_20260615
         │     (claim-without-comment 的 y=0 证据驱动负例;coverage→置信度,PU 折扣 κ)
@@ -112,10 +117,21 @@ build_objective_negative_dataset_v1          →  dataset_objective_negatives_v1
 dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl   ← 论文最终训练集
 ```
 
-各脚本的精确输入/输出路径见其 `argparse` 默认值;每个数据集变体的输入清单与统计
-(reviewed/observed/contrastive/repair 行数、`sample_role`/`promotion_state` 分布、
-split 与泄漏检查)见 `docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_*.md`
-(总览以 `..._FULLPOOL_20260614.md` 为准)。质量自检:`data_quality.audit_dataset_quality`。
+唯一用于论文的 FULLPOOL 配置是
+`docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_FULLPOOL_20260614.md`:它固化了 1 个
+重建队列和 44 个有序评审 JSONL。后出现的评审覆盖同一 `pair_id` 的早期评审,
+因此文件顺序也是数据合约的一部分。其他 `STATEFUL_PROPOSAL_DATASET_V2_*` 是历史迭代,
+不参与论文训练。
+
+对 44 个已冻结的外部模型评审输出之后的所有步骤,可通过一条命令重建并逐字节校验:
+
+```bash
+PYTHONPATH=src python -m data_quality.rebuild_paper_dataset
+```
+
+默认在临时目录重建,不覆盖发布快照;使用 `--in-place` 才会重写文档中的正式路径。
+该校验覆盖 stateful、plan label、Stage-C 三源合并、objective negatives 和最终拼接,
+共 10 个关键 JSONL。
 
 > 最终拼接为一步 `cat`(plan-baseline FULLPOOL supervised 行 + objective negatives 行),
 > 故文件名后缀 **`PLUS_OBJNEG`**。最终训练集随后置于 `data/`(模型代码读取 `data/dataset_*.jsonl`)。
@@ -123,28 +139,24 @@ split 与泄漏检查)见 `docs/dataset_provenance/STATEFUL_PROPOSAL_DATASET_V2_
 ## 6. 字段说明
 
 最终训练集逐字段语义见 `data/README.md` 与 `docs/DATA_README_fields.md`。关键字段:
-`y`(客观核验/感知硬标签)、`y_perception`、`c`/`c_reliability`(样本可靠性权重)、
+`y`(感知硬标签)、`y_perception`、`c`/`c_reliability`(样本可靠性权重)、
 `sample_role`、`contrastive_mask`、`claim`(主播话术 + 带时间戳 segments)、
-`evidence_params`/`evidence_ocr`(商品证据)、`arguments`(无标签泄漏的支持/反驳论证)。
+`evidence_params`、`evidence_ocr`、`evidence_vlm`(三类商品证据)。发布数据不包含也不生成
+`arguments`;实验输入只由上述三源按固定顺序拼接。
 
 ## 7. 从原始数据复现(摘要)
 
 ```bash
-source env.sh && cd src
+source env.sh
 # (a) raw -> 结构化记录 -> 基础数据集(含 LLM/VLM 阶段,需网关与 GPU)
-python -m run_pipeline --all
+PYTHONPATH=src python -m run_pipeline --all
 # 小样冒烟:python -m run_pipeline --pilot
-# (b) 记录 -> 最终监督数据集(在 data/final/repaired_v1/ 产物之上)
-python -m data_quality.build_stateful_proposal_dataset_v2
-python -m data_quality.build_plan_label_weights_v1
-python -m data_quality.build_objective_negative_dataset_v1
-# (c) 拼接最终训练集(plan-baseline FULLPOOL supervised + objective negatives)
-cat data/final/repaired_v1/dataset_planbaseline_duallabel_FULLPOOL_supervised_*.jsonl \
-    data/final/repaired_v1/dataset_objective_negatives_v1_20260615.jsonl \
-    > data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl
-# (d) 质量自检
-python -m data_quality.audit_dataset_quality
+# (b) 从冻结的重建队列 + 44 个评审输出开始,完整重建后续数据链
+PYTHONPATH=src python -m data_quality.rebuild_paper_dataset
+# (c) 综合检查:哈希、规模、切分、room 泄漏、三源覆盖、arguments=0
+python scripts/audit_reproducibility.py
 ```
 
-> 不可逐字节重放的环节(LLM/VLM 评审)以 `docs/dataset_provenance/` 的输入清单 + 统计
-> 作为溯源证据;模型侧复现见根 `README.md`。
+> 外部 LLM/VLM 评审受服务端版本和随机性影响,不承诺重新调用后逐字节一致。
+> 发布包因此保留它们的原始 JSONL 输出与有序清单;从这个冻结边界到论文
+> 4,883 条训练数据的所有处理均可逐字节重现。模型侧复现见根 `README.md`。

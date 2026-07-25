@@ -30,7 +30,7 @@ Usage:
   python -m models.geom_probe2 --bundles none=emb_none_s0.pt supcon=emb_supcon_s0.pt racl=emb_racl_s0.pt \
          --out results_artifacts/geom2.json
   # or sweep seeds and aggregate mean/std:
-  python -m models.geom_probe2 --emb_dir data/final/emb_geom --seeds 0 1 2 --out ...
+  python -m models.geom_probe2 --emb_dir embeddings/fair_rerun/emb_geom --seeds 0 1 2 --out ...
 """
 from __future__ import annotations
 import argparse, json, os
@@ -127,7 +127,8 @@ def _agg(rows):
         if not vals:
             continue
         out[k] = round(float(np.mean(vals)), 4)
-        out[k + "_std"] = round(float(np.std(vals)), 4)
+        out[k + "_std"] = round(
+            float(np.std(vals, ddof=1)) if len(vals) > 1 else 0.0, 4)
     return out
 
 

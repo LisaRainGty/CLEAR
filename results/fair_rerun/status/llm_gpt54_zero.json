@@ -1,0 +1,39 @@
+{
+  "job": "llm_gpt54_zero",
+  "stage": "llm",
+  "signature": "3406fd3e5712163cddce461a9029bd0cf70352f857a210ba9e245a13df9c30a1",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.run_llm_baselines",
+    "--dataset",
+    "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "--model",
+    "GPT-5.4",
+    "--mode",
+    "zero",
+    "--shots",
+    "5",
+    "--tag",
+    "gpt54_zero",
+    "--max_tokens",
+    "320",
+    "--seed",
+    "0",
+    "--evidence_policy",
+    "sources_only",
+    "--eval_out",
+    "/root/CLEAR_run/results/fair_rerun/llm_gpt54_zero.json"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.run_llm_baselines --dataset /root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl --model GPT-5.4 --mode zero --shots 5 --tag gpt54_zero --max_tokens 320 --seed 0 --evidence_policy sources_only --eval_out /root/CLEAR_run/results/fair_rerun/llm_gpt54_zero.json",
+  "started_utc": "2026-07-21T15:31:02.795551+00:00",
+  "finished_utc": "2026-07-21T15:31:05.865709+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/llm_gpt54_zero.log",
+  "result_file": "results/fair_rerun/jobs/llm_gpt54_zero.jsonl",
+  "outputs": [
+    "results/fair_rerun/llm_gpt54_zero.json"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

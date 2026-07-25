@@ -18,19 +18,21 @@ from sklearn.metrics import (average_precision_score, roc_auc_score,
                              balanced_accuracy_score, brier_score_loss,
                              f1_score, fbeta_score)
 
-D = os.path.expanduser("~/claimarc/data/final")
-OUT = os.path.expanduser("~/claimarc/figs")
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+D = os.environ.get("CLAIMARC_EMBED_DIR", os.path.join(ROOT, "embeddings", "fair_rerun"))
+RESULTS = os.environ.get("CLAIMARC_RESULT_DIR", os.path.join(ROOT, "results", "fair_rerun"))
+OUT = os.environ.get("CLAIMARC_FIG_DIR", os.path.join(ROOT, "paper", "figs"))
 os.makedirs(OUT, exist_ok=True)
+os.makedirs(RESULTS, exist_ok=True)
 
 SEED_FILES = {
-    "CLAIMARC": ["emb_clarc_v2_s0.pt", "emb_clarc_v2_s1.pt", "emb_clarc_v2_s2.pt"],
-    "BERT-CLS": ["pred_bert_s0.pt", "pred_bert_s1.pt", "pred_bert_s2.pt"],
-    "RoBERTa-CLS": ["pred_roberta_s0.pt", "pred_roberta_s1.pt", "pred_roberta_s2.pt"],
-    "ESIM": ["pred_esim_s0.pt"],
+    "CLAIMARC": [f"emb_geom/emb_geom_racl_s{s}.pt" for s in range(3)],
+    "BERT-CLS": [f"baseline_predictions/bert_cls_s{s}.pt" for s in range(3)],
+    "RoBERTa-CLS": [f"baseline_predictions/roberta_cls_s{s}.pt" for s in range(3)],
+    "ESIM": [f"baseline_predictions/esim_s{s}.pt" for s in range(3)],
 }
 ABL_FILES = {  # 结构消融，单种子，用 emb_*.pt
-    "w/o RACL": "emb_nocl_s0.pt",
-    "Global-neg": "emb_gneg_s0.pt",
+    "w/o RACL": "emb_geom/emb_geom_none_s0.pt",
 }
 
 
@@ -103,7 +105,14 @@ def agg(files):
         m = metrics_one(d)
         for k, v in m.items():
             vals.setdefault(k, []).append(v)
-    return {k: (float(np.mean(v)), float(np.std(v)), len(v)) for k, v in vals.items()}
+    return {
+        k: (
+            float(np.mean(v)),
+            float(np.std(v, ddof=1)) if len(v) > 1 else 0.0,
+            len(v),
+        )
+        for k, v in vals.items()
+    }
 
 
 def main():
@@ -149,28 +158,35 @@ def main():
         worst = max(comp, key=lambda x: (x[1] if m != "Brier" else -x[1]))
         print(f"  {m:14s} CLAIMARC={cv:.4f}  [{flag}]  margin_vs_closest={edge:+.4f}  (closest={worst[0]}={worst[1]:.4f})")
 
-    json.dump(table, open(os.path.join(D, "metrics_rich.json"), "w"),
+    json.dump(table, open(os.path.join(RESULTS, "metrics_rich.json"), "w"),
               ensure_ascii=False, indent=2)
     print("\nSAVED metrics_rich.json")
 
-    # ---- PR / ROC 曲线（s0） ----
+    # ---- PR / ROC curves from the same three-seed mean used for the main table ----
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from matplotlib import rcParams
     rcParams.update({"font.family": "serif", "font.size": 11, "savefig.bbox": "tight",
                      "axes.grid": True, "grid.alpha": 0.25, "grid.linestyle": "--"})
-    curve_files = {"CLAIMARC": "emb_clarc_v2_s0.pt", "BERT-CLS": "pred_bert_s0.pt",
-                   "RoBERTa-CLS": "pred_roberta_s0.pt", "ESIM": "pred_esim_s0.pt"}
     cols = {"CLAIMARC": "#d1495b", "BERT-CLS": "#2e86ab", "RoBERTa-CLS": "#3a7d44",
             "ESIM": "#999999"}
     fig, (axp, axr) = plt.subplots(1, 2, figsize=(11, 4.6))
     from sklearn.metrics import roc_curve
-    for name, fn in curve_files.items():
-        d = load(fn)
-        if d is None:
+    curve_y = None
+    for name, files in SEED_FILES.items():
+        bundles = [load(fn) for fn in files]
+        bundles = [bundle for bundle in bundles if bundle is not None]
+        if len(bundles) != len(files):
             continue
-        te = d["test"]; y = np.asarray(te["y"], float); p = np.asarray(te["p"], float)
+        y = np.asarray(bundles[0]["test"]["y"], float)
+        ids = list(bundles[0]["test"].get("pair_id", []))
+        for bundle in bundles[1:]:
+            if not np.array_equal(y, np.asarray(bundle["test"]["y"], float)) \
+                    or ids != list(bundle["test"].get("pair_id", [])):
+                raise ValueError(f"{name}: seed bundles disagree on test order")
+        p = np.mean([np.asarray(bundle["test"]["p"], float) for bundle in bundles], axis=0)
+        curve_y = y
         prec, rec, _ = precision_recall_curve(y, p)
         ap = average_precision_score(y, p)
         lw = 2.6 if name == "CLAIMARC" else 1.6
@@ -178,7 +194,9 @@ def main():
         fpr, tpr, _ = roc_curve(y, p)
         au = roc_auc_score(y, p)
         axr.plot(fpr, tpr, color=cols[name], lw=lw, label=f"{name} (AUROC={au:.3f})")
-    base = float(np.mean(np.asarray(load("emb_clarc_v2_s0.pt")["test"]["y"], float)))
+    if curve_y is None:
+        raise FileNotFoundError("complete fair PR/ROC bundles are missing")
+    base = float(np.mean(curve_y))
     axp.axhline(base, color="black", ls=":", lw=1, label=f"random (prevalence={base:.2f})")
     axp.set_xlabel("Recall"); axp.set_ylabel("Precision"); axp.set_title("(a) Precision–Recall")
     axp.legend(framealpha=0.9, fontsize=8.5, loc="upper right")

@@ -24,17 +24,19 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
 
-from models.data import load_split
+from models.data import apply_evidence_policy, load_split
 from models.baselines import claim_text, evidence_text
+from models.provenance import attach_run_provenance
 from models.train import macro_f1, best_threshold_macroF1, ece, cls_loss
 from sklearn.metrics import f1_score, roc_auc_score, average_precision_score
 
 
-def resolve(name):
+def resolve(name, allow_fallback=False):
     import os
     _local = {
-        "bert-base-chinese": "/root/models/bert-base-chinese",
-        "hfl/chinese-roberta-wwm-ext": "/root/models/chinese-roberta-wwm-ext",
+        "bert-base-chinese": os.environ.get("CLAIMARC_BERT_PATH", ""),
+        "hfl/chinese-roberta-wwm-ext": os.environ.get("CLAIMARC_ROBERTA_PATH", ""),
+        "nli": os.environ.get("CLAIMARC_NLI_PATH", ""),
     }.get(name)
     if _local and (os.path.isfile(os.path.join(_local, "pytorch_model.bin"))
                    or os.path.isfile(os.path.join(_local, "model.safetensors"))):
@@ -48,9 +50,13 @@ def resolve(name):
         }.get(name, name)
         return snapshot_download(ms)
     except Exception:
-        # BERT-NLI 回落：NLI 骨干不可达时退回 bert-base-chinese
+        if name == "nli" and allow_fallback:
+            return resolve("bert-base-chinese", allow_fallback=False)
         if name == "nli":
-            return resolve("bert-base-chinese")
+            raise RuntimeError(
+                "BERT-NLI backbone is unavailable. Set --model_path to the exact NLI model; "
+                "use --allow_backbone_fallback only for a separately labelled diagnostic run."
+            )
         return name
 
 
@@ -93,7 +99,7 @@ class SingleStream(nn.Module):
 
 # ----------------------------- ESIM -----------------------------
 class SeqDataset(Dataset):
-    def __init__(self, recs, tok, maxlen=256):
+    def __init__(self, recs, tok, maxlen=384):
         self.recs, self.tok, self.maxlen = recs, tok, maxlen
 
     def __len__(self):
@@ -195,6 +201,7 @@ def run(args, splits=None):
     import random
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     sp = splits if splits is not None else load_split(args.dataset)
+    apply_evidence_policy(sp, getattr(args, "evidence_policy", "sources_only"))
     if getattr(args, "infer_jsonl", ""):
         recs = [json.loads(l) for l in open(args.infer_jsonl, encoding="utf-8") if l.strip()]
         for r in recs:
@@ -208,7 +215,8 @@ def run(args, splits=None):
         "bert_nli": "nli",
         "esim": "bert-base-chinese",
     }
-    path = args.model_path if getattr(args, "model_path", "") else resolve(paths[args.kind])
+    path = (args.model_path if getattr(args, "model_path", "") else
+            resolve(paths[args.kind], getattr(args, "allow_backbone_fallback", False)))
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(path)
 
@@ -258,6 +266,8 @@ def run(args, splits=None):
         model.load_state_dict({k: v.to(device) for k, v in best_state.items()})
 
     res = evaluate(model, vl, te, device, esim, tag=args.kind, seed=args.seed)
+    attach_run_provenance(res, args, path)
+    res["backbone_fallback_allowed"] = bool(getattr(args, "allow_backbone_fallback", False))
     print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
     if args.save_pred:
         @torch.no_grad()
@@ -274,7 +284,13 @@ def run(args, splits=None):
             return torch.cat(ps).numpy(), torch.cat(ys).numpy(), torch.cat(cs).numpy()
         p, y, c = infer(te)
         pva, yva, _ = infer(vl)
-        torch.save({"thr": res["thr"], "val": {"p": pva, "y": yva},
+        torch.save({"thr": res["thr"], "val": {
+                        "p": pva, "y": yva,
+                        "pair_id": [r.get("pair_id", "") for r in sp["val"]]},
+                    "provenance": {k: res.get(k) for k in (
+                        "dataset", "dataset_sha256", "evidence_policy", "resolved_model",
+                        "label_field", "split_field", "split_group", "seed", "tag"
+                    )},
                     "test": {"p": p, "y": y, "c": c,
                     "attr": [r.get("attribute_id", "") for r in sp["test"]],
                     "pair_id": [r.get("pair_id", "") for r in sp["test"]]}}, args.save_pred)
@@ -294,6 +310,9 @@ def main():
     ap.add_argument("--save_pred", default="")
     ap.add_argument("--infer_jsonl", default="", help="用该 jsonl 替换 test 划分做构造样本推理")
     ap.add_argument("--model_path", default="", help="直接指定本地骨干路径，跳过 modelscope")
+    ap.add_argument("--evidence_policy", default="sources_only")
+    ap.add_argument("--allow_backbone_fallback", action="store_true",
+                    help="仅用于诊断；正式 BERT-NLI 结果禁止静默退回普通 BERT")
     ap.add_argument("--loss", default="asl", choices=["bce", "focal", "asl"])
     ap.add_argument("--gamma_neg", type=float, default=4.0)
     args = ap.parse_args()

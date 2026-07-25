@@ -1,0 +1,33 @@
+{
+  "job": "esim_s0",
+  "stage": "table3",
+  "signature": "47b5d6051eaf4999f123ca974c89024df957370765efd67b6dabedac46caffc3",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "-m",
+    "models.baselines_ft",
+    "--dataset",
+    "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "--kind",
+    "esim",
+    "--seed",
+    "0",
+    "--loss",
+    "bce",
+    "--evidence_policy",
+    "sources_only",
+    "--save_pred",
+    "/root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/esim_s0.pt"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python -m models.baselines_ft --dataset /root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl --kind esim --seed 0 --loss bce --evidence_policy sources_only --save_pred /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/esim_s0.pt",
+  "started_utc": "2026-07-21T13:14:44.991559+00:00",
+  "finished_utc": "2026-07-21T13:16:46.754148+00:00",
+  "returncode": 0,
+  "log": "results/fair_rerun/logs/esim_s0.log",
+  "result_file": "results/fair_rerun/jobs/esim_s0.jsonl",
+  "outputs": [
+    "embeddings/fair_rerun/baseline_predictions/esim_s0.pt"
+  ],
+  "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+  "evidence_policy": "sources_only"
+}

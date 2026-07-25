@@ -1,0 +1,27 @@
+  [GPT-5.4:llmbase_gpt54_zero_val] 50/392
+  [GPT-5.4:llmbase_gpt54_zero_val] 100/392
+  [GPT-5.4:llmbase_gpt54_zero_val] 150/392
+  [GPT-5.4:llmbase_gpt54_zero_val] 200/392
+  [GPT-5.4:llmbase_gpt54_zero_val] 250/392
+  [GPT-5.4:llmbase_gpt54_zero_val] 300/392
+  [GPT-5.4:llmbase_gpt54_zero_val] 350/392
+  [GPT-5.4:llmbase_gpt54_zero_val] 392/392
+  [GPT-5.4:llmbase_gpt54_zero_test] 50/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 100/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 150/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 200/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 250/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 300/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 350/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 400/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 450/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 500/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 550/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 600/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 650/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 700/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 750/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 800/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 850/855
+  [GPT-5.4:llmbase_gpt54_zero_test] 855/855
+RESULT {"tag": "gpt54_zero", "model": "GPT-5.4", "mode": "zero", "shots": 5, "n_err_val": 0, "n_err_test": 0, "thr": 0.9, "acc": 0.5825, "macro_f1": 0.4984, "pos_f1": 0.2931, "wF1": 0.506, "auprc": 0.2968, "auroc": 0.4896, "ece": 0.4859, "n_test": 855, "pos_test": 249, "macro_f1_dec05": 0.3818, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "GPT-5.4"}

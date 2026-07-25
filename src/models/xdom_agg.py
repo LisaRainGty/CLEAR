@@ -22,6 +22,21 @@ from models.xdom_common import full_metrics
 METRIC_KEYS = ["acc", "prec", "rec", "f1pos", "macro_f1", "auprc", "auroc"]
 
 
+def validate_bundle(bundle, mode, path, evidence_policy):
+    meta = bundle.get("fold_provenance")
+    if not meta:
+        raise ValueError(f"{path}: missing fold_provenance")
+    if meta.get("mode") != mode or meta.get("evidence_policy") != evidence_policy:
+        raise ValueError(f"{path}: incompatible cross-domain protocol")
+    if any(meta.get("pair_id_overlap", {}).values()):
+        raise ValueError(f"{path}: pair_id leakage")
+    if meta.get("room_overlap", {}).get("train_val"):
+        raise ValueError(f"{path}: source train/validation room leakage")
+    if mode == "rooms" and (meta.get("room_overlap", {}).get("train_test")
+                            or meta.get("room_overlap", {}).get("val_test")):
+        raise ValueError(f"{path}: target room leakage")
+
+
 def clarc_combined(bundle):
     """复现 train.evaluate 的属性分块 RKC：val 调 α，test 上算 forward+RKC 组合概率。"""
     tr, va, te = bundle["train"], bundle["val"], bundle["test"]
@@ -44,7 +59,7 @@ def clarc_combined(bundle):
     return (yv, best_a * pv + (1 - best_a) * rkv, yt, best_a * pt + (1 - best_a) * rkt), best_a
 
 
-def collect(indir, mode):
+def collect(indir, mode, llm_indir="", evidence_policy="sources_only"):
     """返回 {model_name: {holdout: metrics_dict}}。"""
     out = defaultdict(dict)
 
@@ -56,6 +71,7 @@ def collect(indir, mode):
     # CLAIMARC（含 forward 与 forward+RKC）
     for f in sorted(glob.glob(os.path.join(indir, f"clarc_{mode}_*.pt"))):
         b = torch.load(f, map_location="cpu", weights_only=False)
+        validate_bundle(b, mode, f, evidence_policy)
         ho = _fold_key(f, f"clarc_{mode}_")
         yv, cv, yt, ct = clarc_combined(b)[0]
         out["CLAIMARC"][ho] = full_metrics(yv, cv, yt, ct)
@@ -67,13 +83,16 @@ def collect(indir, mode):
     for kind, disp in name.items():
         for f in sorted(glob.glob(os.path.join(indir, f"{kind}_{mode}_*.pt"))):
             b = torch.load(f, map_location="cpu", weights_only=False)
+            validate_bundle(b, mode, f, evidence_policy)
             ho = _fold_key(f, f"{kind}_{mode}_")
             out[disp][ho] = full_metrics(b["val"]["y"], b["val"]["p"],
                                          b["test"]["y"], b["test"]["p"])
 
     # LLM zero / few
-    for f in sorted(glob.glob(os.path.join(indir, f"llm_*_{mode}_*.pt"))):
+    llm_root = llm_indir or indir
+    for f in sorted(glob.glob(os.path.join(llm_root, f"llm_*_{mode}_*.pt"))):
         b = torch.load(f, map_location="cpu", weights_only=False)
+        validate_bundle(b, mode, f, evidence_policy)
         model = b["model"]; ho = b["holdout"]
         for mk, lbl in (("zero", f"LLM zero-shot ({model})"),
                         ("fewshot", f"LLM few-shot ({model})")):
@@ -91,7 +110,8 @@ def aggregate(per_model):
         for k in METRIC_KEYS:
             vals = [f[k] for f in folds if f[k] == f[k]]  # drop nan
             agg[k] = {"mean": round(float(np.mean(vals)), 1) if vals else None,
-                      "std": round(float(np.std(vals)), 1) if vals else None}
+                      "std": (round(float(np.std(vals, ddof=1)), 1)
+                              if len(vals) > 1 else (0.0 if vals else None))}
         # 微平均（pos/N 加权可选）：这里另报总样本量
         agg["total_test"] = int(sum(f["n"] for f in folds))
         agg["total_pos"] = int(sum(f["pos"] for f in folds))
@@ -125,9 +145,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--indir", required=True)
     ap.add_argument("--mode", default="category", choices=["category", "rooms", "time"])
+    ap.add_argument("--llm_indir", default="",
+                    help="optional directory containing xdom_llm bundles")
+    ap.add_argument("--evidence_policy", default="sources_only",
+                    choices=["sources_only", "args_only"])
     ap.add_argument("--out", default="")
     args = ap.parse_args()
-    per_model = collect(args.indir, args.mode)
+    per_model = collect(args.indir, args.mode, args.llm_indir,
+                        args.evidence_policy)
     rows = aggregate(per_model)
     print_table(rows, args.mode)
     blob = {"mode": args.mode, "aggregate": rows,

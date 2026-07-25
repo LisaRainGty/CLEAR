@@ -1,0 +1,17 @@
+2026-07-24 07:28:24,423 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-24 07:28:24,425 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-24 07:28:24,543 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+{'train': 3636, 'val': 392, 'test': 855} pos: {'train': 879, 'val': 122, 'test': 249}
+[train] pos_weight=3.1 seed=2
+[ep0] warmup ce=0.3682 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7142 val_ap=0.5860
+[ep1] warmup ce=0.2436 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7202 val_ap=0.6114
+[ep2] warmup ce=0.1867 td=0.0000 cl=0.0000 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7022 val_ap=0.6123
+[ep3] CL ce=0.1231 td=0.0000 cl=0.2116 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7261 val_ap=0.6520
+[ep4] CL ce=0.0894 td=0.0000 cl=0.2003 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7333 val_ap=0.6618
+[ep5] CL ce=0.0630 td=0.0000 cl=0.1893 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7295 val_ap=0.6342
+[ep6] CL ce=0.0443 td=0.0000 cl=0.1906 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7228 val_ap=0.6316
+[ep7] CL ce=0.0290 td=0.0000 cl=0.1520 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7278 val_ap=0.6411
+[ep8] CL ce=0.0195 td=0.0000 cl=0.1623 view=0.0000 aux=0.0000 proto=0.0000 val_mF1=0.7292 val_ap=0.6448
+[select] best single-val checkpoint score=1.0642
+RESULT {"tag": "bert_backbone", "seed": 2, "thr": 0.28, "acc": 0.8082, "macro_f1": 0.7838, "pos_f1": 0.7113, "wF1": 0.756, "auprc": 0.723, "auroc": 0.8923, "ece": 0.14, "n_test": 855, "pos_test": 249, "alpha_rkc": 0.7, "auprc_rkc": 0.7149, "auroc_rkc": 0.8915, "acc_rkc": 0.8, "pos_f1_rkc": 0.722, "macro_f1_rkc": 0.7829, "wF1_rkc": 0.7554, "label_match@10": 0.7739, "attr_mAP@10": 0.2628, "dataset": "/root/CLEAR_run/data/arguments_only/dataset_arguments_only_20260722.jsonl", "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "args_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese", "encoder_train_mode": "full", "loss": "bce"}
+[save_emb] -> /root/CLEAR_run/embeddings/arguments_only_rerun/ablations/bert_backbone_s2.pt

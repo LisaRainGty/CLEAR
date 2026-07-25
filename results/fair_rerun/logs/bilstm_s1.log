@@ -1,0 +1,13 @@
+2026-07-21 21:23:09,194 - modelscope - INFO - PyTorch version 2.0.0 Found.
+2026-07-21 21:23:09,195 - modelscope - INFO - Loading ast index from /root/modelscope_cache/ast_indexer
+2026-07-21 21:23:09,238 - modelscope - INFO - Loading done! Current index file version is 1.14.0, with md5 428e0e3ddcf0c1d933f5020bad86f8e9 and a total number of 976 components indexed
+[bilstm ep0] loss=0.3967 val_mF1=0.6889
+[bilstm ep1] loss=0.2716 val_mF1=0.7090
+[bilstm ep2] loss=0.2076 val_mF1=0.7143
+[bilstm ep3] loss=0.1498 val_mF1=0.7410
+[bilstm ep4] loss=0.1160 val_mF1=0.7279
+[bilstm ep5] loss=0.0873 val_mF1=0.7139
+[bilstm ep6] loss=0.0618 val_mF1=0.7106
+[bilstm ep7] loss=0.0432 val_mF1=0.7295
+RESULT {"tag": "bilstm", "seed": 1, "thr": 0.44, "acc": 0.7766, "macro_f1": 0.7428, "pos_f1": 0.6495, "wF1": 0.7168, "auprc": 0.6814, "auroc": 0.8658, "ece": 0.1075, "n_test": 855, "pos_test": 249, "dataset": "/root/CLEAR_run/data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl", "dataset_sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76", "label_field": "y", "split_field": "split", "split_group": "room_id", "evidence_policy": "sources_only", "resolved_model": "/root/modelscope_cache/tiansz/bert-base-chinese"}
+[save_pred] -> /root/CLEAR_run/embeddings/fair_rerun/baseline_predictions/bilstm_s1.pt

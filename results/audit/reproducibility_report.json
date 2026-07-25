@@ -1,0 +1,100 @@
+{
+  "schema_version": 2,
+  "config": "configs/paper_fair.json",
+  "dataset": {
+    "path": "data/dataset_duallabel_FULLPOOL_PLUS_OBJNEG_supervised_20260615.jsonl",
+    "sha256": "1eff4c58fff61ed85763f92ecd321f8d61a66026d32b97113cfce26f0c470f76",
+    "rows": 4883,
+    "split_rows": {
+      "train": 3636,
+      "val": 392,
+      "test": 855
+    },
+    "split_positives": {
+      "train": 879,
+      "val": 122,
+      "test": 249
+    },
+    "split_positive_rates": {
+      "train": 0.24174917491749176,
+      "val": 0.3112244897959184,
+      "test": 0.2912280701754386
+    },
+    "rooms_by_split": {
+      "train": 92,
+      "val": 5,
+      "test": 11
+    },
+    "room_overlap": {
+      "train_val": [],
+      "train_test": [],
+      "val_test": []
+    },
+    "categories": {
+      "apparel_and_underwear": 1274,
+      "baby_kids_and_pets": 715,
+      "beauty_and_personal_care": 225,
+      "digital_and_electronics": 270,
+      "food_and_beverages": 426,
+      "general": 827,
+      "jewelry_and_collectibles": 84,
+      "smart_home": 324,
+      "sports_and_outdoor": 262,
+      "shoes_and_bags": 476
+    },
+    "sample_roles": {
+      "supervised_main": 1387,
+      "supervised_silver_ambiguous": 134,
+      "supervised_silver_evidence_incomplete": 305,
+      "supervised_silver_repair_needed": 380,
+      "supervised_silver_guarded": 72,
+      "objective_negative": 2605
+    },
+    "construction_sources": {
+      "factrecords": 2278,
+      "factrecords_neg": 2605
+    },
+    "source_coverage_0_1_2_3": {
+      "0": 1483,
+      "1": 1826,
+      "2": 1118,
+      "3": 456
+    },
+    "argument_records": 0,
+    "argument_coverage": 0.0,
+    "c_mean": 0.45595637927503585,
+    "c_median": 0.48,
+    "c_min": 0.18,
+    "c_max": 0.82,
+    "claim_length_mean_chars": 22.957812819987712,
+    "raw_evidence_length_mean_chars": 51.01638337087856,
+    "pairs_with_aligned_comments": 2278,
+    "pairs_with_aligned_comments_rate": 0.46651648576694654,
+    "consumer_mentions_total_mean": 6.872414499283227,
+    "aligned_negative_mentions_mean": 1.4855621544132704
+  },
+  "checks": {
+    "dataset_exists": true,
+    "dataset_sha256": true,
+    "row_count": true,
+    "split_rows": true,
+    "split_positives": true,
+    "room_group_leakage_absent": true,
+    "shared_sources_nonempty": true,
+    "input_policy_is_sources_only": true,
+    "generated_arguments_excluded": true,
+    "argument_record_count": true,
+    "source_availability": true,
+    "arguments_forbidden_by_config": true,
+    "single_source_experiments_forbidden": true
+  },
+  "historical_results": {},
+  "interpretation": {
+    "paper_headline_matches_c6_args": false,
+    "c6_args_view_is_empty": true,
+    "c6_canon_is_current_shared_source_view_reference": false,
+    "fair_rerun_required": true,
+    "reason": "The paper headline was selected from args_only although the frozen dataset has no generated arguments. Historical baselines and most ablations used source evidence."
+  },
+  "overall": "PASS"
+}

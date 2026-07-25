@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 
 import config
 
@@ -18,7 +19,8 @@ import torch
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score, roc_auc_score, average_precision_score, precision_score, recall_score
 
-from models.data import load_split, resolve_bge_path
+from models.data import apply_evidence_policy, load_split, resolve_bge_path
+from models.provenance import attach_run_provenance
 
 
 def claim_text(r):
@@ -27,28 +29,57 @@ def claim_text(r):
     return (r.get("attribute_name", "") + " " + " ".join(s.get("text", "") for s in segs)).strip()
 
 
-def evidence_text(r, policy: str | None = None):
-    """Build evidence string. Default / canonical: three sources only (no arguments)."""
+def evidence_text(r, policy_override=""):
     parts = [r.get("attribute_name", "")]
 
-    def source_parts():
-        for it in r.get("evidence_params", []) or []:
-            yield it.get("raw_text", "")
-        for it in r.get("evidence_ocr", []) or []:
-            yield it.get("raw_text", "")
-        for it in r.get("evidence_vlm", []) or []:
-            yield it.get("raw_quote", "")
+    def arg_parts():
+        args = r.get("arguments", {}) or {}
+        for label, key in (
+            ("[ARG_SUP]", "supporting_argument"),
+            ("[ARG_REF]", "refuting_argument"),
+            ("[ARG_GAP]", "evidence_gap"),
+        ):
+            txt = args.get(key, "")
+            if txt:
+                yield f"{label} {txt}"
 
-    # Paper-fair canonical: params + OCR + VLM only (ignore LLM arguments).
-    pol = policy or r.get("_evidence_policy") or r.get("evidence_policy") or getattr(
-        config, "EVIDENCE_POLICY_CANONICAL", "sources_only"
-    )
-    if pol in ("", "record", "sources_only", "source_only", "no_args", "args_first",
-               "source_first", "args_only"):
-        # All paper runs force three-source evidence; argument views are retired.
+    def source_parts(only=None):
+        for key, field, name, label in (
+                ("evidence_params", "raw_text", "params", "[PARAM]"),
+                ("evidence_ocr", "raw_text", "ocr", "[OCR]"),
+                ("evidence_vlm", "raw_quote", "vlm", "[VLM]")):
+            if only is not None and name not in only:
+                continue
+            texts = [str(it.get(field, "") or "").strip()
+                     for it in (r.get(key, []) or []) if str(it.get(field, "") or "").strip()]
+            if texts:
+                yield f"{label} " + " [SEP_E] ".join(texts)
+
+    policy = policy_override or r.get("_evidence_policy", r.get("evidence_policy", "args_first"))
+    if policy == "source_first":
+        parts.extend(source_parts())
+        parts.extend(arg_parts())
+    elif policy in ("no_args", "source_only", "sources_only"):
+        parts.extend(source_parts())
+    elif policy == "args_only":
+        parts.extend(arg_parts())
+    elif policy == "params_only":
+        parts.extend(source_parts({"params"}))
+    elif policy == "ocr_only":
+        parts.extend(source_parts({"ocr"}))
+    elif policy == "vlm_only":
+        parts.extend(source_parts({"vlm"}))
+    elif policy == "params_args":
+        parts.extend(source_parts({"params"})); parts.extend(arg_parts())
+    elif policy == "ocr_args":
+        parts.extend(source_parts({"ocr"})); parts.extend(arg_parts())
+    elif policy == "vlm_args":
+        parts.extend(source_parts({"vlm"})); parts.extend(arg_parts())
+    elif policy in ("args_first", "record", "", None):
+        parts.extend(arg_parts())
         parts.extend(source_parts())
     else:
-        parts.extend(source_parts())
+        raise ValueError(f"unknown evidence_policy: {policy}")
     return " ".join(p for p in parts if p).strip()
 
 
@@ -79,10 +110,9 @@ def best_thr(y, p):
 
 def run(args):
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    import os as _os
-    _local = "/root/models/bge-large-zh-v1.5"
-    bge = _local if _os.path.isdir(_local) else resolve_bge_path()
+    bge = resolve_bge_path(args.model_path or "BAAI/bge-large-zh-v1.5")
     sp = load_split(args.dataset)
+    apply_evidence_policy(sp, args.evidence_policy)
     out = []
     for name, feat in (("claim_only", claim_text), ("evidence_only", evidence_text),
                        ("concat", None)):
@@ -103,6 +133,7 @@ def run(args):
         res = {"tag": f"BGE_frozen_LR_{name}", "thr": round(thr, 3),
                **metrics(yte, pte, thr, c=cte),
                "n_test": int(len(yte)), "pos_test": int(yte.sum())}
+        attach_run_provenance(res, args, bge)
         print("RESULT", json.dumps(res, ensure_ascii=False), flush=True)
         out.append(res)
     return out
@@ -111,6 +142,8 @@ def run(args):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", default=str(config.DEFAULT_TRAIN_DATASET))
+    ap.add_argument("--evidence_policy", default="sources_only")
+    ap.add_argument("--model_path", default=os.environ.get("CLAIMARC_BGE_PATH", ""))
     args = ap.parse_args()
     run(args)
 

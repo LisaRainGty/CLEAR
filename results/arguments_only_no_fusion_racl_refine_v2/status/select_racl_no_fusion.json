@@ -1,0 +1,27 @@
+{
+  "job": "select_racl_no_fusion",
+  "stage": "racl_tune",
+  "signature": "64c78630b1863797e57d3eb7cc14f3e0f936717d95f271c3438a6ebe9888c470",
+  "command": [
+    "/root/claimarc_venv/bin/python",
+    "/root/CLEAR_run/scripts/select_racl_no_fusion.py",
+    "--config",
+    "/root/CLEAR_run/configs/racl_no_fusion_refine_v2.json",
+    "--result-root",
+    "/root/CLEAR_run/results/arguments_only_no_fusion_racl_refine_v2",
+    "--output",
+    "/root/CLEAR_run/results/arguments_only_no_fusion_racl_refine_v2/racl_no_fusion_selection.json"
+  ],
+  "command_shell": "/root/claimarc_venv/bin/python /root/CLEAR_run/scripts/select_racl_no_fusion.py --config /root/CLEAR_run/configs/racl_no_fusion_refine_v2.json --result-root /root/CLEAR_run/results/arguments_only_no_fusion_racl_refine_v2 --output /root/CLEAR_run/results/arguments_only_no_fusion_racl_refine_v2/racl_no_fusion_selection.json",
+  "started_utc": "2026-07-23T12:30:39.122101+00:00",
+  "finished_utc": "2026-07-23T12:30:39.256171+00:00",
+  "returncode": 0,
+  "log": "results/arguments_only_no_fusion_racl_refine_v2/logs/select_racl_no_fusion.log",
+  "result_file": "results/arguments_only_no_fusion_racl_refine_v2/jobs/select_racl_no_fusion.jsonl",
+  "outputs": [
+    "results/arguments_only_no_fusion_racl_refine_v2/racl_no_fusion_selection.json"
+  ],
+  "removed_failed_outputs": [],
+  "dataset_sha256": "b6bc9a91f87da3a489af216a036e4d11bd02d7eb8895e9d7f2cd9d78e26bd618",
+  "evidence_policy": "args_only"
+}

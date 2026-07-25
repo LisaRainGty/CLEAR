@@ -15,3 +15,9 @@ export PYTHONPATH="$CLAIMARC_ROOT/src:${PYTHONPATH:-}"
 # Optional: load BAAI/bge-large-zh-v1.5 from a local directory (offline / faster).
 # If unset, the encoder is fetched from ModelScope/HuggingFace on first run.
 export CLAIMARC_BGE_PATH="${CLAIMARC_BGE_PATH:-}"
+export CLAIMARC_BERT_PATH="${CLAIMARC_BERT_PATH:-}"
+export CLAIMARC_ROBERTA_PATH="${CLAIMARC_ROBERTA_PATH:-}"
+export CLAIMARC_NLI_PATH="${CLAIMARC_NLI_PATH:-}"
+
+# Optional: exact Python interpreter used by the GPU experiment runner.
+export CLAIMARC_PYTHON="${CLAIMARC_PYTHON:-python}"
